@@ -40,7 +40,7 @@ PORT=8181 npm run test
 
 #### Unit tests
 ```sh
-npm run unit
+npm run test:unit
 ```
 
 #### E2E tests
