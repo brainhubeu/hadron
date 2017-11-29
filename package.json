@@ -8,36 +8,31 @@
     "build": "NODE_PATH=./src:./lib babel index.js init.js src -s -D -d dist",
     "start": "NODE_PATH=dist NODE_ENV=production node dist",
     "prestart": "NODE_PATH=./src:./lib npm run -s build",
-    "lint": "NODE_PATH=./src:./lib eslint src lib test || true",
+    "lint": "NODE_PATH=./src:./lib eslint src lib test",
     "lint:fix": "NODE_PATH=./src:./lib eslint src lib test --fix",
-    "test": "NODE_PATH=./src:./lib NODE_ENV=development mocha tools/testSetup.js \"./test/**/*.js\"",
+    "test": "npm run -s test:unit && npm run -s test:e2e",
+    "test:unit": "NODE_PATH=./src:./lib NODE_ENV=test mocha tools/testSetup.js \"./src/**/__tests__/*.js\" -r babel-register",
     "test:e2e": "NODE_PATH=./src:./lib ./test.sh",
-    "test:cucumber": "NODE_PATH=./src:./lib NODE_ENV=development ./node_modules/.bin/cucumberjs --compiler=js:babel-register"
+    "test:cucumber": "NODE_PATH=./src:./lib NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=js:babel-register"
   },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "babel-polyfill": "6.26.0",
     "body-parser": "1.18.2",
-    "chalk": "2.1.0",
     "cors": "2.8.4",
-    "dotenv": "4.0.0",
-    "express": "4.16.1"
+    "dotenv": "4.0.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
-    "babel-preset-env": "1.6.0",
-    "babel-preset-stage-0": "6.24.1",
+    "babel-preset-env": "1.6.1",
     "chai": "4.1.2",
-    "chai-as-promised": "7.1.1",
-    "chai-subset": "1.6.0",
-    "cucumber": "3.0.6",
-    "eslint": "4.8.0",
+    "cucumber": "3.1.0",
+    "eslint": "4.12.0",
     "eslint-config-brainhub": "1.6.3",
     "mocha": "4.0.1",
     "nodemon": "1.12.1",
-    "sinon": "4.0.1",
+    "sinon": "4.1.2",
     "sinon-chai": "2.14.0"
   }
 }

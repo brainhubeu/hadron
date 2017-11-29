@@ -2,6 +2,12 @@
 
 ## Getting Started
 
+#### Requirements
+- Installed GIT
+- Installed node.js (we recommend using [nvm](https://github.com/creationix/nvm) to run multiple versions of node).
+
+We recommend using latest (9.x) version of node. If you want to use older versions you may need to add [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) to use [some features](http://node.green/).
+
 #### Clone it
 ```sh
 git clone ssh://git@git.brainhub.pl:2222/brainhub-framework/brainhub-framework-app.git
@@ -25,9 +31,16 @@ npm start
 
 ## Running tests
 
-#### Unit tests
+#### All tests
 ```sh
 npm run test
+# or
+PORT=8181 npm run test
+```
+
+#### Unit tests
+```sh
+npm run unit
 ```
 
 #### E2E tests

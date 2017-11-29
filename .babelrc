@@ -4,8 +4,7 @@
       "targets": {
         "node": "current"
       }
-    }],
-    "stage-0"
+    }]
   ],
   "plugins": []
 }
