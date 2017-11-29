@@ -4,15 +4,15 @@
   "description": "Brainhub framework app",
   "main": "dist",
   "scripts": {
-    "dev": "NODE_PATH=./src:./lib NODE_ENV=development nodemon -w src --exec \"babel-node src\"",
+    "dev": "NODE_PATH=./src:./lib NODE_ENV=development nodemon -w src --exec 'babel-node src'",
     "build": "NODE_PATH=./src:./lib babel index.js init.js src -s -D -d dist",
     "start": "NODE_PATH=dist NODE_ENV=production node dist",
     "prestart": "NODE_PATH=./src:./lib npm run -s build",
     "lint": "NODE_PATH=./src:./lib eslint src lib test",
     "lint:fix": "NODE_PATH=./src:./lib eslint src lib test --fix",
     "test": "npm run -s test:unit && npm run -s test:e2e",
-    "test:unit": "NODE_PATH=./src:./lib NODE_ENV=test mocha tools/testSetup.js \"./src/**/__tests__/*.js\" -r babel-register",
-    "test:e2e": "NODE_PATH=./src:./lib ./test.sh",
+    "test:unit": "NODE_PATH=./src:./lib NODE_ENV=test mocha tools/testSetup.js './src/**/__tests__/*.js' -r babel-register",
+    "test:e2e": "./test.sh",
     "test:cucumber": "NODE_PATH=./src:./lib NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=js:babel-register"
   },
   "author": "Brainhub",
