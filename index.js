@@ -5,7 +5,7 @@ import BF from 'brainhub-framework';
 BF.configureApp()
 */
 
-// following is a simple http server to show that configuration works
+// following is a simple http server to show that configuration works, can be removed at any time
 import http from 'http';
 
 import app from 'example/app';
