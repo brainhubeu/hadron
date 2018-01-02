@@ -57,4 +57,4 @@ npm run lint:fix    # to fix the errors and show what's left
 ```
 
 ## Documentation
-*nothing to see here yet*
+1. [directory structure](docs/directoryStructure)
