@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "extends": [
+    "brainhub"
+  ],
+  "rules": {},
+  "globals": {},
+  "settings": {
+    "import/resolve": {
+      "moduleDirectory": ["node_modules", "lib", "src"]
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/*.js"],
+      "env": {
+        "mocha": true
+      }
+    }
+  ]
+}
