@@ -1,6 +1,6 @@
 const controller = {
-  get() {
-    return { foo: 'bar' };
+  get(): { foo: string } {
+    return { foo: "bar" };
   },
 };
 

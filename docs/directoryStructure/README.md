@@ -59,9 +59,9 @@
 - Dockerfile
 - entrypoint.sh
 - README.md
-- .babelrc
+- tsconfig.json
+- tslint.json
 - .dockerignore
-- .eslintrc
 - .gitignore
 - .gitlab-ci.yml
 ```
