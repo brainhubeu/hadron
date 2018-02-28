@@ -13,7 +13,12 @@
     "test": "npm run -s test:unit && npm run -s test:e2e",
     "test:unit": "NODE_PATH=./src:./lib NODE_ENV=test mocha tools/testSetup.js './src/**/__tests__/*.js' -r babel-register",
     "test:e2e": "./test.sh",
-    "test:cucumber": "NODE_PATH=./src:./lib NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=js:babel-register"
+    "test:cucumber": "NODE_PATH=./src:./lib NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=js:babel-register",
+
+    "start:test": "npm run test",
+    "start:development": "pm2-dev start --interpreter babel-node index.js",
+    "start:production": "pm2-docker start pm2.config.js --env production",
+    "docker:build": "docker build -t brainhub-framework-app ."
   },
   "author": "Brainhub",
   "license": "MIT",
