@@ -4,11 +4,11 @@
   "description": "Brainhub framework app",
   "main": "dist",
   "scripts": {
-    "dev": "concurrently -k -p \"[{name}]\" -n \"build,node\" -c \"blue.bold,green.bold\" \"npm run build:watch\" \"npm run start:watch\"",
+    "start:production": "NODE_ENV=production NODE_PATH=./src:./lib node src",
+    "start:development": "npm run build && concurrently --kill-others --prefix \"[{name}]\" --names \"build,node\" --prefix-colors \"blue.bold,green.bold\" \"npm run build:watch\" \"sleep 3 && npm run start:watch\"",
     "build": "tsc",
-    "build:watch": "tsc -w",
-    "start": "NODE_ENV=production NODE_PATH=./dist/src:./dist/lib node dist/src",
-    "start:watch": "NODE_ENV=development NODE_PATH=./dist/src:./dist/lib nodemon --watch dist dist/src",
+    "build:watch": "tsc --watch",
+    "start:watch": "NODE_ENV=development NODE_PATH=./dist/src:./dist/lib nodemon --watch ./dist/ ./dist/src",
     "prestart": "npm run build",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint:fix": "tslint  -c tslint.json -p tsconfig.json --fix",
@@ -16,14 +16,16 @@
     "test:unit": "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './src/**/__tests__/*.ts'",
     "test:unit:watch": "npm run test:unit -- --reporter min --watch-extensions ts --watch",
     "test:e2e": "./test.sh",
-    "test:cucumber": "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register"
+    "test:cucumber": "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",
+    "docker:build": "docker build -t brainhub-framework-app ."
   },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.18.2",
     "cors": "2.8.4",
-    "dotenv": "4.0.0"
+    "dotenv": "4.0.0",
+    "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
     "@types/body-parser": "1.16.8",
