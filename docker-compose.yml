@@ -6,6 +6,8 @@ networks:
 services:
   brainhub-framework-app:
     image: brainhub-framework-app
+    build:
+      context: .
     container_name: fs-brainhub-framework-app
     volumes:
       - ./:/usr/src/app
