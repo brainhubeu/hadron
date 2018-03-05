@@ -6,10 +6,12 @@ class Container {
     constructor() {
         this.containerRegister = new Array<ContainerItem>();
     }
+
     public register(key: string, item: any): ContainerItem {
         let containerItem = this.takeContainerByKey(key);
         if (containerItem === null) {
             containerItem = new ContainerItem(key, item);
+            containerItem.container = this;
             this.containerRegister.push(containerItem);
             return containerItem;
         }
@@ -47,10 +49,6 @@ class Container {
         // type is not defineg
         return null;
     }
-
-    // public register<T>(item: T): Container{
-
-    // }
 }
 
 export default Container;
