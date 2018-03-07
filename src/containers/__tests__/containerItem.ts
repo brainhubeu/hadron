@@ -1,18 +1,20 @@
 import { expect } from "chai";
+import * as container from "../container";
 import containerItem from "../ContainerItem";
+import { Lifetime } from "../lifetime";
 
 describe("containerItem set lifetime", () => {
     it("should be default(value)", () => {
         const item = containerItem.containerItemFactory("object", Object);
-        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Value);
+        expect(item.constructor.name).to.equal("ContainerItem");
     });
     it("should be transient", () => {
-        const item = containerItem.containerItemFactory("object1", Object, containerItem.Lifetime.Transient);
-        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Transient);
+        const item = containerItem.containerItemFactory("object1", Object, Lifetime.Transient);
+        expect(item.constructor.name).to.equal("ContainerItemTransient");
     });
     it("should be singletone", () => {
-        const item = containerItem.containerItemFactory("object2", Object, containerItem.Lifetime.Singletone);
-        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Singletone);
+        const item = containerItem.containerItemFactory("object2", Object, Lifetime.Singletone);
+        expect(item.constructor.name).to.equal("ContainerItemSingletone");
     });
   });
 describe("containerItem set value", () => {
@@ -37,7 +39,7 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = containerItem.containerItemFactory("Fooooo", Foo, containerItem.Lifetime.Singletone);
+        const item = containerItem.containerItemFactory("Fooooo", Foo, Lifetime.Singletone);
         const item1 = item.Item;
         const item2 = item.Item;
         expect(item1).to.equal(item2);
@@ -50,7 +52,7 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = containerItem.containerItemFactory("Foo", Foo, containerItem.Lifetime.Transient);
+        const item = containerItem.containerItemFactory("Foo", Foo, Lifetime.Transient);
         const item1 = item.Item;
 
         setTimeout(() => {
@@ -67,7 +69,7 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = containerItem.containerItemFactory("Foo", Foo, containerItem.Lifetime.Transient);
+        const item = containerItem.containerItemFactory("Foo", Foo, Lifetime.Transient);
         const item1 = item.Item;
         const item2 = item.Item;
         expect(item1).to.not.equal(item2);
@@ -85,14 +87,14 @@ describe("getArgs return list of arguments", () => {
         // tslint:disable-next-line:only-arrow-functions
         const item = containerItem.containerItemFactory("foo", function(bar: any, bar2: any) {
             const t = "";
-        }, containerItem.Lifetime.Value);
+        }, Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("arrow expression - should return ['bar', 'bar2']", () => {
         const item = containerItem.containerItemFactory("foo", (bar: any, bar2: any) => {
             const t = "";
-        }, containerItem.Lifetime.Value);
+        }, Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
@@ -110,7 +112,7 @@ describe("getArgs return list of arguments", () => {
         // tslint:disable-next-line:max-classes-per-file
         const item = containerItem.containerItemFactory("foo", class {constructor(bar: any, bar2: any) {
             const t = "";
-         }}, containerItem.Lifetime.Value);
+         }}, Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
@@ -118,7 +120,7 @@ describe("getArgs return list of arguments", () => {
         // tslint:disable-next-line:max-classes-per-file
         // tslint:disable-next-line:no-empty
         const item = containerItem.containerItemFactory("foo", {foo(bar: any, bar2: any) {}}.foo
-            , containerItem.Lifetime.Value);
+            , Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });

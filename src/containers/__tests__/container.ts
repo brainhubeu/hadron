@@ -1,13 +1,9 @@
 import { expect } from "chai";
-import container from "../Container";
+import container from "../container";
 import containerItem from "../containerItem";
+import { Lifetime } from "../lifetime";
 
 describe("container register", () => {
-    it("should register 2 items", () => {
-        container.register("test", "given");
-        container.register("test2", "given");
-        expect(2).to.equal(container.CountItems());
-    });
     it("should overrive value for the the same key", () => {
         const itemName = "test";
         container.register(itemName, "given");
@@ -23,7 +19,7 @@ describe("container register", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        container.register(itemName, Foo, containerItem.Lifetime.Singletone);
+        container.register(itemName, Foo, Lifetime.Singletone);
         const item1 = container.take(itemName);
         const item2 = container.take(itemName);
         expect(item2).to.deep.equal(item1);
@@ -36,7 +32,7 @@ describe("container register", () => {
                 this.value = "xxxx";
             }
         }
-        container.register("test", Foo, containerItem.Lifetime.Transient);
+        container.register("test", Foo, Lifetime.Transient);
         const item1 = container.take("test");
         const item2 = container.take("test");
         expect(item1).to.deep.equal(item2);
@@ -58,8 +54,8 @@ describe("container items with parameters in constructor", () => {
                 this.value = parameterName.value;
             }
         }
-        container.register("parameterName", Foo, containerItem.Lifetime.Transient);
-        container.register("foo2", Foo2, containerItem.Lifetime.Transient);
+        container.register("parameterName", Foo, Lifetime.Transient);
+        container.register("foo2", Foo2, Lifetime.Transient);
 
         const item = container.take("parameterName") as Foo;
 
