@@ -1,54 +1,34 @@
-import ContainerItem from "../containers/containerItem";
+import * as container from "../containers/containerItem";
 
-class Container {
-    private containerRegister: ContainerItem[];
+const containerRegister = new Array<container.IContainerItem>();
 
-    constructor() {
-        this.containerRegister = new Array<ContainerItem>();
+const register = (key: string, item: any, lifetime?: number): container.IContainerItem => {
+    const containerItem = takeContainerByKey(key);
+    if (containerItem.length === 0) {
+        const ci = container.default.containerItemFactory(key, item, lifetime );
+        containerRegister.push(ci);
+        return ci;
     }
+    containerItem[0].Item = item;
+    return containerItem[0];
+};
 
-    public register(key: string, item: any): ContainerItem {
-        let containerItem = this.takeContainerByKey(key);
-        if (containerItem === null) {
-            containerItem = new ContainerItem(key, item);
-            containerItem.container = this;
-            this.containerRegister.push(containerItem);
-            return containerItem;
-        }
-        containerItem.Item = item;
-        return containerItem;
-    }
-
-    public CountItems() {
-        return this.containerRegister.length;
-    }
-    // public takeAndCast<T>(key: string): T {
-    //     const containerItem = this.takeContainerByKey(key);
-    //     if (containerItem == null) {
-    //         // type is not registeres
-    //     }
-
-    //     const retval = containerItem.Item as T;
-    //     return retval;
-    // }
-    public take(key: string): any {
-        const containerItem = this.takeContainerByKey(key);
-        if (containerItem == null) {
-            // type is not registeres
-            return null;
-        }
-        return  containerItem.Item;
-    }
-    private takeContainerByKey(key: string): any {
-        for (let i = 0; i < this.CountItems(); i++) {
-            if (this.containerRegister[i].Key === key) {
-                return this.containerRegister[i];
-            }
-        }
-
-        // type is not defineg
+const take = (key: string): any => {
+    const containerItem = takeContainerByKey(key);
+    if (containerItem.length === 0) {
+        // type is not registeres
         return null;
     }
-}
+    return  containerItem[0].Item;
+};
+const takeContainerByKey = (key: string): container.IContainerItem[] =>
+    containerRegister.filter((x) => x.Key() === key);
 
+const Container = {
+    register,
+    take,
+    CountItems(): number {
+        return containerRegister.length;
+    },
+};
 export default Container;

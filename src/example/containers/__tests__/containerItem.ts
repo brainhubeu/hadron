@@ -3,31 +3,29 @@ import containerItem from "../ContainerItem";
 
 describe("containerItem set lifetime", () => {
     it("should be default(value)", () => {
-        const item = new containerItem("object", Object);
-        expect(item.Lifetime).to.equal(2);
+        const item = containerItem.containerItemFactory("object", Object);
+        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Value);
     });
     it("should be transient", () => {
-        const item = new containerItem("object", Object);
-        item.AsTransient();
-        expect(item.Lifetime).to.equal(0);
+        const item = containerItem.containerItemFactory("object1", Object, containerItem.Lifetime.Transient);
+        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Transient);
     });
     it("should be singletone", () => {
-        const item = new containerItem("object", Object);
-        item.AsSingletone();
-        expect(item.Lifetime).to.equal(1);
+        const item = containerItem.containerItemFactory("object2", Object, containerItem.Lifetime.Singletone);
+        expect(item.Lifetime()).to.equal(containerItem.Lifetime.Singletone);
     });
   });
 describe("containerItem set value", () => {
     it("should return 1", () => {
-        const item = new containerItem("number", 5);
+        const item = containerItem.containerItemFactory("number", 5);
         expect(item.Item).to.equal(5);
     });
     it("should return 'oko'", () => {
-        const item = new containerItem("string", "oko");
+        const item = containerItem.containerItemFactory("string", "oko");
         expect(item.Item).to.equal("oko");
     });
     it("should return '{}'", () => {
-        const item = new containerItem("object", {});
+        const item = containerItem.containerItemFactory("object", {});
         expect(item.Item).to.deep.equal({});
     });
 
@@ -39,8 +37,7 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = new containerItem("Foo", Foo);
-        item.AsSingletone();
+        const item = containerItem.containerItemFactory("Fooooo", Foo, containerItem.Lifetime.Singletone);
         const item1 = item.Item;
         const item2 = item.Item;
         expect(item1).to.equal(item2);
@@ -53,15 +50,14 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = new containerItem("Foo", Foo);
-        item.AsTransient();
+        const item = containerItem.containerItemFactory("Foo", Foo, containerItem.Lifetime.Transient);
         const item1 = item.Item;
 
         setTimeout(() => {
             const item2 = item.Item;
             expect(item1.value).to.not.equal(item2.value);
             done();
-        }, 100);
+        }, 10);
     });
     it("should always return new instance of given type 2", () => {
         // tslint:disable-next-line:max-classes-per-file
@@ -71,8 +67,7 @@ describe("containerItem set value", () => {
                 this.value = (new Date()).getTime().toString();
             }
         }
-        const item = new containerItem("Foo", Foo);
-        item.AsTransient();
+        const item = containerItem.containerItemFactory("Foo", Foo, containerItem.Lifetime.Transient);
         const item1 = item.Item;
         const item2 = item.Item;
         expect(item1).to.not.equal(item2);
@@ -82,22 +77,22 @@ describe("getArgs return list of arguments", () => {
     it("function declaration - should return ['bar', 'bar2']", () => {
         // tslint:disable-next-line:no-empty
         function foo(bar: any, bar2: any) { }
-        const item = new containerItem("foo", foo);
+        const item = containerItem.containerItemFactory("foo", foo);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("function expression - should return ['bar', 'bar2']", () => {
         // tslint:disable-next-line:only-arrow-functions
-        const item = new containerItem("foo", function(bar: any, bar2: any) {
+        const item = containerItem.containerItemFactory("foo", function(bar: any, bar2: any) {
             const t = "";
-        });
+        }, containerItem.Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("arrow expression - should return ['bar', 'bar2']", () => {
-        const item = new containerItem("foo", (bar: any, bar2: any) => {
+        const item = containerItem.containerItemFactory("foo", (bar: any, bar2: any) => {
             const t = "";
-        });
+        }, containerItem.Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
@@ -107,22 +102,23 @@ describe("getArgs return list of arguments", () => {
             // tslint:disable-next-line:no-empty
             constructor(bar: any, bar2: any) { }
         }
-        const item = new containerItem("foo", Foo);
+        const item = containerItem.containerItemFactory("foo", Foo);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("class expression - should return ['bar', 'bar2']", () => {
         // tslint:disable-next-line:max-classes-per-file
-        const item = new containerItem("foo", class {constructor(bar: any, bar2: any) {
+        const item = containerItem.containerItemFactory("foo", class {constructor(bar: any, bar2: any) {
             const t = "";
-         }});
+         }}, containerItem.Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("object method is no constructable - should return ['bar', 'bar2']", () => {
         // tslint:disable-next-line:max-classes-per-file
         // tslint:disable-next-line:no-empty
-        const item = new containerItem("foo", {foo(bar: any, bar2: any) {}}.foo);
+        const item = containerItem.containerItemFactory("foo", {foo(bar: any, bar2: any) {}}.foo
+            , containerItem.Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
@@ -132,7 +128,7 @@ describe("getArgs return list of arguments", () => {
             // tslint:disable-next-line:no-empty
             public bar(bar: any, bar2: any) {}
           }
-        const item = new containerItem("foo", new Foo().bar);
+        const item = containerItem.containerItemFactory("foo", new Foo().bar);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
@@ -142,7 +138,7 @@ describe("getArgs return list of arguments", () => {
             // tslint:disable-next-line:no-empty
             public static bar(bar: any, bar2: any) {}
           }
-        const item = new containerItem("foo", Foo.bar);
+        const item = containerItem.containerItemFactory("foo", Foo.bar);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
