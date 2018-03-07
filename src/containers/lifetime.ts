@@ -1,7 +1,7 @@
 enum Lifetime {
-    Transient = 0,
-    Singletone = 1,
-    Value = 2,
+    Transient = "transient",
+    Singletone = "singletone",
+    Value = "value",
 }
 
 export { Lifetime };

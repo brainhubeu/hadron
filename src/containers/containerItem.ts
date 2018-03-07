@@ -2,8 +2,8 @@ import container from "../containers/container";
 import { IContainerItem } from "../containers/IContainerItem";
 import { Lifetime } from "../containers/lifetime";
 
-const containerItemFactory = (key: string, item: any, lifetime?: number): ContainerItem => {
-    switch (+lifetime) {
+const containerItemFactory = (key: string, item: any, lifetime?: string): ContainerItem => {
+    switch (lifetime) {
         case Lifetime.Singletone:
             return new ContainerItemSingletone(key, item);
         case Lifetime.Transient:

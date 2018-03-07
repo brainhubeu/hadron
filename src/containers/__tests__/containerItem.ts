@@ -9,7 +9,7 @@ describe("containerItem set lifetime", () => {
         expect(item.constructor.name).to.equal("ContainerItem");
     });
     it("should be transient", () => {
-        const item = containerItem.containerItemFactory("object1", Object, Lifetime.Transient);
+        const item = containerItem.containerItemFactory("object1", Object, "transient");
         expect(item.constructor.name).to.equal("ContainerItemTransient");
     });
     it("should be singletone", () => {
