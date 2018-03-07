@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as container from "../container";
-import containerItem from "../ContainerItem";
+import containerItem from "../containerItem";
 import { Lifetime } from "../lifetime";
 
 describe("containerItem set lifetime", () => {
