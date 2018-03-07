@@ -10,7 +10,7 @@ const containerRegister = new Array<IContainerItem>();
  * @param item stored item, can be any tyle: value, type, function....
  * @param lifetime setting type of life-span [value, singletone, transient] - value is default
  */
-const register = (key: string, item: any, lifetime?: number): void => {
+const register = (key: string, item: any, lifetime?: string): void => {
     const containerItems = takeContainerByKey(key);
     if (containerItems.length === 0) {
         const ci = containerItem.containerItemFactory(key, item, lifetime );
