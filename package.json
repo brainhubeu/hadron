@@ -25,6 +25,7 @@
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",
+    "glob": "7.1.2",
     "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
