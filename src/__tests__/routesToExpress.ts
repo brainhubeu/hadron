@@ -77,7 +77,7 @@ describe("router config", () => {
         return request(app)
             .get(`/index/${testParam}`)
             .expect(HTTPStatus.OK)
-            .then((res) => {
+            .then((res: any) => {
                 expect(res.body).to.equal(testParam);
             });
     });
@@ -94,7 +94,7 @@ describe("router config", () => {
         return request(app)
             .get(`/index/${testParam}/${secondParam}`)
             .expect(HTTPStatus.OK)
-            .then((res) => expect(res.body).to.equal(testParam + secondParam));
+            .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
     });
     it("calls middleware passed in router config", () => {
         const callback = (params: any) => params.testParam + params.anotherParam;
