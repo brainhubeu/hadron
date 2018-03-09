@@ -47,12 +47,12 @@ describe("router config", () => {
     });
     it("returns status OK for request from generated route", () => {
         // tslint:disable-next-line:no-empty
-        const testRoute = createTestRoute("/index", ["GET"], () => {});
+        const testRoute = createTestRoute("/testRequest", ["GET"], () => {});
 
         routesToExpress(app, testRoute);
 
-        request(app)
-            .get("/middlewares")
+        return request(app)
+            .get("/testRequest")
             .expect(HTTPStatus.OK);
     });
     it("throws a RouterError if method specified in config doesn't exist", () => {
