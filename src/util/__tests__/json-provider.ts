@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import jsonProvider from "../json-provider";
 
-describe.only ("jsonProvider", () => {
+describe ("jsonProvider", () => {
     it ("should return object", () => {
         return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["js"])
         .then((result) => {
@@ -10,7 +10,7 @@ describe.only ("jsonProvider", () => {
     });
 
     it ("should return JavaScript object with proper values", () => {
-        const obj = {
+        const validObject = {
             emailJS: "user-JS@email.com",
             name: "module - x",
             usernameJS: "user-JS",
@@ -18,12 +18,12 @@ describe.only ("jsonProvider", () => {
 
         return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["js"])
         .then((result) => {
-            expect(result).to.be.deep.equal(obj);
+            expect(result).to.be.deep.equal(validObject);
         });
     });
 
     it ("should return JavaScript object from json and xml files", () => {
-        const obj = {
+        const validObject = {
             database: {
                 host: "default",
                 password: "default",
@@ -34,12 +34,12 @@ describe.only ("jsonProvider", () => {
 
         return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json", "xml"])
         .then((result) => {
-            expect(result).to.be.deep.equal(obj);
+            expect(result).to.be.deep.equal(validObject);
         });
     });
 
     it ("should return JavaScript object from json and js files", () => {
-        const obj = {
+        const validObject = {
             database: {
                 host: "default",
                 password: "default",
@@ -53,7 +53,7 @@ describe.only ("jsonProvider", () => {
 
         return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json", "js"])
         .then((result) => {
-            expect(result).to.be.deep.equal(obj);
+            expect(result).to.be.deep.equal(validObject);
         });
     });
 });

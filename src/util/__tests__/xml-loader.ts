@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { xmlLoader } from "../json-provider";
 
-describe.only ("xmlLoader", () => {
-    const path = "src/util/__tests__/mock/app/config/config.xml";
+describe ("xmlLoader", () => {
+    const path = "src/util/__tests__/mock/app/config/config.XML";
 
     it ("should return object", () => {
         return xmlLoader(path).then((result) => {
@@ -18,10 +18,10 @@ describe.only ("xmlLoader", () => {
         });
     });
 
-    it ("should throw error if file path does not have a valid extension", () => {
+    it ("should throw error if file path doesn't have a valid extension", () => {
         return xmlLoader(`${path}x`).catch((error) => {
             expect(error).to.be.an.instanceof(Error);
-            expect(error.message).to.be.equal(`${path}x don't have xml extension`);
+            expect(error.message).to.be.equal(`${path}x doesn't have xml extension`);
         });
     });
 });

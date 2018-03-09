@@ -1,26 +1,16 @@
 import * as fs from "fs";
 import { relative } from "path";
-import { to_json } from "xmljson";
+import { parseString as xmlToJson } from "xml2js";
 import locate from "./file-locator";
 
-const types = {
-    JS: "js",
-    JSON: "json",
-    XML: "xml",
-};
-
-const validExtension = (path: string, extension: string) => {
-    if (path.split(".")[path.split(".").length - 1] !== extension) {
-        return false;
-    }
-
-    return true;
+const getExtension = (path: string): string => {
+    return path.split(".")[path.split(".").length - 1].toLowerCase();
 };
 
 export const jsonLoader = (path: string) => {
     return new Promise((resolve, reject) => {
-        if (path.split(".")[path.split(".").length - 1] !== types.JSON) {
-            reject(new Error(`${path} don't have a ${types.JSON} extension`));
+        if (getExtension(path) !== Object.keys(mapper)[1]) {
+            reject(new Error(`${path} doesn't have a ${Object.keys(mapper)[1]} extension`));
         }
 
         fs.readFile(path, "utf8", (err, data) => {
@@ -31,8 +21,8 @@ export const jsonLoader = (path: string) => {
 
 export const jsLoader = (path: string) => {
     return new Promise((resolve, reject) => {
-        if (!validExtension(path, types.JS)) {
-            reject(new Error(`${path} don't have ${types.JS} extension`));
+        if (getExtension(path) !== Object.keys(mapper)[0]) {
+            reject(new Error(`${path} doesn't have ${Object.keys(mapper)[0]} extension`));
         }
 
         const data = require(`./${relative(__dirname, path)}`);
@@ -42,19 +32,20 @@ export const jsLoader = (path: string) => {
 
 export const xmlLoader = (path: string) => {
     return new Promise((resolve, reject) => {
-        if (!validExtension(path, types.XML)) {
-            reject(new Error(`${path} don't have ${types.XML} extension`));
+        if (getExtension(path) !== Object.keys(mapper)[2]) {
+            reject(new Error(`${path} doesn't have ${Object.keys(mapper)[2]} extension`));
         }
 
         fs.readFile(path, "utf8", (err, data) => {
             if (err) {
                 reject(err);
             }
-            to_json(data, (jsErr: Error, jsData: string) => {
-                if (err) {
-                    reject(jsErr);
+
+            xmlToJson(data, (jsonErr: Error, jsonData: string) => {
+                if (jsonErr) {
+                    reject(jsonErr);
                 }
-                resolve(jsData);
+                resolve(jsonData);
             });
         });
     });
@@ -67,13 +58,10 @@ const mapper: any = {
 };
 
 const extensionMapper = (paths: string[]): Array<Promise<any>> => {
-    const promises: Array<Promise<any>> = [];
-    paths.map((path) => {
+    return paths.map((path) => {
         const ext = path.split(".")[path.split(".").length - 1];
-        promises.push(mapper[ext](path));
+        return mapper[ext](path);
     });
-
-    return promises;
 };
 
 const jsonProvider = (paths: string[], configName: string, type: string, extensions: string[] = []) => {
