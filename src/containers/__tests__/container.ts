@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import container from "../containers/container";
-import { Lifetime } from "../containers/lifetime";
+import container from "../container";
+import { Lifetime } from "../lifetime";
 
 describe("container register", () => {
     it("should overrive value for the the same key", () => {
@@ -11,7 +11,6 @@ describe("container register", () => {
     });
     it("should always return the same object - Singletone", () => {
         const itemName = "test";
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: string;
             constructor() {
@@ -24,7 +23,6 @@ describe("container register", () => {
         expect(item2).to.deep.equal(item1);
     });
     it("should always return a new same object - Transient", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: string;
             constructor() {
@@ -39,14 +37,12 @@ describe("container register", () => {
   });
 describe("container items with parameters in constructor", () => {
     it("second level of injection", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: number;
             constructor() {
                 this.value = 4;
             }
         }
-        // tslint:disable-next-line:max-classes-per-file
         class Foo2 {
             public value: number;
             constructor(parameterName: Foo) {

@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import containerItem from "../containers/containerItem";
-import { Lifetime } from "../containers/lifetime";
+import containerItem from "../containerItem";
+import { Lifetime } from "../lifetime";
 
 describe("containerItem set lifetime", () => {
     it("should be default(value)", () => {
