@@ -15,9 +15,9 @@ describe.only ('locate', () => {
         });
     });
 
-    it ('should return path files from mock/app/config/* with development type and ts extension', () => {
-        return locate(['src/util/__tests__/mock/app/config/*'], 'config', 'development', ['ts']).then(result => {
-            expect(result).to.have.deep.members(['src/util/__tests__/mock/app/config/config.ts']);
+    it ('should return path files from mock/app/config/* with development type and json extension', () => {
+        return locate(['src/util/__tests__/mock/app/config/*'], 'config', 'development', ['json']).then(result => {
+            expect(result).to.have.deep.members(['src/util/__tests__/mock/app/config/config.json', 'src/util/__tests__/mock/app/config/config_development.json']);
         });
     });
 

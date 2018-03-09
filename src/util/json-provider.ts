@@ -1,6 +1,5 @@
 import locate from './file-locator';
 import * as fs from 'fs';
-import * as convert from 'xml-js';
 import { relative } from 'path';
 import { to_json } from 'xmljson';
 
@@ -60,3 +59,27 @@ export const xmlLoader = (path) => {
         });
     });
 }
+
+const mapper = {
+    'json': jsonLoader,
+    'js': jsLoader,
+    'xml': xmlLoader
+}
+
+const extensionMapper = (paths) => {
+    const promises = [];
+    paths.map(path => {
+        const ext = path.split('.')[path.split('.').length - 1];
+        promises.push(mapper[ext](path));
+    });
+
+    return promises;
+}
+
+const jsonProvider = (paths: Array<String>, configName: String, type: String, extensions: Array<String> = []) => {
+    return locate(paths, configName, type, extensions)
+    .then(paths => Promise.all(extensionMapper(paths)))
+    .then(data => Object.assign({}, ...data));
+}
+
+export default jsonProvider;

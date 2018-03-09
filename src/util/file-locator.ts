@@ -15,8 +15,9 @@ const locate = (paths: Array<String>, configName: String, type: String, extensio
         Promise.all(promises).then(data => {
             let arr:Array<String> = [];
             for (let i = 0; i < data.length; i++) {
-                arr = [...arr, ...data[i]];
+                arr = [...arr, ...data[i].sort()];
             }
+            
 
              filterPaths(flattenDeep(data), configName, type).then(data => {
                 resolve(data);
