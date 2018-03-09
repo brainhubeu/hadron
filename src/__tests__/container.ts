@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import container from "../container";
-import containerItem from "../containerItem";
-import { Lifetime } from "../lifetime";
+import container from "../containers/container";
+import { Lifetime } from "../containers/lifetime";
 
 describe("container register", () => {
     it("should overrive value for the the same key", () => {

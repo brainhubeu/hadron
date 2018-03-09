@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import * as container from "../container";
-import containerItem from "../containerItem";
-import { Lifetime } from "../lifetime";
+import containerItem from "../containers/containerItem";
+import { Lifetime } from "../containers/lifetime";
 
 describe("containerItem set lifetime", () => {
     it("should be default(value)", () => {
@@ -32,7 +31,6 @@ describe("containerItem set value", () => {
     });
 
     it("should return the same object twice", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: string;
             constructor() {
@@ -45,7 +43,6 @@ describe("containerItem set value", () => {
         expect(item1).to.equal(item2);
     });
     it("should always return new instance of given type", (done) => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: string;
             constructor() {
@@ -62,7 +59,6 @@ describe("containerItem set value", () => {
         }, 10);
     });
     it("should always return new instance of given type 2", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
             public value: string;
             constructor() {
@@ -77,14 +73,12 @@ describe("containerItem set value", () => {
   });
 describe("getArgs return list of arguments", () => {
     it("function declaration - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:no-empty
         function foo(bar: any, bar2: any) { }
         const item = containerItem.containerItemFactory("foo", foo);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("function expression - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:only-arrow-functions
         const item = containerItem.containerItemFactory("foo", function(bar: any, bar2: any) {
             const t = "";
         }, Lifetime.Value);
@@ -99,9 +93,7 @@ describe("getArgs return list of arguments", () => {
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("class declaration - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
-            // tslint:disable-next-line:no-empty
             constructor(bar: any, bar2: any) { }
         }
         const item = containerItem.containerItemFactory("foo", Foo);
@@ -109,7 +101,6 @@ describe("getArgs return list of arguments", () => {
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("class expression - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:max-classes-per-file
         const item = containerItem.containerItemFactory("foo", class {constructor(bar: any, bar2: any) {
             const t = "";
          }}, Lifetime.Value);
@@ -117,17 +108,13 @@ describe("getArgs return list of arguments", () => {
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("object method is no constructable - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:max-classes-per-file
-        // tslint:disable-next-line:no-empty
         const item = containerItem.containerItemFactory("foo", {foo(bar: any, bar2: any) {}}.foo
             , Lifetime.Value);
         const args = item.getArgs();
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("static class method - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
-            // tslint:disable-next-line:no-empty
             public bar(bar: any, bar2: any) {}
           }
         const item = containerItem.containerItemFactory("foo", new Foo().bar);
@@ -135,9 +122,7 @@ describe("getArgs return list of arguments", () => {
         expect(["bar", "bar2"]).to.deep.equal(args);
     });
     it("class method - should return ['bar', 'bar2']", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class Foo {
-            // tslint:disable-next-line:no-empty
             public static bar(bar: any, bar2: any) {}
           }
         const item = containerItem.containerItemFactory("foo", Foo.bar);
