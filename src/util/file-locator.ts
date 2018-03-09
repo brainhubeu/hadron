@@ -1,57 +1,43 @@
 import glob from "./glob-promise";
 
-const locate = (paths: Array<String>, configName: String, type: String, extensions: Array<String> = []) => {
+const locate = (paths: Array<string>, configName: string, type: string, extensions: Array<string> = []): Promise<any> => {
     return new Promise((resolve, reject) => {
-        let promises = [];
-
         if (extensions.length > 0) {
             paths = addExtension(paths, extensions);
         }
 
-        for (let i = 0; i < paths.length; i++) {
-            promises.push(glob(paths[i]));
-        }
-
-        Promise.all(promises).then(data => {
-            let arr:Array<String> = [];
-            for (let i = 0; i < data.length; i++) {
-                arr = [...arr, ...data[i].sort()];
-            }
-            
-
-             filterPaths(flattenDeep(data), configName, type).then(data => {
+        Promise.all(paths.map(glob)).then(data => {
+             filterPaths(flattenDeep(data.map(el => el.sort())), configName, type).then(data => {
                 resolve(data);
              });
         });
     });
 }
 
-const addExtension = (paths: Array<String>, extensions: Array<String>): Array<String> => {
-    let pathsWithExtion: Array<String> = [];
-    extensions.forEach(ext => {
-        paths.forEach(path => {
-            pathsWithExtion.push(`${path}.${ext}`);
-        });
-    });
+const addExtension = (paths: Array<string>, extensions: Array<string>): Array<string> => {
+    const pathsWithExtension: Array<string> = [];
 
-    return pathsWithExtion;
+    extensions.map(ext => {
+        paths.map(path => pathsWithExtension.push(`${path}.${ext}`));
+    });    
+
+    return pathsWithExtension;
 }
 
 const flattenDeep = (arr: Array<any>): Array<any> => {
     return Array.isArray(arr) ? arr.reduce((a, b) => [...flattenDeep(a), ...flattenDeep(b)], []) : [arr];
 }
 
-const filterPaths = (data: Array<String>, configName: String, type: String) => {
+const filterPaths = (data: Array<string>, configName: string, type: string) => {
     return new Promise((resolve, reject) => {
         let arr: Array<String> = [];
         
         data.forEach(element => {
-            let fileName = element.split('/')[element.split('/').length - 1];
-            fileName = fileName.split('.')[0];
+            const fileName = (element.split('/')[element.split('/').length - 1]).split('.')[0];
 
             if (fileName === configName) {
                 arr.push(element);
-            } else if (fileName.indexOf('_') > -1) {
+            } else if (fileName.includes('_')) {
                 if (fileName.split('_')[0] === configName && fileName.split('_')[1] === type) {
                     arr.push(element);
                 }

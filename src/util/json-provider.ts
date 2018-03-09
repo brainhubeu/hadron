@@ -9,7 +9,7 @@ const types = {
     XML: 'xml'
 }
 
-const validExtension = (path: String, extension: String) => {
+const validExtension = (path: string, extension: string) => {
     if (path.split('.')[path.split('.').length - 1] !== extension) {
         return false;
     }
@@ -17,7 +17,7 @@ const validExtension = (path: String, extension: String) => {
     return true;
 }
 
-export const jsonLoader = (path) => {
+export const jsonLoader = (path: string) => {
     return new Promise((resolve, reject) => {
         if (path.split('.')[path.split('.').length - 1] !== types.JSON) {
             reject(new Error(`${path} don't have a ${types.JSON} extension`));
@@ -29,7 +29,7 @@ export const jsonLoader = (path) => {
     });
 }
 
-export const jsLoader = (path) => {
+export const jsLoader = (path: string) => {
     return new Promise((resolve, reject) => {
         if (!validExtension(path, types.JS)) {
             reject(new Error(`${path} don't have ${types.JS} extension`));
@@ -40,7 +40,7 @@ export const jsLoader = (path) => {
     });
 };
 
-export const xmlLoader = (path) => {
+export const xmlLoader = (path: string) => {
     return new Promise((resolve, reject) => {
         if (!validExtension(path, types.XML)) {
             reject(new Error(`${path} don't have ${types.XML} extension`));
@@ -50,7 +50,7 @@ export const xmlLoader = (path) => {
             if (err) {
                 reject(err);
             }
-            to_json(data, (err, data) => {
+            to_json(data, (err: Error, data: string) => {
                 if (err) {
                     reject(err);
                 }
@@ -60,14 +60,14 @@ export const xmlLoader = (path) => {
     });
 }
 
-const mapper = {
+const mapper: any = {
     'json': jsonLoader,
     'js': jsLoader,
     'xml': xmlLoader
 }
 
-const extensionMapper = (paths) => {
-    const promises = [];
+const extensionMapper = (paths: Array<String>): Array<Promise<any>> => {
+    const promises: Array<Promise<any>> = [];
     paths.map(path => {
         const ext = path.split('.')[path.split('.').length - 1];
         promises.push(mapper[ext](path));
@@ -76,7 +76,7 @@ const extensionMapper = (paths) => {
     return promises;
 }
 
-const jsonProvider = (paths: Array<String>, configName: String, type: String, extensions: Array<String> = []) => {
+const jsonProvider = (paths: Array<string>, configName: string, type: string, extensions: Array<string> = []) => {
     return locate(paths, configName, type, extensions)
     .then(paths => Promise.all(extensionMapper(paths)))
     .then(data => Object.assign({}, ...data));
