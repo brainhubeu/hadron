@@ -1,0 +1,8 @@
+{
+    "status": "Default",
+    "database": {
+        "host": "default",
+        "user": "default",
+        "password": "default"
+    }
+}
