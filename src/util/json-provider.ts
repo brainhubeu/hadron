@@ -2,6 +2,7 @@ import locate from './file-locator';
 import * as fs from 'fs';
 import * as convert from 'xml-js';
 import { relative } from 'path';
+import { to_json } from 'xmljson';
 
 const types = {
     JS: 'js',
@@ -41,5 +42,21 @@ export const jsLoader = (path) => {
 };
 
 export const xmlLoader = (path) => {
+    return new Promise((resolve, reject) => {
+        if (!validExtension(path, types.XML)) {
+            reject(new Error(`${path} don't have ${types.XML} extension`));
+        }
 
+        fs.readFile(path, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            to_json(data, (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data);
+            });
+        });
+    });
 }
