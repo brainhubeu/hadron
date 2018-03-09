@@ -30,9 +30,16 @@ export const jsonLoader = (path) => {
 }
 
 export const jsLoader = (path) => {
+    return new Promise((resolve, reject) => {
+        if (!validExtension(path, types.JS)) {
+            reject(new Error(`${path} don't have ${types.JS} extension`));
+        }
 
+        const data = require(`./${relative(__dirname, path)}`);
+        data !== null ? resolve(data()) : reject(new Error('File not found'));
+    });
 };
 
 export const xmlLoader = (path) => {
-    
+
 }
