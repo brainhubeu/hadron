@@ -4,7 +4,7 @@
   "description": "Brainhub framework app",
   "main": "dist",
   "scripts": {
-    "start:production": "NODE_ENV=production NODE_PATH=./src:./lib node src",
+    "start:production": "NODE_ENV=production NODE_PATH=./dist/src:./dist/lib node dist/src",
     "start:development": "npm run build && concurrently --kill-others --prefix \"[{name}]\" --names \"build,node\" --prefix-colors \"blue.bold,green.bold\" \"npm run build:watch\" \"sleep 3 && npm run start:watch\"",
     "build": "tsc",
     "build:watch": "tsc --watch",
