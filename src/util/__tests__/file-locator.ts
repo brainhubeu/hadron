@@ -10,7 +10,7 @@ describe ("locate", () => {
     });
 
     it ("should return path files from mock/app/conifg/* with development type and js extension", () => {
-        return locate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["js"]).then((result) => {
+        return locate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["JS"]).then((result) => {
             expect(result).to.deep
             .equal(["src/util/__tests__/mock/app/config/config.js",
                     "src/util/__tests__/mock/app/config/config_development.js"]);

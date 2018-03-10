@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { xmlLoader } from "../json-provider";
 
 describe ("xmlLoader", () => {
-    const path = "src/util/__tests__/mock/app/config/config.XML";
+    const path = "src/util/__tests__/mock/app/config/config.xml";
 
     it ("should return object", () => {
         return xmlLoader(path).then((result) => {

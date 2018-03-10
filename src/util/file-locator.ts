@@ -3,6 +3,8 @@ import glob from "./glob-promise";
 const locate = (paths: string[], configName: string, type: string,
                 extensions: string[] = []): Promise<any> => {
     return new Promise((resolve, reject) => {
+        paths.map((path) => path.toLowerCase());
+
         if (extensions.length > 0) {
             paths = addExtension(paths, extensions);
         }
@@ -17,7 +19,7 @@ const addExtension = (paths: string[], extensions: string[]): string[] => {
     const pathsWithExtension: string[] = [];
 
     extensions.map((ext) => {
-        paths.map((path) => pathsWithExtension.push(`${path}.${ext}`));
+        paths.map((path) => pathsWithExtension.push(`${path}.${ext.toLowerCase()}`));
     });
 
     return pathsWithExtension;

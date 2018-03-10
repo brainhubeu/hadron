@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { jsonLoader } from "../json-provider";
 
 describe ("jsonLoader", () => {
-    const path = "src/util/__tests__/mock/app/config/config_development.JSON";
+    const path = "src/util/__tests__/mock/app/config/config_development.json";
 
     it ("should return an object", () => {
         return jsonLoader(path).then((result) => {
