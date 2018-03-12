@@ -15,7 +15,10 @@
                 "node_modules/*",
                 "types/*"
             ]
-        }
+        },
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "inlineSources" :true,
     },
     "include": [
         "src/**/*",
