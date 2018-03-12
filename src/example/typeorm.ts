@@ -30,18 +30,19 @@ createConnections(connectionOptions)
                 teamRepository.find().then((teams) => teamRepository.remove(teams)),
             ]);
 
-            const team = teamRepository.create();
-            team.name = "team" + Math.random();
-
+            const team = teamRepository.create({
+                name : "team",
+            });
             const savedTeam = await teamRepository.save(team);
 
-            const firstUser = userRepository.create();
-            firstUser.name = "szczepan" + Math.random();
-            firstUser.team = savedTeam;
-
-            const secondUser = userRepository.create();
-            secondUser.name = "adam" + + Math.random();
-            secondUser.team = savedTeam;
+            const firstUser = userRepository.create({
+                name : "szczepan",
+                team : savedTeam,
+            });
+            const secondUser = userRepository.create({
+                name : "adam",
+                team : savedTeam,
+            });
 
             await Promise.all([
                     userRepository.save(firstUser),
