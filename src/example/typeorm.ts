@@ -33,24 +33,24 @@ createConnections(connectionOptions)
             const team = teamRepository.create();
             team.name = "team" + Math.random();
 
-            const t = await teamRepository.save(team);
+            const savedTeam = await teamRepository.save(team);
 
-            const user = userRepository.create();
-            user.name = "szczepan" + Math.random();
-            user.team = t;
+            const firstUser = userRepository.create();
+            firstUser.name = "szczepan" + Math.random();
+            firstUser.team = savedTeam;
 
-            const newUser = userRepository.create();
-            newUser.name = "adam" + + Math.random();
-            newUser.team = t;
+            const secondUser = userRepository.create();
+            secondUser.name = "adam" + + Math.random();
+            secondUser.team = savedTeam;
 
             await Promise.all([
-                    userRepository.save(user),
-                    userRepository.save(newUser),
+                    userRepository.save(firstUser),
+                    userRepository.save(secondUser),
                 ])
                 .then(() => teamRepository.find({relations : ["users"]}))
-                .then((teams) => {
-                    teams.forEach((tt) =>
-                        console.log(tt));
+                .then((retrievedTeams) => {
+                    retrievedTeams.forEach((retrievedTeam) =>
+                        console.log(retrievedTeam));
                     });
             });
         });
