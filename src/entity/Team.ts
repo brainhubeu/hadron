@@ -11,8 +11,4 @@ export class Team {
 
     @OneToMany((type) => User, (user) => user.team)
     public users: User[];
-
-    // public asPromise() {
-    //     return Promise.resolve(this);
-    // }
 }

@@ -1,6 +1,5 @@
 import { Then } from "cucumber";
 import "reflect-metadata";
-// tslint:disable-next-line:max-line-length
 import { Connection, ConnectionOptions, createConnection, createConnections, getConnection } from "typeorm";
 import { promisify } from "util";
 import container from "../containers/container";
