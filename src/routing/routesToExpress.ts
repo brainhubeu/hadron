@@ -1,4 +1,5 @@
 import * as express from "express";
+import { getArgs } from "../helpers/functionHelper";
 import { IRoute, IRoutesConfig } from "../types/routing";
 import { validateMethods } from "../validators/routing";
 
@@ -23,8 +24,16 @@ const generateMiddlewares = (route: IRoute) =>
 const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
     route.methods.map((method: string) => {
         app[method.toLowerCase()](route.path, ...middleware, (req: express.Request, res: express.Response) => {
-            Promise.resolve(route.callback(req.params))
-                .then((result) => res.json(result));
+            Promise.resolve()
+            .then(() => {
+                    const args = getArgs(route.callback);
+                    const param = {};
+                    //args.map((a) => param[a] = a);
+
+                    return route.callback(req.params);
+                })
+                .then((result) => res.json(result))
+                .catch((error) => res.send(500));
         });
     });
 
