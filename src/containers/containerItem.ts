@@ -1,6 +1,7 @@
 import container from "../containers/container";
 import { IContainerItem } from "../containers/IContainerItem";
 import { Lifetime } from "../containers/lifetime";
+import { getArgs } from "../helpers/functionHelper";
 
 const containerItemFactory = (key: string, item: any, lifetime?: string): ContainerItem => {
     switch (lifetime) {
@@ -21,18 +22,7 @@ class ContainerItem implements IContainerItem {
     set Item(item: any) { this.item = item; }
 
     public Key() { return this.key; }
-
-    public getArgs(): string[] {
-        const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-        const ARGUMENT_NAMES = /([^\s,]+)/g;
-        const funcContent = this.item.toString().replace(STRIP_COMMENTS, "");
-        return funcContent
-            .slice(
-                funcContent.indexOf("(") + 1,
-                funcContent.indexOf(")"),
-            )
-            .match(ARGUMENT_NAMES) || [];
-    }
+    public getArgs(): string[] { return getArgs(this.item); }
 }
 
 // tslint:disable-next-line:max-classes-per-file
