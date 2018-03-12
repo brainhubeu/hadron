@@ -19,12 +19,17 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "inlineSources" :true,
+        "lib": [
+            "es2017",
+            "dom"
+        ]
     },
     "include": [
         "src/**/*",
         "lib/**/*"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "src/**/__tests__/*"
     ]
 }
