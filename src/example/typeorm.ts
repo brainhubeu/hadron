@@ -41,7 +41,7 @@ createConnections(connectionOptions)
             user.team = t;
 
             const newUser = userRepository.create();
-            newUser.name = "adam";
+            newUser.name = "adam" + + Math.random();
             newUser.team = t;
 
             await Promise.all([
@@ -50,7 +50,8 @@ createConnections(connectionOptions)
                 ])
                 .then(() => teamRepository.find({relations : ["users"]}))
                 .then((teams) => {
-                    teams.map((tt) => console.log(tt));
-                });
+                    teams.forEach((tt) =>
+                        console.log(tt));
+                    });
             });
         });
