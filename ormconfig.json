@@ -1,0 +1,44 @@
+[
+    {
+        "name": "postgres",
+        "type": "postgres",
+        "host": "localhost",
+        "port": 5432,
+        "username": "postgres",
+        "password":"mysecretpassword",
+        "database": "_test",
+        "synchronize": true,
+        "logging": false,
+        "autoSchemaSync": true,
+        "entities": [
+            "../../src/entity/**/*.ts"
+        ],
+        "migrations": [
+            "../../src/migration/**/*.ts"
+        ],
+        "subscribers": [
+            "../../src/subscriber/**/*.ts"
+        ]
+    },
+    {
+        "name": "mysql",
+        "type": "mysql",
+        "host": "localhost",
+        "port": 3306,
+        "username": "root",
+        "password":"my-secret-pw",
+        "database": "_test",
+        "synchronize": true,
+        "logging": false,
+        "autoSchemaSync": true,
+        "entities": [
+            "../../src/entity/**/*.ts"
+        ],
+        "migrations": [
+            "../../src/migration/**/*.ts"
+        ],
+        "subscribers": [
+            "../../src/subscriber/**/*.ts"
+        ]
+    }
+]

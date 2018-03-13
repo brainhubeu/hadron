@@ -16,6 +16,9 @@
                 "types/*"
             ]
         },
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "inlineSources": true,
         "lib": [
             "es2017",
             "dom"

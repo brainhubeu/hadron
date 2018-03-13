@@ -25,6 +25,10 @@
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",
+    "mongodb": "3.0.4",
+    "mssql": "4.1.0",
+    "mysql": "2.15.0",
+    "pg": "7.4.1",
     "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
@@ -55,6 +59,8 @@
     "supertest": "3.0.0",
     "ts-node": "5.0.0",
     "tslint": "5.9.1",
-    "typescript": "2.7.2"
+    "typescript": "2.7.2",
+    "typeorm": "0.1.16",
+    "reflect-metadata": "0.1.12"
   }
 }
