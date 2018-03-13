@@ -67,11 +67,11 @@ describe("router config", () => {
         }
     });
     it("should pass parameter to callback func", () => {
-        const callback = (tp: any) => tp;
+        const callback = (valueA: any) => valueA;
 
         const testParam = "This is a test";
 
-        const testRoute = createTestRoute("/index/:tp", ["GET"], callback);
+        const testRoute = createTestRoute("/index/:valueA", ["GET"], callback);
 
         routesToExpress(app, testRoute);
 
@@ -82,18 +82,49 @@ describe("router config", () => {
                 expect(res.body).to.equal(testParam);
             });
     });
+    it("should pass parameter to callback func v2", () => {
+        const callback = (valueA: any) => valueA;
+
+        const testParam = "This is a test";
+
+        const testRoute = createTestRoute("/index", ["GET"], callback);
+
+        routesToExpress(app, testRoute);
+
+        return request(app)
+            .get(`/index?valueA=${testParam}`)
+            .expect(HTTPStatus.OK)
+            .then((res: any) => {
+                expect(res.body).to.equal(testParam);
+            });
+    });
     it("should pass multiple parameters to callback func", () => {
-        const callback = (tp: string, ap: string) => tp + ap;
+        const callback = (valueA: string, valueB: string) => valueA + valueB;
 
         const testParam = "This is a test";
         const secondParam = " This is a second param";
 
-        const testRoute = createTestRoute("/index/:tp/:ap", ["GET"], callback);
+        const testRoute = createTestRoute("/index/:valueA/:valueB", ["GET"], callback);
 
         routesToExpress(app, testRoute);
 
         return request(app)
             .get(`/index/${testParam}/${secondParam}`)
+            .expect(HTTPStatus.OK)
+            .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
+    });
+    it("should pass multiple parameters to callback func v2", () => {
+        const callback = (valueA: string, valueB: string) => valueA + valueB;
+
+        const testParam = "This is a test";
+        const secondParam = " This is a second param";
+
+        const testRoute = createTestRoute("/index", ["GET"], callback);
+
+        routesToExpress(app, testRoute);
+
+        return request(app)
+            .get(`/index?valueA=${testParam}&valueB=${secondParam}`)
             .expect(HTTPStatus.OK)
             .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
     });
