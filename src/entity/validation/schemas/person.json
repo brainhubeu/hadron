@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "age": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false
+}
