@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import container from "../containers/container";
 
 import * as express from "express";
 import * as HTTPStatus from "http-status";
@@ -66,11 +67,11 @@ describe("router config", () => {
         }
     });
     it("should pass parameter to callback func", () => {
-        const callback = (params: any) => params.testParam;
+        const callback = (tp: any) => tp;
 
         const testParam = "This is a test";
 
-        const testRoute = createTestRoute("/index/:testParam", ["GET"], callback);
+        const testRoute = createTestRoute("/index/:tp", ["GET"], callback);
 
         routesToExpress(app, testRoute);
 
@@ -82,12 +83,12 @@ describe("router config", () => {
             });
     });
     it("should pass multiple parameters to callback func", () => {
-        const callback = (params: any) => params.testParam + params.anotherParam;
+        const callback = (tp: string, ap: string) => tp + ap;
 
         const testParam = "This is a test";
         const secondParam = " This is a second param";
 
-        const testRoute = createTestRoute("/index/:testParam/:anotherParam", ["GET"], callback);
+        const testRoute = createTestRoute("/index/:tp/:ap", ["GET"], callback);
 
         routesToExpress(app, testRoute);
 
@@ -99,7 +100,10 @@ describe("router config", () => {
     it("calls middleware passed in router config", () => {
         const callback = (params: any) => params.testParam + params.anotherParam;
 
-        const middle = sinon.spy();
+        const middle = () => {
+            container.register("params", true);
+            return true;
+        };
         const testRoute = createTestRoute("/testRoute", ["GET"], callback, [middle]);
 
         routesToExpress(app, testRoute);
@@ -107,7 +111,7 @@ describe("router config", () => {
         return request(app)
             .get(`/testRoute`)
             .expect(HTTPStatus.OK)
-            .then(() => expect(middle.called).to.be.eq(true));
+            .then(() => expect(middle()).to.be.eq(true));
     });
     it("generate multiple methods based on config", () => {
         const callback = (params: any) => params.testParam + params.anotherParam;
