@@ -14,8 +14,7 @@ const generateMiddlewares = (route: IRoute) =>
     // tslint:disable-next-line:ban-types
     route.middleware && route.middleware.map((middleware: Function) => {
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            Promise.resolve(middleware(req.params))
-                .then(() => next());
+            Promise.resolve(middleware(req, res, next));
         };
     });
 
@@ -23,8 +22,7 @@ const generateMiddlewares = (route: IRoute) =>
 const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
     route.methods.map((method: string) => {
         app[method.toLowerCase()](route.path, ...middleware, (req: express.Request, res: express.Response) => {
-            Promise.resolve(route.callback(req.params))
-                .then((result) => res.json(result));
+            Promise.resolve(route.callback(req, res));
         });
     });
 
