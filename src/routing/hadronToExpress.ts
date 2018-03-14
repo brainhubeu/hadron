@@ -25,13 +25,16 @@ const generateMiddlewares = (route: IRoute) =>
 // tslint:disable-next-line:ban-types
 const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
     route.methods.map((method: string) => {
-        app[method.toLowerCase()](route.path, ...middleware, (req: express.Request, res: express.Response) => {
+        app[method.toLowerCase()](route.path, ...middleware, (req: any, res: express.Response) => {
             Promise.resolve()
             .then(() => {
                     const args = getArgs(route.callback)
                                 .map((name: string) => {
                                     if (name === "body") {
                                         return req.body;
+                                    }
+                                    if (name === "req") {
+                                     return req.files || req.file;
                                     }
                                     return req.params[name]
                                         || req.query[name]

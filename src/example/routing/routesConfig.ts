@@ -4,12 +4,12 @@ const upload = multer({ dest: "uploads/" });
 
 const func = () => "Hello world";
 
-const alterFunc = (req: any, res: any) => {
-    return res.send(req.params.testParam);
+const alterFunc = (testParam: any) => {
+    return testParam;
 };
 
 const uploadFile = (req: any) => {
-    return req.files;
+    return req;
 };
 
 const uploadMiddleware = upload.any();

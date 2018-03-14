@@ -85,11 +85,11 @@ describe("router config", () => {
     });
     describe("router params", () => {
         it("should pass parameter to callback func", () => {
-            const callback = (req: any, res: any) => req.params.testParam;
+            const callback = (valueA: any) => valueA;
 
             const testParam = "This is a test";
 
-            const testRoute = createTestRoute("/index/:testParam", ["GET"], callback);
+            const testRoute = createTestRoute("/index/:valueA", ["GET"], callback);
 
             routesToExpress(app, testRoute);
 
@@ -100,13 +100,29 @@ describe("router config", () => {
                     expect(res.body).to.equal(testParam);
                 });
         });
+        it("should pass parameter to callback func v2", () => {
+            const callback = (valueA: any) => valueA;
+
+            const testParam = "This is a test";
+
+            const testRoute = createTestRoute("/index", ["GET"], callback);
+
+            routesToExpress(app, testRoute);
+
+            return request(app)
+                .get(`/index?valueA=${testParam}`)
+                .expect(HTTPStatus.OK)
+                .then((res: any) => {
+                    expect(res.body).to.equal(testParam);
+                });
+        });
         it("should pass multiple parameters to callback func", () => {
-            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
+            const callback = (valueA: string, valueB: string) => valueA + valueB;
 
             const testParam = "This is a test";
             const secondParam = " This is a second param";
 
-            const testRoute = createTestRoute("/index/:testParam/:anotherParam", ["GET"], callback);
+            const testRoute = createTestRoute("/index/:valueA/:valueB", ["GET"], callback);
 
             routesToExpress(app, testRoute);
 
@@ -115,8 +131,23 @@ describe("router config", () => {
                 .expect(HTTPStatus.OK)
                 .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
         });
+        it("should pass multiple parameters to callback func v2", () => {
+            const callback = (valueA: string, valueB: string) => valueA + valueB;
+
+            const testParam = "This is a test";
+            const secondParam = " This is a second param";
+
+            const testRoute = createTestRoute("/index", ["GET"], callback);
+
+            routesToExpress(app, testRoute);
+
+            return request(app)
+                .get(`/index?valueA=${testParam}&valueB=${secondParam}`)
+                .expect(HTTPStatus.OK)
+                .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
+        });
         it("should pass query to callback func", () => {
-            const callback = (req: any, res: any) => req.query.foo;
+            const callback = (foo: any) => foo;
 
             const testQuery = "bar";
             const testRoute = createTestRoute("/index", ["GET"], callback);
@@ -131,7 +162,7 @@ describe("router config", () => {
                 });
         });
         it("should pass body to callback func", () => {
-            const callback = (req: any, res: any) => req.body.testData;
+            const callback = (body: any) => body.testData;
 
             const postData = {
                 testData: "some value",
@@ -152,7 +183,7 @@ describe("router config", () => {
     });
     describe("router middleware", () => {
         it("calls middleware passed in router config", () => {
-            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
+            const callback = () => {};
 
             const spy = sinon.spy();
 
@@ -171,7 +202,7 @@ describe("router config", () => {
                 .then(() => expect(spy.called).to.be.eq(true));
         });
         it("calls multiple middlewares passed in router config", () => {
-            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
+            const callback = () => {};
 
             const firstSpy = sinon.spy();
             const secondSpy = sinon.spy();
@@ -202,9 +233,7 @@ describe("router config", () => {
     describe("file handling", () => {
         const upload = multer({ dest: "./src/routing/__tests__/testUploads/" });
 
-        const callback = (req: any, res: any) => {
-            return req.files;
-        };
+        const callback = (req: any) => req;
 
         const uploadMiddleware = (req: any, res: any, next: any)  => {
             return upload.any()(req, res, next);
