@@ -2,7 +2,7 @@ import * as multer from "multer";
 
 const upload = multer({ dest: "uploads/" });
 
-const func = (req: any, res: any, next: any) => res.json("Hello world");
+const func = () => "Hello world";
 
 const alterFunc = (req: any, res: any) => {
     return res.send(req.params.testParam);

@@ -53,7 +53,7 @@ describe("router config", () => {
         });
         it("returns status OK for request from generated route", () => {
             // tslint:disable-next-line:no-empty
-            const testRoute = createTestRoute("/testRequest", ["GET"], (req: any, res: any) => res.send());
+            const testRoute = createTestRoute("/testRequest", ["GET"], () => {});
 
             routesToExpress(app, testRoute);
 
@@ -72,7 +72,7 @@ describe("router config", () => {
             }
         });
         it("generate multiple methods based on config", () => {
-            const callback = (req: any, res: any) => res.json(req.params.testParam + req.params.anotherParam);
+            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
 
             const middle = sinon.spy();
             const testRoute = createTestRoute("/testRoute", ["PUT", "DELETE"], callback, [middle]);
@@ -85,7 +85,7 @@ describe("router config", () => {
     });
     describe("router params", () => {
         it("should pass parameter to callback func", () => {
-            const callback = (req: any, res: any) => res.json(req.params.testParam);
+            const callback = (req: any, res: any) => req.params.testParam;
 
             const testParam = "This is a test";
 
@@ -101,7 +101,7 @@ describe("router config", () => {
                 });
         });
         it("should pass multiple parameters to callback func", () => {
-            const callback = (req: any, res: any) => res.json(req.params.testParam + req.params.anotherParam);
+            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
 
             const testParam = "This is a test";
             const secondParam = " This is a second param";
@@ -116,7 +116,7 @@ describe("router config", () => {
                 .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
         });
         it("should pass query to callback func", () => {
-            const callback = (req: any, res: any) => res.json(req.query.foo);
+            const callback = (req: any, res: any) => req.query.foo;
 
             const testQuery = "bar";
             const testRoute = createTestRoute("/index", ["GET"], callback);
@@ -131,7 +131,7 @@ describe("router config", () => {
                 });
         });
         it("should pass body to callback func", () => {
-            const callback = (req: any, res: any) => res.json(req.body.testData);
+            const callback = (req: any, res: any) => req.body.testData;
 
             const postData = {
                 testData: "some value",
@@ -152,7 +152,7 @@ describe("router config", () => {
     });
     describe("router middleware", () => {
         it("calls middleware passed in router config", () => {
-            const callback = (req: any, res: any) => res.json(req.params.testParam + req.params.anotherParam);
+            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
 
             const spy = sinon.spy();
 
@@ -171,7 +171,7 @@ describe("router config", () => {
                 .then(() => expect(spy.called).to.be.eq(true));
         });
         it("calls multiple middlewares passed in router config", () => {
-            const callback = (req: any, res: any) => res.json(req.params.testParam + req.params.anotherParam);
+            const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
 
             const firstSpy = sinon.spy();
             const secondSpy = sinon.spy();
@@ -203,7 +203,7 @@ describe("router config", () => {
         const upload = multer({ dest: "./src/routing/__tests__/testUploads/" });
 
         const callback = (req: any, res: any) => {
-            return res.json(req.files);
+            return req.files;
         };
 
         const uploadMiddleware = (req: any, res: any, next: any)  => {
