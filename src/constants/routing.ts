@@ -1,1 +1,1 @@
-export const availableMethods: string[] = ["GET", "POST", "PATCH", "DELETE", "PUT"];
+export const HTTPRequestMethods: string[] = ["GET", "POST", "PATCH", "DELETE", "PUT"];
