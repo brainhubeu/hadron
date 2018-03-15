@@ -1,10 +1,9 @@
 import * as express from "express";
-import container from "../containers/container";
-import { getArgs } from "../helpers/functionHelper";
 import { IRoute, IRoutesConfig } from "../types/routing";
 import { validateMethods } from "../validators/routing";
+import { EventEmitter } from "events";
 import listenersWrapper from '../../app/listeners';
-
+import Container from '../containers/container';
 
 
 const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
@@ -19,41 +18,22 @@ const generateMiddlewares = (route: IRoute) =>
     // tslint:disable-next-line:ban-types
     route.middleware && route.middleware.map((middleware: Function) => {
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            Promise.resolve()
-                .then(() => middleware(req, res, next))
-                .catch((error) => res.send(500));
+            Promise.resolve(middleware(req.params))
+                .then(() => next());
         };
     });
 
 // tslint:disable-next-line:ban-types
-const mapRouteArgs = (req: any, res: any, routeCallback: Function) => {
-    return getArgs(routeCallback)
-        .map((name: string) => {
-            if (name === "body") {
-                return req.body;
-            }
-            if (name === "req") {
-                return req.files || req.file;
-            }
-            return req.params[name]
-                || req.query[name]
-                || res.locals[name]
-                || container.take(name);
-        });
-};
-
-// tslint:disable-next-line:ban-types
 const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
     route.methods.map((method: string) => {
-        app[method.toLowerCase()](route.path, ...middleware, (req: any, res: express.Response) => {
+        app[method.toLowerCase()](route.path, (req: express.Request, res: express.Response) => {
             Promise.resolve()
-            .then(() => {
-                    const args = mapRouteArgs(req, res, route.callback);
+                .then(() => {
                     const eventName = 'someEvent';
                     const event = {
                         callback: route.callback,
                     }
-                    const emitter = container.take('emitter');
+                    const emitter = Container.take('emitter');
 
                     const listeners = Object.values(listenersWrapper);
                     listeners.forEach(listener => {
@@ -62,10 +42,9 @@ const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
                         }
                     })
                     emitter.emit(eventName, event);
-                    return route.callback(...args);
+                    return event.callback(req.params);
                 })
-                .then((result) => res.json(result))
-                .catch((error) => res.send(500));
+                .then((result) => res.json(result));
         });
     });
 
