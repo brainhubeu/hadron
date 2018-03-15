@@ -1,59 +1,33 @@
 import { expect } from "chai";
-import jsonProvider from "../json-provider";
+import jsonProvider from "../../util/json-provider";
 
 describe ("jsonProvider", () => {
-    it ("should return object", () => {
-        return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["js"])
-        .then((result) => {
-            expect(result).to.be.an.instanceof(Object);
+    it ("should return object from config files, supports custom paths (like 'config.js')", () => {
+        const finalObject = {
+            dogName: "Rex",
+            teamName: "team1",
+            userName: "user1",
+        };
+
+        return jsonProvider(["src/util/__tests__/mock/app/universal/*"], ["config.js"]).then((object) => {
+            expect(object).to.be.deep.equal(finalObject);
         });
     });
 
-    it ("should return JavaScript object with proper values", () => {
-        const validObject = {
-            emailJS: "user-JS@email.com",
-            name: "module - x",
-            usernameJS: "user-JS",
-        };
-
-        return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["js"])
-        .then((result) => {
-            expect(result).to.be.deep.equal(validObject);
-        });
+    it ("should return empty object if files do not exists", () => {
+        return jsonProvider(["a/b/c"], ["js"]).then((data) => expect(data).to.be.deep.equal({}));
     });
 
-    it ("should return JavaScript object from json and xml files", () => {
-        const validObject = {
-            database: {
-                host: "default",
-                password: "default",
-                user: "default",
-            },
-            status: "Test",
+    it ("should combine configurations from different extensions", () => {
+        const finalObject = {
+            dogName: "Rex",
+            fromJSON: true,
+            teamName: "team1",
+            userName: "user1",
         };
 
-        return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json", "xml"])
-        .then((result) => {
-            expect(result).to.be.deep.equal(validObject);
-        });
-    });
-
-    it ("should return JavaScript object from json and js files", () => {
-        const validObject = {
-            database: {
-                host: "default",
-                password: "default",
-                user: "default",
-            },
-            emailJS: "user-JS@email.com",
-            name: "module - x",
-            status: "Development",
-            usernameJS: "user-JS",
-        };
-
-        return jsonProvider(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json", "js"])
-        .then((result) => {
-            expect(result).to.be.deep.equal(validObject);
+        return jsonProvider(["src/util/__tests__/mock/app/universal/*"], ["config.js", "json"]).then((object) => {
+            expect(object).to.be.deep.equal(finalObject);
         });
     });
 });
