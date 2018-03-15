@@ -1,15 +1,15 @@
-import * as express from "express";
-import container from "../containers/container";
-import { getArgs } from "../helpers/functionHelper";
-import { IRoute, IRoutesConfig } from "../types/routing";
-import { validateMethods } from "../validators/routing";
+import * as express from 'express';
+import container from '../containers/container';
+import { getArgs } from '../helpers/functionHelper';
+import { IRoute, IRoutesConfig } from '../types/routing';
+import { validateMethods } from '../validators/routing';
 
 const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
     Object.values(routes).map((route: IRoute) => {
-        validateMethods(route.methods);
+      validateMethods(route.methods);
         // tslint:disable-next-line:ban-types
-        const middlewares: Function[] = generateMiddlewares(route) || [];
-        createRoutes(app, route, middlewares);
+      const middlewares: Function[] = generateMiddlewares(route) || [];
+      createRoutes(app, route, middlewares);
     });
 
 const generateMiddlewares = (route: IRoute) =>
@@ -50,7 +50,7 @@ const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
                 })
                 .then((result) => res.json(result))
                 .catch((error) => res.send(500));
-        });
+      });
     });
 
 export default convertToExpress;

@@ -1,18 +1,82 @@
 {
-    "extends": [
-        "tslint:recommended"
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-airbnb",
+    "tslint-eslint-rules"
+  ],
+  "rules": {
+    "no-console": {
+      "severity": "warning",
+      "options": [
+        "debug",
+        "info",
+        "log",
+        "time",
+        "timeEnd",
+        "trace"
+      ]
+    },
+    "no-conditional-assignment": true,
+    "no-debugger": true,
+    "no-irregular-whitespace": true,
+    "switch-default": true,
+    "forin": true,
+    "no-arg": true,
+    "no-empty": true,
+    "no-invalid-this": false,
+    "label-position": true,
+    "no-multi-spaces": true,
+    "no-unused-expression": true,
+    "no-return-assign": false,
+    "no-string-throw": true,
+    "radix": [true, "as-needed"],
+    "no-shadowed-variable": false,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
+    "array-bracket-spacing": [true, "never"],
+    "brace-style": true,
+    "variable-name": true,
+    "trailing-comma": [true, {"multiline": "always"}],
+    "ter-computed-property-spacing": true,
+    "eofline": true,
+    "ter-func-call-spacing": true,
+    "ter-indent": [true, 2, { "SwitchCase": 1 }],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type",
+      "check-typecast"
     ],
-    "rules": {
-        "no-console": {
-            "severity": "warning",
-            "options": [
-                "debug",
-                "info",
-                "log",
-                "time",
-                "timeEnd",
-                "trace"
-            ]
-        }
-    }
+    "linebreak-style": true,
+    "ter-max-len": [true, {
+      "code": 120,
+      "tabWidth": 2,
+      "ignoreComments": true,
+      "ignoreUrls": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true
+    }],
+    "new-parens": true,
+    "ter-no-mixed-spaces-and-tabs": true,
+    "no-consecutive-blank-lines": [true, 2],
+    "no-trailing-whitespace": true,
+    "object-curly-spacing": false,
+    "one-variable-per-declaration": true,
+    "ter-padded-blocks": [true, "never"],
+    "object-literal-key-quotes": [true, "as-needed"],
+    "quotemark": [true, "single", "jsx-double"],
+    "semicolon": false,
+    "space-before-function-paren": [true, "never"],
+    "comment-format": [true, "check-space"],
+    "ter-arrow-body-style": [true, "as-needed"],
+    "ter-arrow-parens": [true, "as-needed"],
+    "ter-arrow-spacing": [true],
+    "no-duplicate-imports": true,
+    "no-var-keyword": true,
+    "object-literal-shorthand": true,
+    "prefer-const": true,
+    "prefer-template": true
+  }
 }
