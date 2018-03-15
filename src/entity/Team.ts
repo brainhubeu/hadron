@@ -9,6 +9,6 @@ export class Team {
   @Column()
     public name: string;
 
-  @OneToMany((type) => User, (user) => user.team)
+  @OneToMany(type => User, user => user.team)
     public users: User[];
 }
