@@ -50,6 +50,7 @@
       "check-typecast"
     ],
     "linebreak-style": true,
+    "max-line-length": [true, 120],
     "ter-max-len": [true, {
       "code": 120,
       "tabWidth": 2,
@@ -65,6 +66,7 @@
     "object-curly-spacing": false,
     "one-variable-per-declaration": true,
     "object-literal-key-quotes": [true, "as-needed"],
+    "object-literal-sort-keys": [true, "ignore-case", "match-declaration-order", "shorthand-first"],
     "quotemark": [true, "single", "jsx-double"],
     "semicolon": false,
     "space-before-function-paren": [true, "never"],
