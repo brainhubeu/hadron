@@ -59,9 +59,11 @@
     "nodemon": "1.12.1",
     "sinon": "4.1.2",
     "sinon-chai": "2.14.0",
+    "reflect-metadata": "0.1.12",
     "supertest": "3.0.0",
     "ts-node": "5.0.0",
     "tslint": "5.9.1",
+    "typescript": "2.7.2",
     "typeorm": "0.1.16"
   }
 }
