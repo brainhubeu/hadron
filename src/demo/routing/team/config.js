@@ -1,4 +1,4 @@
-const teamService = require("./teamService")
+const teamService = require("../../services/teamService")
 
 const teamRoutsConfig = () => {
     return {

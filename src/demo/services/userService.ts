@@ -22,6 +22,10 @@ const insertUser = async (userRepository: Repository<User>,
                 .then((amount) =>  `total amount of users: ${amount}`);
 };
 
+const insertUserPost = async (body: any) => {
+    console.log(body);
+};
+
 const updateUser = async (userRepository: Repository<User>, id: number, userName: string) => {
     return await userRepository.findOneById(id)
           .then((user) => {
@@ -35,4 +39,4 @@ const deleteUser = async (userRepository: Repository<User>, id: number) => {
     await userRepository.removeById(id);
 };
 
-export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser };
+export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser, insertUserPost };

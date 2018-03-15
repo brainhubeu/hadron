@@ -1,4 +1,4 @@
-const userService = require("./userService");
+const userService = require("../../services/userService");
 
 const userRoutsConfig = () => {
     return {
@@ -16,6 +16,11 @@ const userRoutsConfig = () => {
             callback: userService.insertUser,
             methods: ["GET"],
             path: "/insertUser/:userName/:teamId",
+        },
+        insertUserPost : {
+            callback: userService.insertUserPost,
+            methods: ["POST"],
+            path: "/insertUser/",
         },
         updateUser : {
             callback: userService.updateUser,
