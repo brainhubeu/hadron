@@ -245,7 +245,7 @@ describe("router config", () => {
 
             return request(app)
                 .post("/testUploads")
-                .attach("image", __dirname + "/mocks/sample.jpg")
+                .attach("image", __dirname + "/mocks/sample.jpeg")
                 .expect(HTTPStatus.OK)
                 .then(() => {
                     const files = fs.readdirSync(mockDir);
@@ -259,17 +259,16 @@ describe("router config", () => {
 
             return request(app)
                 .post("/testUpload")
-                .attach("image", __dirname + "/mocks/sample.jpg")
+                .attach("image", __dirname + "/mocks/sample.jpeg")
                 .expect(HTTPStatus.OK)
                 .then((res) => {
-                    expect(R.omit(["filename", "path"], res.body[0])).to.eql(
+                    expect(R.omit(["filename", "path", "size"], res.body[0])).to.eql(
                         {
                             destination: "./src/routing/__tests__/testUploads/",
                             encoding: "7bit",
                             fieldname: "image",
                             mimetype: "image/jpeg",
-                            originalname: "sample.jpg",
-                            size: 76178,
+                            originalname: "sample.jpeg",
                         });
                 });
         });
