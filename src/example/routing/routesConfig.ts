@@ -1,17 +1,29 @@
+import * as multer from "multer";
+
+const upload = multer({ dest: "uploads/" });
+
 const func = () => "Hello world";
 
-const alterFunc = (params: any) => {
-    return params.testParam;
+const alterFunc = (testParam: any) => {
+    return testParam;
 };
 
-const first = () => {
+const uploadFile = (req: any) => {
+    return req;
+};
+
+const uploadMiddleware = upload.any();
+
+const first = (req: any, res: any, next: any) => {
     // tslint:disable-next-line:no-console
     console.log("first middleware");
+    next();
 };
 
-const second = () => {
+const second = (req: any, res: any, next: any) => {
     // tslint:disable-next-line:no-console
     console.log("second middleware");
+    next();
 };
 
 export default {
@@ -20,6 +32,12 @@ export default {
         methods: ["GET"],
         middleware: [first, second],
         path: "/",
+    },
+    routeForUploading: {
+        callback: uploadFile,
+        methods: ["post"],
+        middleware: [uploadMiddleware],
+        path: "/upload",
     },
     secondRoute: {
         callback: alterFunc,
