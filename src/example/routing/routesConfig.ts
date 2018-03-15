@@ -41,14 +41,14 @@ const insertUser = async(userRepository: Repository<User>,
   return `total amount of users: ${await userRepository.count()}`;
 };
 
-const updateUser = async (userRepository: Repository<User>, id: number, userName: string) => {
+const updateUser = async(userRepository: Repository<User>, id: number, userName: string) => {
   const user = await userRepository.findOneById(id);
   const oldName = user.name;
   user.name = userName;
   await userRepository.save(user);
   return `user id: ${id} name: ${oldName} has new name ${userName}`;
 };
-const updateTeam = async (teamRepository: Repository<Team>, id: number, teamName: string) => {
+const updateTeam = async(teamRepository: Repository<Team>, id: number, teamName: string) => {
   const team = await teamRepository.findOneById(id);
   const oldName = team.name;
   team.name = teamName;
@@ -56,7 +56,7 @@ const updateTeam = async (teamRepository: Repository<Team>, id: number, teamName
   return `team id: ${id} name: ${oldName} has new name ${teamName}`;
 };
 
-const insertTeam = async (teamRepository: Repository<Team>, teamName: string) => {
+const insertTeam = async(teamRepository: Repository<Team>, teamName: string) => {
   await teamRepository.insert({name: teamName});
   return `total amount of teams: ${await teamRepository.count()}`;
 };
@@ -74,17 +74,17 @@ const second = (req: any, res: any, next: any) => {
 };
 
 export default {
-  firstRoute: {
-    callback: func,
-    methods: ['GET'],
-    middleware: [first, second],
-    path: '/',
-  },
   routeForUploading: {
     callback: uploadFile,
     methods: ['POST'],
     middleware: [uploadMiddleware],
     path: '/upload',
+  },
+  firstRoute: {
+    callback: func,
+    methods: ['GET'],
+    middleware: [first, second],
+    path: '/',
   },
   secondRoute: {
     callback: alterFunc,
