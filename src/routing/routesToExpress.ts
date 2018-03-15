@@ -27,7 +27,6 @@ const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
         app[method.toLowerCase()](route.path, ...middleware, (req: express.Request, res: express.Response) => {
             Promise.resolve()
             .then(() => {
-                    console.log(req.body);
                     const args = getArgs(route.callback)
                                 .map((name: string) => {
                                     if (name === "body") {

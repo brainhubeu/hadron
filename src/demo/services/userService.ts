@@ -15,28 +15,30 @@ const getUserById = async (userRepository: Repository<User>, id: number) => awai
 
 const insertUser = async (userRepository: Repository<User>,
                           teamRepository: Repository<Team>,
-                          userName: string, teamId: number) => {
-    return await teamRepository.findOneById(teamId)
-                .then((t) => userRepository.insert({name: userName, team: t }))
+                          body: {userName: string, teamId: number }) => {
+    return await teamRepository.findOneById(body.teamId)
+                .then((t) => userRepository.insert({name: body.userName, team: t }))
                 .then(() => userRepository.count())
                 .then((amount) =>  `total amount of users: ${amount}`);
 };
 
-const insertUserPost = async (body: any) => {
-    console.log(body);
-};
+// const insertUser= async (userRepository: Repository<User>,
+//                              teamRepository: Repository<Team>,body: {userName: string, teamId: number }) => {
+//     console.log(body);
+// };
 
-const updateUser = async (userRepository: Repository<User>, id: number, userName: string) => {
-    return await userRepository.findOneById(id)
+const updateUser = async (userRepository: Repository<User>, body: {id: number, userName: string, teamId: number }) => {
+    return await userRepository.findOneById(body.id)
           .then((user) => {
-            user.name = userName;
+            user.name = body.userName;
             return userRepository.save(user);
           })
-          .then(() => `user id: ${id} has new name ${userName}`);
+          .then(() => `user id: ${body.id} has new name ${body.userName}`);
 };
 
 const deleteUser = async (userRepository: Repository<User>, id: number) => {
+    console.log(id);
     await userRepository.removeById(id);
 };
 
-export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser, insertUserPost };
+export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser };

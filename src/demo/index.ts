@@ -1,4 +1,4 @@
-import { json as bodyParser } from "body-parser";
+import * as bodyParser from "body-parser";
 import * as express from "express";
 import { ConnectionOptions, createConnection } from "typeorm";
 import container from "../containers/container";
@@ -28,11 +28,11 @@ const setupDatabase = (): Promise<void> => {
 setupDatabase().then(async () => {
             const port = process.env.PORT || 8080;
             const expressApp = express();
+            expressApp.use(bodyParser.json());
 
             await jsonProvider(["./routing/**/*"], "config", "development", ["js"])
             .then((exampleRouting) => {
                 routesToExpress(expressApp, exampleRouting as IRoutesConfig);
-                expressApp.use(bodyParser());
                 // expressApp.use(bodyParser.urlencoded({extended: true}));
                 expressApp.listen(port);
                 return;

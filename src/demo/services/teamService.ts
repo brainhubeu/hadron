@@ -13,17 +13,17 @@ const getAllTeams = async (teamRepository: Repository<Team>) => {
 
 const getTeamById = async (teamRepository: Repository<Team>, id: number) => await teamRepository.findOneById(id);
 
-const updateTeam = async (teamRepository: Repository<Team>, id: number, teamName: string) => {
-    await teamRepository.findOneById(id)
+const updateTeam = async (teamRepository: Repository<Team>, body: { id: number, teamName: string }) => {
+    await teamRepository.findOneById(body.id)
           .then((team) => {
-            team.name = teamName;
+            team.name = body.teamName;
             return teamRepository.save(team);
           })
-          .then(() => `team id: ${id} has new name ${teamName}`);
+          .then(() => `team id: ${body.id} has new name ${body.teamName}`);
 };
 
-const insertTeam = async (teamRepository: Repository<Team>, teamName: string) => {
-    await teamRepository.insert({name: teamName})
+const insertTeam = async (teamRepository: Repository<Team>, body: { teamName: string }) => {
+    await teamRepository.insert({name: body.teamName})
     .then(() => teamRepository.count())
     .then((amount) => `total amount of teams: ${amount}`);
 };

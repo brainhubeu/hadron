@@ -14,22 +14,17 @@ const userRoutsConfig = () => {
         },
         insertUser : {
             callback: userService.insertUser,
-            methods: ["GET"],
-            path: "/insertUser/:userName/:teamId",
-        },
-        insertUserPost : {
-            callback: userService.insertUserPost,
             methods: ["POST"],
             path: "/insertUser/",
         },
         updateUser : {
             callback: userService.updateUser,
-            methods: ["GET"],
-            path: "/updateUser/:id/:userName",
+            methods: ["PUT"],
+            path: "/updateUser/",
         },
         deleteUser : {
             callback : userService.deleteUser,
-            methods : ["GET"],
+            methods : ["DELETE"],
             path : "/deleteUser/:id"
         }
     };
