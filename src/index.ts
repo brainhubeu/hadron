@@ -1,7 +1,7 @@
-import * as express from "express";
-import exampleRouting from "./example/routing/routesConfig";
-import "./init";
-import routesToExpress from "./routing/routesToExpress";
+import * as express from 'express';
+import routesConfig from './example/routing/routesConfig';
+import './init';
+import routesToExpress from './routing/routesToExpress';
 
 /*
 import BF from 'brainhub-framework';
