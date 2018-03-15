@@ -9,12 +9,11 @@ import * as sinon from "sinon";
 import * as request from "supertest";
 
 import { json as bodyParser } from "body-parser";
-import RouterMethodError from "../../errors/RouterMethodError";
+import RouterMethodError from "../../errors/HadronRouterError";
 import routesToExpress from "../hadronToExpress";
 
 let app = express();
 
-// tslint:disable-next-line:ban-types
 const createTestRoute = (path: string, methods: string[], callback: Function, middleware?: Function[]) => ({
     testRoute: {
         callback,
@@ -36,7 +35,6 @@ describe("router config", () => {
     });
     describe("generating routes", () => {
         it("should generate express route based on config file", () => {
-            // tslint:disable-next-line:no-empty
             const testRoute = createTestRoute("/index", ["GET"], () => {});
 
             routesToExpress(app, testRoute);
@@ -44,7 +42,6 @@ describe("router config", () => {
             expect(getRouteProp(app, "path")[0]).to.equal("/index");
         });
         it("should generate correct router method based on config file", () => {
-            // tslint:disable-next-line:no-empty
             const testRoute = createTestRoute("/index", ["POST"], () => {});
 
             routesToExpress(app, testRoute);
@@ -52,7 +49,6 @@ describe("router config", () => {
             expect(getRouteProp(app, "methods")[0].post).to.equal(true);
         });
         it("returns status OK for request from generated route", () => {
-            // tslint:disable-next-line:no-empty
             const testRoute = createTestRoute("/testRequest", ["GET"], () => {});
 
             routesToExpress(app, testRoute);
@@ -62,7 +58,6 @@ describe("router config", () => {
                 .expect(HTTPStatus.OK);
         });
         it("throws a RouterError if method specified in config doesn't exist", () => {
-            // tslint:disable-next-line:no-empty
             const testRoute = createTestRoute("/index", ["REPAIR"], () => {});
 
             try {
