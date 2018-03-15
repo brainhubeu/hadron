@@ -1,1 +1,7 @@
-export const availableMethods: string[] = ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'];
+export enum HTTPRequestMethods {
+    GET = "GET",
+    POST = "POST",
+    PATCH = "PATCH",
+    DELETE = "DELETE",
+    PUT = "PUT",
+}
