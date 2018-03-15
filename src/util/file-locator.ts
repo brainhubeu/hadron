@@ -1,4 +1,3 @@
-import globPromise from './glob-promise';
 
 const locate = (paths: string[], configName: string, type: string,
                 extensions: string[] = []): Promise<any> => {
@@ -6,12 +5,12 @@ const locate = (paths: string[], configName: string, type: string,
     paths.map((path) => path.toLowerCase());
 
     if (extensions.length > 0) {
-        paths = addExtension(paths, extensions);
-      }
+      paths = addExtension(paths, extensions);
+    }
 
     Promise.all(paths.map(glob)).then((data) => {
-        filterPaths(flattenDeep(data.map((el) => el.sort())), configName, type).then(resolve);
-      });
+      filterPaths(flattenDeep(data.map((el) => el.sort())), configName, type).then(resolve);
+    });
   });
 };
 
@@ -34,16 +33,16 @@ const filterPaths = (data: string[], configName: string, type: string) => {
     const arr: string[] = [];
 
     data.forEach((element) => {
-        const fileName = (element.split('/')[element.split('/').length - 1]).split('.')[0];
+      const fileName = (element.split('/')[element.split('/').length - 1]).split('.')[0];
 
-        if (fileName === configName) {
-            arr.push(element);
-          } else if (fileName.includes('_')) {
-              if (fileName.split('_')[0] === configName && fileName.split('_')[1] === type) {
+      if (fileName === configName) {
+          arr.push(element);
+        } else if (fileName.includes('_')) {
+            if (fileName.split('_')[0] === configName && fileName.split('_')[1] === type) {
                 arr.push(element);
               }
-            }
-      });
+          }
+    });
 
     resolve(arr);
   });

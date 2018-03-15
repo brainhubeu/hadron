@@ -12,5 +12,5 @@ const port = process.env.PORT || 8080;
 
 const expressApp = express();
 
-routesToExpress(expressApp, exampleRouting);
+routesToExpress(expressApp, routesConfig);
 expressApp.listen(port);
