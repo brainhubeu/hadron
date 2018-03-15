@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { Team } from "../../Team";
-import { User } from "../../User";
-import validate from "../validate";
+import { Team } from "../Team";
+import { User } from "../User";
+import validate from "../validation/validate";
 
 describe ("Validate", () => {
     it ("should pass valid email", () => {
