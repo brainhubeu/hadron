@@ -1,4 +1,4 @@
-export default class RouterMethodError extends Error {
+export default class HadronRouterError extends Error {
     private error?: Error;
     constructor(message = "Invalid route method error", error: Error = null) {
         super(message);
