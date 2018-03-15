@@ -42,19 +42,19 @@ class ContainerItemSingletone extends ContainerItem {
       const parameterInstances = parameters.map(paramName => container.take(paramName));
       if (this._itemInstanse === null) {
         try {
-            this._itemInstanse = new this.item(...parameterInstances);
-          } catch (error) {
-            throw new Error(`can not create an instance of ${this.key}`);
-          }
+          this._itemInstanse = new this.item(...parameterInstances);
+        } catch (error) {
+          throw new Error(`can not create an instance of ${this.key}`);
+        }
       }
       return this._itemInstanse;
     } else {
       if (this._itemInstanse === null) {
         try {
-            this._itemInstanse = new this.item();
-          } catch (error) {
-            throw new Error(`can not create an instance of  ${this.key}`);
-          }
+          this._itemInstanse = new this.item();
+        } catch (error) {
+          throw new Error(`can not create an instance of  ${this.key}`);
+        }
       }
       return this._itemInstanse;
     }

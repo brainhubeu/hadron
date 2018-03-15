@@ -1,8 +1,7 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import exampleRouting from "./example/routing/routesConfig";
-import "./init";
-import hadronToExpress from "./routing/hadronToExpress";
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
+import './init';
+import hadronToExpress from './routing/hadronToExpress';
 
 /*
 import BF from 'brainhub-framework';

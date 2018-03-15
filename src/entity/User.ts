@@ -9,6 +9,6 @@ export class User {
   @Column()
     public name: string;
 
-  @ManyToOne((type) => Team, (team) => team.users)
+  @ManyToOne(type => Team, team => team.users)
     public team: Team;
 }

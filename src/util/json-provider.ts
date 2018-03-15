@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
+import locate from './file-locator';
 
 const getExtension = (path: string): string => {
   return extname(path).substring(1);
@@ -45,8 +46,8 @@ export const xmlLoader = (path: string) => {
 
       xmlToJson(data, (jsonErr: Error, jsonData: string) => {
         if (jsonErr) {
-            reject(jsonErr);
-          }
+          reject(jsonErr);
+        }
         resolve(jsonData);
       });
     });
@@ -59,15 +60,14 @@ const mapper: any = {
   xml: xmlLoader,
 };
 
-const extensionMapper = (paths: string[]): Array<Promise<any>> => {
-  return paths.map((path) => mapper[getExtension(path)](path));
-};
+const extensionMapper = (paths: string[]): Array<Promise<any>> => paths.map(path => mapper[getExtension(path)](path));
+
 
 const jsonProvider = (paths: string[], configName: string,
                       type: string, extensions: string[] = []): Promise<object> => {
   return locate(paths, configName, type, extensions)
-    .then((locatedPaths) => Promise.all(extensionMapper(locatedPaths)))
-    .then((data) => Object.assign({}, ...data));
+    .then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
+    .then(data => Object.assign({}, ...data));
 };
 
 export default jsonProvider;
