@@ -3,6 +3,9 @@ import { IContainerItem } from '../containers/IContainerItem';
 
 const containerRegister = new Array<IContainerItem>();
 
+const takeContainerByKey = (key: string): IContainerItem[] =>
+    containerRegister.filter(x => x.Key() === key);
+
 /* method for registering items in container */
 /**
  * Method for registering items in container, optionaly setting a lifespan for items
@@ -29,12 +32,10 @@ const take = (key: string): any => {
   const containerItems = takeContainerByKey(key);
   return containerItems.length === 0 ? null : containerItems[0].Item;
 };
-const takeContainerByKey = (key: string): IContainerItem[] =>
-    containerRegister.filter((x) => x.Key() === key);
 
-const Container = {
+const container = {
   register,
   take,
 };
 
-export default Container;
+export default container;

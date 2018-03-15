@@ -36,12 +36,12 @@ const filterPaths = (data: string[], configName: string, type: string) => {
       const fileName = (element.split('/')[element.split('/').length - 1]).split('.')[0];
 
       if (fileName === configName) {
-          arr.push(element);
-        } else if (fileName.includes('_')) {
-            if (fileName.split('_')[0] === configName && fileName.split('_')[1] === type) {
-                arr.push(element);
-              }
-          }
+        arr.push(element);
+      } else if (fileName.includes('_')) {
+          if (fileName.split('_')[0] === configName && fileName.split('_')[1] === type) {
+              arr.push(element);
+            }
+        }
     });
 
     resolve(arr);

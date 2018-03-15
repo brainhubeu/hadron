@@ -39,23 +39,23 @@ class ContainerItemSingletone extends ContainerItem {
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
-      const parameterInstances = parameters.map((paramName) => container.take(paramName));
+      const parameterInstances = parameters.map(paramName => container.take(paramName));
       if (this._itemInstanse === null) {
-          try {
-              this._itemInstanse = new this.item(...parameterInstances);
-            } catch (error) {
-              throw new Error('can not create an instance of ' + this.key);
-            }
-        }
+        try {
+            this._itemInstanse = new this.item(...parameterInstances);
+          } catch (error) {
+            throw new Error(`can not create an instance of ${this.key}`);
+          }
+      }
       return this._itemInstanse;
     } else {
       if (this._itemInstanse === null) {
-          try {
-              this._itemInstanse = new this.item();
-            } catch (error) {
-              throw new Error('can not create an instance of ' + this.key);
-            }
-        }
+        try {
+            this._itemInstanse = new this.item();
+          } catch (error) {
+            throw new Error(`can not create an instance of  ${this.key}`);
+          }
+      }
       return this._itemInstanse;
     }
   }
@@ -68,18 +68,18 @@ class ContainerItemTransient extends ContainerItem {
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
-      const parameterInstances = parameters.map((paramName) => container.take(paramName));
+      const parameterInstances = parameters.map(paramName => container.take(paramName));
       try {
-          return new this.item(...parameterInstances);
-        } catch (error) {
-          throw new Error('can not create a new instance of ' + this.key);
-        }
+        return new this.item(...parameterInstances);
+      } catch (error) {
+        throw new Error(`can not create a new instance of  ${this.key}`);
+      }
     } else {
       try {
-          return new this.item();
-        } catch (error) {
-          throw new Error('can not create a new instance of ' + this.key);
-        }
+        return new this.item();
+      } catch (error) {
+        throw new Error(`can not create a new instance of  ${this.key}`);
+      }
     }
   }
 }

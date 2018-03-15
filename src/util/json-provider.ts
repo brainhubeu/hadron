@@ -40,15 +40,15 @@ export const xmlLoader = (path: string) => {
 
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
-          reject(err);
-        }
+        reject(err);
+      }
 
       xmlToJson(data, (jsonErr: Error, jsonData: string) => {
-          if (jsonErr) {
-              reject(jsonErr);
-            }
-          resolve(jsonData);
-        });
+        if (jsonErr) {
+            reject(jsonErr);
+          }
+        resolve(jsonData);
+      });
     });
   });
 };

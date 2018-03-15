@@ -27,5 +27,3 @@ export default {
     path: '/index/:testParam',
   },
 };
-
-//        "ban": ["warning", ["alert"]],
