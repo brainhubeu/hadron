@@ -18,8 +18,8 @@ const connectionOptions = [
 ];
 
 createConnections(connectionOptions)
-    .then(async(connections) => {
-      connections.map(async(connection) => {
+    .then(async connections => {
+      connections.map(async connection => {
         const teamRepository = connection.getRepository<Team>('team');
         const userRepository = connection.getRepository<User>('user');
 

@@ -1,19 +1,5 @@
 import glob from './glob-promise';
 
-const locate = (paths: string[], configName: string, type: string,
-                extensions: string[] = []): Promise<any> =>
-  new Promise((resolve, reject) => {
-    paths.map(path => path.toLowerCase());
-
-    if (extensions.length > 0) {
-      paths = addExtension(paths, extensions);
-    }
-
-    Promise.all(paths.map(glob)).then(data => {
-      filterPaths(flattenDeep(data.map(el => el.sort())), configName, type).then(resolve);
-    });
-  });
-
 const addExtension = (paths: string[], extensions: string[]): string[] => {
   const pathsWithExtension: string[] = [];
 
@@ -44,6 +30,20 @@ const filterPaths = (data: string[], configName: string, type: string) =>
     });
 
     resolve(arr);
+  });
+
+const locate = (paths: string[], configName: string, type: string,
+                extensions: string[] = []): Promise<any> =>
+  new Promise((resolve, reject) => {
+    paths.map(path => path.toLowerCase());
+
+    if (extensions.length > 0) {
+      paths = addExtension(paths, extensions);
+    }
+
+    Promise.all(paths.map(glob)).then(data => {
+      filterPaths(flattenDeep(data.map(el => el.sort())), configName, type).then(resolve);
+    });
   });
 
 export default locate;

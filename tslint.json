@@ -34,7 +34,7 @@
     "no-unused-variable": true,
     "no-use-before-declare": true,
     "array-bracket-spacing": [true, "never"],
-    "brace-style": true,
+    "brace-style": [true, "1tbs", { "allowSingleLine": true }],
     "variable-name": true,
     "trailing-comma": [true, {"multiline": "always"}],
     "ter-computed-property-spacing": true,
@@ -79,8 +79,10 @@
     "object-literal-shorthand": true,
     "prefer-const": true,
     "prefer-template": true,
+
     "import-name": false,
     "prefer-array-literal": false,
-    "no-parameter-reassignment": false
+    "no-parameter-reassignment": false,
+    "align": false
   }
 }

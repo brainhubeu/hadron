@@ -12,7 +12,7 @@ class TestClass {
   constructor() {
     this.value = this.constructor.name;
   }
-  public GetName() {
+  public getName() {
     return value;
   }
 }
