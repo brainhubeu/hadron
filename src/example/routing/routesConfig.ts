@@ -5,6 +5,7 @@ import { User } from '../../entity/User';
 import '../typeorm';
 
 const upload = multer({ dest: 'uploads/' });
+import { ISerializer } from 'types/serialization';
 
 const func = () => 'Hello world';
 
@@ -75,6 +76,36 @@ const second = (req: any, res: any, next: any) => {
   next();
 };
 
+const testSerialization = (serializer: ISerializer, type: any, group: any) => {
+  const availableResponses = {
+    princess: {
+      address: 'Górnych Wałów 26/5',
+      friends: [
+          { name: 'Francesca', salary: '5120', profession: 'Cooker', id: '123' },
+          { name: 'Marina', salary: '2010', profession: 'Gardener' },
+          { name: 'Robin', salary: '0', profession: 'Crime Fighter' },
+      ],
+      id: '10002',
+      money: '21000',
+      name: 'Jasmine',
+    },
+    unicorn: {
+      hornLength: '20',
+      id: '10002',
+      magicPower: {
+        magicSchool: 'Fake',
+        name: 'Power of Truth',
+        power: '12',
+        usability: '0',
+      },
+      name: 'RainbowHoof',
+      price: '2100',
+      secretName: 'RainbowFart',
+    },
+  } as any;
+  return serializer.serialize(availableResponses[type], [group], type);
+};
+
 export default {
   routeForUploading: {
     callback: uploadFile,
@@ -139,5 +170,10 @@ export default {
     callback: updateTeam,
     methods: ['GET'],
     path: '/updateTeam/:id/:teamName',
+  },
+  thirdRoute: {
+    callback: testSerialization,
+    methods: ['GET'],
+    path: '/serialization/:type/:group',
   },
 };

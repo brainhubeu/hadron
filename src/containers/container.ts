@@ -1,5 +1,8 @@
 import containerItem from '../containers/containerItem';
 import { IContainerItem } from '../containers/IContainerItem';
+import schemaProvider from '../serialization/schema-provider';
+import serializerProvider from '../serialization/serializer';
+import { ISerializationSchema } from '../types/serialization';
 
 const containerRegister = new Array<IContainerItem>();
 
@@ -37,5 +40,20 @@ const container = {
   register,
   take,
 };
+
+const parsers = {
+  currency: (currencyValue: any) => `${currencyValue}$`,
+};
+
+schemaProvider(['src/example/serialization/*'])
+  .then((schemas: ISerializationSchema[]) => {
+    container.register(
+      'serializer',
+      serializerProvider({
+        parsers,
+        schemas,
+      }),
+    );
+  });
 
 export default container;

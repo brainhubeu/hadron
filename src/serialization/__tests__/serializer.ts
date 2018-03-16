@@ -1,7 +1,9 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
-import { hasIntersection, serialize, serializeEntry } from "../serializer";
+import serializerProvider, { hasIntersection, serialize, serializeEntry } from "../serializer";
 import { carConfiguration, fruitConfiguration, options } from "./mocks";
+
+import { IProperty, ISerializer } from "../../types/serialization";
 
 describe("serializer", () => {
     describe("hasIntersection", () => {
@@ -120,6 +122,89 @@ describe("serializer", () => {
             };
             const result = serialize(data, ["common"], fruitConfiguration.properties, {});
             expect(result).to.have.property("ID");
+        });
+
+        it("should serialize array with given properties", () => {
+            const serializerProperties = {
+                name: "arrayProperties",
+                properties: [
+                    { name: "String", type: "string" },
+                    { name: "Number", type: "number" },
+                ],
+                type: "array",
+            } as IProperty;
+
+            const data = {
+                arrayProperties: [
+                    { String: "123" },
+                    { Number: 456 },
+                ],
+            };
+            expect(serialize(data, ["common"], [serializerProperties], {}))
+                .to.be.deep.equal({
+                        arrayProperties: {
+                            Number: 456,
+                            String: "123",
+                        },
+                    });
+        });
+
+        it("should exclude parameters from array, that doesn't belong to group", () => {
+            const serializerProperties = {
+                name: "arrayProperties",
+                properties: [
+                    { name: "String", type: "string" },
+                    { name: "Number", type: "number", groups: ["uncommon"] },
+                ],
+                type: "array",
+            } as IProperty;
+
+            const data = {
+                arrayProperties: [
+                    { String: "123" },
+                    { Number: 456 },
+                ],
+            };
+            expect(serialize(data, ["common"], [serializerProperties], {}))
+                .to.be.deep.equal({
+                        arrayProperties: {
+                            String: "123",
+                        },
+                    });
+        });
+    });
+
+    describe("serializerProvider()", () => {
+        it("should add configuration dynamically", () => {
+            const serializer: ISerializer = serializerProvider({});
+            serializer.addSchema(carConfiguration);
+            const data = {
+                name: "Civic",
+                price: "12000",
+                type: "hatchback",
+            };
+            expect(serializer.serialize(data, ["common"], "Car")).to.eventually.contain.keys(["name", "price"]);
+        });
+
+        it("should add parser dynamically", () => {
+            const serializer: ISerializer = serializerProvider({
+                schemas: [
+                    {
+                        name: "Test",
+                        properties: [
+                            { name: "parsesParams", parsers: ["testParser"], type: "Something"},
+                        ],
+                    },
+                ],
+            });
+            const parserSpy = sinon.spy();
+            serializer.addParser(parserSpy, "testParser");
+            const data = {
+                parsesParams: "smth",
+            };
+            return serializer.serialize(data, ["common"], "Test").then(() =>
+                expect(parserSpy.called).to.eql(true),
+            );
         });
     });
 });

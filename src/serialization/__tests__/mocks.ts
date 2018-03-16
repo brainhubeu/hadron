@@ -1,4 +1,8 @@
-import IConfiguration, { IProperty, ISerializerOptions } from "serialization/IConfiguration";
+import {
+    IProperty,
+    ISerializationSchema,
+    ISerializerConfig,
+} from "../../types/serialization";
 
 export const fruitConfiguration = {
     name: "Fruit",
@@ -27,7 +31,7 @@ export const fruitConfiguration = {
             type: "object",
         },
     ],
-} as IConfiguration;
+} as ISerializationSchema;
 
 export const carConfiguration = {
     name: "Car",
@@ -40,10 +44,10 @@ export const carConfiguration = {
             type: "string",
         } as IProperty,
     ],
-} as IConfiguration;
+} as ISerializationSchema;
 
 export const options = {
     parsers: {
         funkyParser: (data: any) => `funky ${data}`,
     },
-} as ISerializerOptions;
+} as ISerializerConfig;

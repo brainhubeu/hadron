@@ -2,7 +2,6 @@ import glob from './glob-promise';
 
 const addExtension = (paths: string[], extensions: string[]): string[] => {
   const pathsWithExtension: string[] = [];
-
   extensions.map(ext => {
     paths.map(path => pathsWithExtension.push(`${path}.${ext.toLowerCase()}`));
   });
@@ -28,7 +27,6 @@ const filterPaths = (data: string[], configName: string, type: string) =>
 
       resolve(arr);
     });
-
 
 const flattenDeep = (arr: any[]): any[] =>
 Array.isArray(arr) ? arr.reduce((a, b) => [...flattenDeep(a), ...flattenDeep(b)], []) : [arr];
