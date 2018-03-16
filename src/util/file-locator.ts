@@ -1,8 +1,8 @@
-import * as glob from "glob";
+import glob from './glob-promise';
 
 const locate = (paths: string[], configName: string, type: string,
-                extensions: string[] = []): Promise<any> => {
-  return new Promise((resolve, reject) => {
+                extensions: string[] = []): Promise<any> =>
+  new Promise((resolve, reject) => {
     paths.map(path => path.toLowerCase());
 
     if (extensions.length > 0) {
@@ -13,7 +13,6 @@ const locate = (paths: string[], configName: string, type: string,
       filterPaths(flattenDeep(data.map(el => el.sort())), configName, type).then(resolve);
     });
   });
-};
 
 const addExtension = (paths: string[], extensions: string[]): string[] => {
   const pathsWithExtension: string[] = [];

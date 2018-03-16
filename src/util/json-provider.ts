@@ -3,9 +3,8 @@ import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
 import locate from './file-locator';
 
-const getExtension = (path: string): string => {
-  return extname(path).substring(1);
-};
+const getExtension = (path: string): string =>
+  extname(path).substring(1);
 
 export const jsLoader = (path: string) => {
   const supportsExtension: string = 'js';
@@ -64,10 +63,9 @@ const extensionMapper = (paths: string[]): Array<Promise<any>> => paths.map(path
 
 
 const jsonProvider = (paths: string[], configName: string,
-                      type: string, extensions: string[] = []): Promise<object> => {
-  return locate(paths, configName, type, extensions)
+                      type: string, extensions: string[] = []): Promise<object> =>
+  locate(paths, configName, type, extensions)
     .then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
     .then(data => Object.assign({}, ...data));
-};
 
 export default jsonProvider;

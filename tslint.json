@@ -78,6 +78,9 @@
     "no-var-keyword": true,
     "object-literal-shorthand": true,
     "prefer-const": true,
-    "prefer-template": true
+    "prefer-template": true,
+    "import-name": false,
+    "prefer-array-literal": false,
+    "no-parameter-reassignment": false
   }
 }

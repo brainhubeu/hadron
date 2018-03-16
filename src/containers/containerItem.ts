@@ -3,26 +3,23 @@ import { IContainerItem } from '../containers/IContainerItem';
 import { Lifetime } from '../containers/lifetime';
 import { getArgs } from '../helpers/functionHelper';
 
-const containerItemFactory = (key: string, item: any, lifetime?: string): ContainerItem => {
-  switch (lifetime) {
-    case Lifetime.Singletone:
-      return new ContainerItemSingletone(key, item);
-    case Lifetime.Transient:
-      return new ContainerItemTransient(key, item);
-    default:
-      return new ContainerItem(key, item);
-  }
-};
-
 class ContainerItem implements IContainerItem {
     // tslint:disable-next-line:variable-name
   constructor(protected key: string, protected item: any) { }
 
-  get Item(): any { return this.item; }
-  set Item(item: any) { this.item = item; }
+  get Item(): any {
+    return this.item;
+  }
+  set Item(item: any) {
+    this.item = item;
+  }
 
-  public Key() { return this.key; }
-  public getArgs(): string[] { return getArgs(this.item); }
+  public Key() {
+    return this.key;
+  }
+  public getArgs(): string[] {
+    return getArgs(this.item);
+  }
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -35,7 +32,9 @@ class ContainerItemSingletone extends ContainerItem {
     this._itemInstanse = null;
   }
 
-  set Item(item: any) { this.item = item; }
+  set Item(item: any) {
+    this.item = item;
+  }
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
@@ -62,9 +61,13 @@ class ContainerItemSingletone extends ContainerItem {
 }
 // tslint:disable-next-line:max-classes-per-file
 class ContainerItemTransient extends ContainerItem {
-  constructor(key: string, item: any) { super(key, item); }
+  constructor(key: string, item: any) {
+    super(key, item);
+  }
 
-  set Item(item: any) { this.item = item; }
+  set Item(item: any) {
+    this.item = item;
+  }
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
@@ -83,5 +86,16 @@ class ContainerItemTransient extends ContainerItem {
     }
   }
 }
+
+const containerItemFactory = (key: string, item: any, lifetime?: string): ContainerItem => {
+  switch (lifetime) {
+    case Lifetime.Singletone:
+      return new ContainerItemSingletone(key, item);
+    case Lifetime.Transient:
+      return new ContainerItemTransient(key, item);
+    default:
+      return new ContainerItem(key, item);
+  }
+};
 
 export default { containerItemFactory };

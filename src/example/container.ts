@@ -9,8 +9,12 @@ console.log(value);
 // register singletone class
 class TestClass {
   public value: string;
-  constructor() { this.value = this.constructor.name; }
-  public GetName() {return  value; }
+  constructor() {
+    this.value = this.constructor.name;
+  }
+  public GetName() {
+    return value;
+  }
 }
 container.register('xxxTestClass', TestClass, Lifetime.Singletone);
 const testClassInstance = container.take('xxxTestClass');
@@ -30,4 +34,4 @@ container.register('param', TestClass, Lifetime.Transient);
 container.register('TestClass2', TestClass2, Lifetime.Transient);
 const testClass2Instance = container.take('TestClass2');
 // tslint:disable-next-line:no-console
-console.log(testClass2Instance.value + '2');
+console.log(`${testClass2Instance.value}2`);

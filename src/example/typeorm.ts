@@ -24,8 +24,8 @@ createConnections(connectionOptions)
         const userRepository = connection.getRepository<User>('user');
 
         await Promise.all([
-          userRepository.find().then((users) => userRepository.remove(users)),
-          teamRepository.find().then((teams) => teamRepository.remove(teams)),
+          userRepository.find().then(users => userRepository.remove(users)),
+          teamRepository.find().then(teams => teamRepository.remove(teams)),
         ]);
 
         const team = teamRepository.create({
@@ -47,9 +47,10 @@ createConnections(connectionOptions)
           userRepository.save(secondUser),
         ])
                 .then(() => teamRepository.find({ relations : ['users'] }))
-                .then((retrievedTeams) => {
-                  retrievedTeams.forEach((retrievedTeam) =>
-                        console.log(retrievedTeam));
+                .then(retrievedTeams => {
+                  retrievedTeams.forEach(retrievedTeam =>
+                    // tslint:disable-next-line:no-console
+                    console.log(retrievedTeam));
                 });
       });
     });
