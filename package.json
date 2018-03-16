@@ -52,6 +52,7 @@
     "chai-as-promised": "7.1.1",
     "concurrently": "3.5.1",
     "cucumber": "3.1.0",
+    "cucumber-steps": "git+https://github.com/brainhubeu/cucumber-steps.git",
     "dirty-chai": "2.0.1",
     "express": "4.16.2",
     "fs-extra": "5.0.0",
