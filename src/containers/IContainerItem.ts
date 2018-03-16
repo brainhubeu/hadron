@@ -1,7 +1,7 @@
 interface IContainerItem {
   Item(): any;
   Item(key: string): void;
-  Key(): string;
+  getKey(): string;
   getArgs(): string[];
 }
 

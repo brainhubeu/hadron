@@ -14,7 +14,7 @@ class ContainerItem implements IContainerItem {
     this.item = item;
   }
 
-  public Key() {
+  public getKey() {
     return this.key;
   }
   public getArgs(): string[] {
@@ -47,16 +47,16 @@ class ContainerItemSingletone extends ContainerItem {
         }
       }
       return this._itemInstanse;
-    } else {
-      if (this._itemInstanse === null) {
-        try {
-          this._itemInstanse = new this.item();
-        } catch (error) {
-          throw new Error(`can not create an instance of  ${this.key}`);
-        }
-      }
-      return this._itemInstanse;
     }
+
+    if (this._itemInstanse === null) {
+      try {
+        this._itemInstanse = new this.item();
+      } catch (error) {
+        throw new Error(`can not create an instance of  ${this.key}`);
+      }
+    }
+    return this._itemInstanse;
   }
 }
 // tslint:disable-next-line:max-classes-per-file
