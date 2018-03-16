@@ -4,7 +4,7 @@ import { ConnectionOptions, createConnection } from "typeorm";
 import container from "../containers/container";
 import { Team } from "../entity/Team";
 import { User } from "../entity/User";
-import routesToExpress from "../routing/routesToExpress";
+import routesToExpress from "../routing/hadronToExpress";
 import { createDatabaseConnection } from "../typeorm/connectionHelper";
 import { IRoutesConfig } from "../types/routing";
 import jsonProvider from "../util/json-provider";
