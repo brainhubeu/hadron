@@ -4,18 +4,18 @@ interface CallbackEvent{
 export default {
   "my-listener": { //listener name
       event: 'someEvent', // event to listen to
-      handler: (params:any) => (event: CallbackEvent) => {
+      handler: (...params:any[]) => (event: CallbackEvent) => {
         let original = event.callback;
         event.callback = () => { 
             console.log(`My new implementation of event.callback as a developer`);
-            return original(params);    
+            return original(...params);    
         };
     }
   },
 
   "my-listener2": { //listener name
     event: 'someEvent', // event to listen to
-    handler: (params:any) => (event: CallbackEvent) => {
+    handler: (...params:any[]) => (event: CallbackEvent) => {
       console.log('lalalal')
       return event.callback;
       }
@@ -23,11 +23,11 @@ export default {
 
   "my-listener3": { //listener name
     event: 'someEvent', // event to listen to
-    handler: (params:any) => (event: CallbackEvent) => {
+    handler: (...params:any[]) => (event: CallbackEvent) => {
       let original = event.callback;
       event.callback = () => { 
           console.log(`22222My new implementation of event.callback as a developer`);
-          return original(params);    
+          return original(...params);    
       };
   }
 }
