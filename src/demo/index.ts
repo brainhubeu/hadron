@@ -15,7 +15,7 @@ BF.configureApp()
 */
 const setupDatabase = (): Promise<void> => {
     const dbConnection = createDatabaseConnection("mysql", "mysql", "localhost", 3306, "root", "my-secret-pw", "test");
-    dbConnection.entities = [ "../entity/**/*.ts" ];
+    dbConnection.entities = [ "../entity/*.ts" ];
     const connectionOption = (dbConnection as ConnectionOptions);
 
     return createConnection(connectionOption)
@@ -25,16 +25,17 @@ const setupDatabase = (): Promise<void> => {
         });
 };
 
-setupDatabase().then(async () => {
-            const port = process.env.PORT || 8080;
-            const expressApp = express();
-            expressApp.use(bodyParser.json());
+setupDatabase()
+.then(async () => {
+    const port = process.env.PORT || 8080;
+    const expressApp = express();
+    expressApp.use(bodyParser.json());
 
-            await jsonProvider(["./routing/**/*"], "config", "development", ["js"])
-            .then((exampleRouting) => {
-                routesToExpress(expressApp, exampleRouting as IRoutesConfig);
-                // expressApp.use(bodyParser.urlencoded({extended: true}));
-                expressApp.listen(port);
-                return;
-            });
-        });
+    await jsonProvider(["./routing/**/*"], "config", "development", ["js"])
+    .then((exampleRouting) => {
+        routesToExpress(expressApp, exampleRouting as IRoutesConfig);
+        // expressApp.use(bodyParser.urlencoded({extended: true}));
+        expressApp.listen(port);
+        return;
+    });
+});
