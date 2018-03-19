@@ -53,4 +53,7 @@ createConnections(connectionOptions)
                     console.log(retrievedTeam));
                 });
       });
+    })
+    .catch(err => {
+      console.log('Cannot connect to database', err);
     });
