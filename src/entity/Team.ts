@@ -4,10 +4,10 @@ import { User } from './User';
 @Entity()
 export class Team {
   @PrimaryGeneratedColumn()
-    public id: number;
+  public id: number;
 
-  @Column()
-    public name: string;
+  @Column({ type: 'text' })
+  public name: string;
 
   @OneToMany(type => User, user => user.team)
     public users: User[];
