@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "userName": {
+      "type": "string"
+    },
+    "teamId": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false
+}

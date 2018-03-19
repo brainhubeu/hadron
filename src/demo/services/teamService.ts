@@ -1,6 +1,7 @@
 import { Team } from "entity/Team";
 import { User } from "entity/User";
 import { Repository } from "typeorm";
+import validate from "../validation/validate";
 
 class TeamDto {
     constructor(public id: number, public name: string, public amount: number) { }
@@ -14,19 +15,28 @@ const getAllTeams = async (teamRepository: Repository<Team>) => {
 const getTeamById = async (teamRepository: Repository<Team>, id: number) => await teamRepository.findOneById(id);
 
 const updateTeam = async (teamRepository: Repository<Team>, body: { id: number, teamName: string }) => {
-    await teamRepository.findOneById(body.id)
-          .then((team) => {
-            team.name = body.teamName;
-            return teamRepository.save(team);
-          })
-          .then(() => `team id: ${body.id} has new name ${body.teamName}`);
+    try {
+        await validate("updateTeam", body);
+        return await teamRepository.findOneById(body.id)
+            .then((team) => {
+                team.name = body.teamName;
+                return teamRepository.save(team);
+            })
+            .then(() => `team id: ${body.id} has new name ${body.teamName}`);
+        } catch (error) {
+            throw error;
+        }
 };
 
 const insertTeam = async (teamRepository: Repository<Team>, body: { teamName: string }) => {
-    console.log(body);
-    await teamRepository.insert({name: body.teamName})
-    .then(() => teamRepository.count())
-    .then((amount) => `total amount of teams: ${amount}`);
+    try {
+        const validBody = await validate("insertTeam", body);
+        return await teamRepository.insert({name: body.teamName})
+        .then(() => teamRepository.count())
+        .then((amount) => `total amount of teams: ${amount}`);
+    } catch (err) {
+        throw err;
+    }
 };
 
 const deleteTeam = async (teamRepository: Repository<Team>, userRepository: Repository<User>, id: number) => {
