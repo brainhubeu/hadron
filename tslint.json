@@ -66,7 +66,7 @@
     "object-curly-spacing": false,
     "one-variable-per-declaration": true,
     "object-literal-key-quotes": [true, "as-needed"],
-    "object-literal-sort-keys": [true, "ignore-case", "match-declaration-order", "shorthand-first"],
+    "object-literal-sort-keys": false,
     "quotemark": [true, "single", "jsx-double"],
     "semicolon": false,
     "space-before-function-paren": [true, "never"],

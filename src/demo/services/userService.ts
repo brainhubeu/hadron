@@ -17,7 +17,7 @@ const insertUser = async(userRepository: Repository<User>,
                           teamRepository: Repository<Team>,
                           body: {userName: string, teamId: number }) => {
   try {
-    const validBody = await validate('insertUser', body);
+    await validate('insertUser', body);
     return await teamRepository.findOneById(body.teamId)
       .then(team => userRepository.insert({ team, name: body.userName }))
       .then(() => userRepository.count())

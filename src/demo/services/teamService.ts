@@ -29,7 +29,7 @@ const updateTeam = async(teamRepository: Repository<Team>, body: { id: number, t
 
 const insertTeam = async(teamRepository: Repository<Team>, body: { teamName: string }) => {
   try {
-    const validBody = await validate('insertTeam', body);
+    await validate('insertTeam', body);
     return await teamRepository.insert({name: body.teamName})
       .then(() => teamRepository.count())
       .then(amount => `total amount of teams: ${amount}`);
