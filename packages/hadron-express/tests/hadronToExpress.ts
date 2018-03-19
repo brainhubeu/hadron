@@ -9,12 +9,17 @@ import * as sinon from "sinon";
 import * as request from "supertest";
 
 import { json as bodyParser } from "body-parser";
-import RouterMethodError from "../../errors/HadronRouterError";
-import routesToExpress from "../hadronToExpress";
+import RouterMethodError from "../errors/HadronRouterError";
+import routesToExpress from "../src/hadronToExpress";
 
 let app = express();
 
-const createTestRoute = (path: string, methods: string[], callback: Function, middleware?: Function[]) => ({
+const createTestRoute = (
+    path: string,
+    methods: string[],
+    callback: (req: any, res: any) => any,
+    middleware?: Array<(req: any, res: any, next: any) => any>,
+) => ({
     testRoute: {
         callback,
         methods,
@@ -22,6 +27,10 @@ const createTestRoute = (path: string, methods: string[], callback: Function, mi
         path,
     },
 });
+
+const containerMock = {
+    take: () => null,
+};
 
 const getRouteProp = (expressApp: any, prop: string) =>
     expressApp._router.stack                 // registered routes
@@ -35,33 +44,33 @@ describe("router config", () => {
     });
     describe("generating routes", () => {
         it("should generate express route based on config file", () => {
-            const testRoute = createTestRoute("/index", ["GET"], () => {});
+            const testRoute = createTestRoute("/index", ["GET"], () => null);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             expect(getRouteProp(app, "path")[0]).to.equal("/index");
         });
         it("should generate correct router method based on config file", () => {
-            const testRoute = createTestRoute("/index", ["POST"], () => {});
+            const testRoute = createTestRoute("/index", ["POST"], () => null);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             expect(getRouteProp(app, "methods")[0].post).to.equal(true);
         });
         it("returns status OK for request from generated route", () => {
-            const testRoute = createTestRoute("/testRequest", ["GET"], () => {});
+            const testRoute = createTestRoute("/testRequest", ["GET"], () => null);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get("/testRequest")
                 .expect(HTTPStatus.OK);
         });
         it("throws a RouterError if method specified in config doesn't exist", () => {
-            const testRoute = createTestRoute("/index", ["REPAIR"], () => {});
+            const testRoute = createTestRoute("/index", ["REPAIR"], () => null);
 
             try {
-                routesToExpress(app, testRoute);
+                routesToExpress(app, testRoute, containerMock);
             } catch (error) {
                 expect(error).to.be.instanceOf(RouterMethodError);
             }
@@ -72,7 +81,7 @@ describe("router config", () => {
             const middle = sinon.spy();
             const testRoute = createTestRoute("/testRoute", ["PUT", "DELETE"], callback, [middle]);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             expect(getRouteProp(app, "methods")[0].put).to.equal(true);
             expect(getRouteProp(app, "methods")[1].delete).to.equal(true);
@@ -86,7 +95,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/index/:valueA", ["GET"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/index/${testParam}`)
@@ -102,7 +111,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/index", ["GET"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/index?valueA=${testParam}`)
@@ -119,7 +128,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/index/:valueA/:valueB", ["GET"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/index/${testParam}/${secondParam}`)
@@ -134,7 +143,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/index", ["GET"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/index?valueA=${testParam}&valueB=${secondParam}`)
@@ -147,7 +156,7 @@ describe("router config", () => {
             const testQuery = "bar";
             const testRoute = createTestRoute("/index", ["GET"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/index/?foo=${testQuery}`)
@@ -165,7 +174,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/index", ["POST"], callback);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .post(`/index`)
@@ -178,7 +187,7 @@ describe("router config", () => {
     });
     describe("router middleware", () => {
         it("calls middleware passed in router config", () => {
-            const callback = () => {};
+            const callback = () => null;
 
             const spy = sinon.spy();
 
@@ -189,7 +198,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/testRoute", ["GET"], callback, [middle]);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/testRoute`)
@@ -197,7 +206,7 @@ describe("router config", () => {
                 .then(() => expect(spy.called).to.be.eq(true));
         });
         it("calls multiple middlewares passed in router config", () => {
-            const callback = () => {};
+            const callback = () => null;
 
             const firstSpy = sinon.spy();
             const secondSpy = sinon.spy();
@@ -214,7 +223,7 @@ describe("router config", () => {
 
             const testRoute = createTestRoute("/testRoute", ["GET"], callback, [firstMiddleware, secondMiddleware]);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .get(`/testRoute`)
@@ -240,7 +249,7 @@ describe("router config", () => {
         it("should save file passed to route", () => {
             const testRoute = createTestRoute("/testUploads", ["POST"], callback, [uploadMiddleware]);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
             const mockDir = __dirname + "/testUploads";
 
             return request(app)
@@ -255,7 +264,7 @@ describe("router config", () => {
         it("should pass file to callback func", () => {
             const testRoute = createTestRoute("/testUpload", ["POST"], callback, [uploadMiddleware]);
 
-            routesToExpress(app, testRoute);
+            routesToExpress(app, testRoute, containerMock);
 
             return request(app)
                 .post("/testUpload")

@@ -31,7 +31,8 @@
     "mssql": "4.1.0",
     "mysql": "2.15.0",
     "pg": "7.4.1",
-    "pm2": "github:Unitech/pm2#development"
+    "pm2": "github:Unitech/pm2#development",
+    "hadron-express": "file:./packages/hadron-express"
   },
   "devDependencies": {
     "@types/body-parser": "1.16.8",
@@ -58,6 +59,7 @@
     "express": "4.16.2",
     "fs-extra": "5.0.0",
     "http-status": "1.0.1",
+    "lerna": "^2.9.0",
     "mocha": "4.0.1",
     "multer": "1.3.0",
     "nodemon": "1.12.1",
