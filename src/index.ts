@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { ConnectionOptions, createConnection, createConnections } from 'typeorm';
+import { ConnectionOptions, createConnection } from 'typeorm';
 import container from './containers/container';
 import { Team } from './entity/Team';
 import { User } from './entity/User';

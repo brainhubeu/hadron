@@ -48,6 +48,7 @@ const updateUser = async(userRepository: Repository<User>, id: number, userName:
   await userRepository.save(user);
   return `user id: ${id} name: ${oldName} has new name ${userName}`;
 };
+
 const updateTeam = async(teamRepository: Repository<Team>, id: number, teamName: string) => {
   const team = await teamRepository.findOneById(id);
   const oldName = team.name;
