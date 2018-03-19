@@ -1,16 +1,17 @@
 import { expect } from "chai";
 
-import locate from "../file-locator";
+import locate, { configLocate } from "../file-locator";
 
 describe ("locate", () => {
     it ("should return an array", () => {
-        return locate(["src/util/__tests__/mock/app/config/*"], "config", "development").then((result) => {
+        return configLocate(["src/util/__tests__/mock/app/config/*"], "config", "development").then((result) => {
             expect(result).to.be.an("array");
         });
     });
 
     it ("should return path files from mock/app/conifg/* with development type and js extension", () => {
-        return locate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["JS"]).then((result) => {
+        return configLocate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["JS"])
+        .then((result) => {
             expect(result).to.deep
             .equal(["src/util/__tests__/mock/app/config/config.js",
                     "src/util/__tests__/mock/app/config/config_development.js"]);
@@ -18,7 +19,8 @@ describe ("locate", () => {
     });
 
     it ("should return path files from mock/app/config/* with development type and json extension", () => {
-        return locate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json"]).then((result) => {
+        return configLocate(["src/util/__tests__/mock/app/config/*"], "config", "development", ["json"])
+        .then((result) => {
             expect(result).to.deep
             .equal(["src/util/__tests__/mock/app/config/config.json",
                     "src/util/__tests__/mock/app/config/config_development.json"]);
@@ -26,7 +28,7 @@ describe ("locate", () => {
     });
 
     it ("should return path files from every folder in mock/plugins with config folder", () => {
-        return locate(["src/util/__tests__/mock/plugins/*/config/*"],
+        return configLocate(["src/util/__tests__/mock/plugins/*/config/*"],
                         "config", "development", ["js"]).then((result) => {
             expect(result).to.deep.equal([
                 "src/util/__tests__/mock/plugins/plugin1/config/config.js",
@@ -40,7 +42,7 @@ describe ("locate", () => {
     });
 
     it ("should return path files from mock/app/ext with js, json and xml extensions", () => {
-        return locate(["src/util/__tests__/mock/app/ext/*"],
+        return configLocate(["src/util/__tests__/mock/app/ext/*"],
                     "config", "development", ["js", "json", "xml"]).then((result) => {
             expect(result).to.deep.equal([
                 "src/util/__tests__/mock/app/ext/config.js",

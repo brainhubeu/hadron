@@ -1,10 +1,9 @@
 import * as fs from 'fs';
 import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
-import locate from './file-locator';
+import locate, { configLocate } from './file-locator';
 
-const getExtension = (path: string): string =>
-  extname(path).substring(1);
+const getExtension = (path: string): string => extname(path).substring(1);
 
 export const jsLoader = (path: string) => {
   const supportsExtension: string = 'js';
@@ -16,7 +15,7 @@ export const jsLoader = (path: string) => {
     const data = require(`./${relative(__dirname, path)}`);
     data !== null ? resolve(data()) : reject(new Error('File not found'));
   });
-};
+}
 
 export const jsonLoader = (path: string) => {
   const supportsExtension: string = 'json';
@@ -62,10 +61,14 @@ const mapper: any = {
 const extensionMapper = (paths: string[]): Array<Promise<any>> => paths.map(path => mapper[getExtension(path)](path));
 
 
-const jsonProvider = (paths: string[], configName: string,
-                      type: string, extensions: string[] = []): Promise<object> =>
-  locate(paths, configName, type, extensions)
+export const configJsonProvider = (paths: string[], configName: string,
+                                   type: string, extensions: string[] = []): Promise<object> =>
+  configLocate(paths, configName, type, extensions)
     .then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
+    .then(data => Object.assign({}, ...data));
+
+export const jsonProvider = (paths: string[], extensions: string[]) =>
+   locate(paths, extensions).then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
     .then(data => Object.assign({}, ...data));
 
 export default jsonProvider;
