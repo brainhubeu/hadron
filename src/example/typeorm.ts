@@ -55,5 +55,6 @@ createConnections(connectionOptions)
       });
     })
     .catch(err => {
+      // tslint:disable-next-line:no-console
       console.log('Cannot connect to database', err);
     });
