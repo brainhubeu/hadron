@@ -4,7 +4,7 @@ import { IRoutesConfig } from "./src/interfaces";
 
 export default hadronExpress;
 
-export const register = (app: any, Container: any, config: any) => {
-    hadronExpress(app, config.routes as IRoutesConfig, Container as any);
+export const register = (Container: any, config: any) => {
+    hadronExpress(config.routes as IRoutesConfig, Container as any);
     console.log("registering express");
 };

@@ -14,6 +14,8 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 expressApp.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded
 
-hadronExpress.register(expressApp, Container, { routes: exampleRouting });
+Container.register("server", expressApp);
+
+hadronExpress.register(Container, { routes: exampleRouting });
 
 expressApp.listen(port);
