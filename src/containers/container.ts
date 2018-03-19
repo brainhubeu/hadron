@@ -1,7 +1,10 @@
-import containerItem from "../containers/containerItem";
-import { IContainerItem } from "../containers/IContainerItem";
+import containerItem from '../containers/containerItem';
+import { IContainerItem } from '../containers/IContainerItem';
 
 const containerRegister = new Array<IContainerItem>();
+
+const takeContainerByKey = (key: string): IContainerItem[] =>
+    containerRegister.filter(x => x.getKey() === key);
 
 /* method for registering items in container */
 /**
@@ -11,13 +14,13 @@ const containerRegister = new Array<IContainerItem>();
  * @param lifetime setting type of life-span [value, singletone, transient] - value is default
  */
 const register = (key: string, item: any, lifetime?: string): void => {
-    const containerItems = takeContainerByKey(key);
-    if (containerItems.length === 0) {
-        const ci = containerItem.containerItemFactory(key, item, lifetime );
-        containerRegister.push(ci);
-    } else {
-        containerItems[0].Item = item;
-    }
+  const containerItems = takeContainerByKey(key);
+  if (containerItems.length === 0) {
+    const ci = containerItem.containerItemFactory(key, item, lifetime);
+    containerRegister.push(ci);
+  } else {
+    containerItems[0].Item = item;
+  }
 };
 
 /** method for getting item from register
@@ -26,15 +29,13 @@ const register = (key: string, item: any, lifetime?: string): void => {
  * @return { any } return stored item
  */
 const take = (key: string): any => {
-    const containerItems = takeContainerByKey(key);
-    return containerItems.length === 0 ? null : containerItems[0].Item;
-};
-const takeContainerByKey = (key: string): IContainerItem[] =>
-    containerRegister.filter((x) => x.Key() === key);
-
-const Container = {
-    register,
-    take,
+  const containerItems = takeContainerByKey(key);
+  return containerItems.length === 0 ? null : containerItems[0].Item;
 };
 
-export default Container;
+const container = {
+  register,
+  take,
+};
+
+export default container;
