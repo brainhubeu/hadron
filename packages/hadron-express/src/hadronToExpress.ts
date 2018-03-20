@@ -15,8 +15,10 @@ import container from "../containers/container";
 import { getArgs } from "../helpers/functionHelper";
 import { IRoute, IRoutesConfig } from "../types/routing";
 import { validateMethods } from "../validators/routing";
-import listenersWrapper from '../../app/listeners';
-
+import registerEvents from '../events/registerEvents';
+import Container from "../containers/container";
+import listenersWrapper from '../events/listeners';
+import listeners from '../events/listeners';
 
 
 const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
@@ -94,19 +96,7 @@ const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
             Promise.resolve()
             .then(() => {
                     const args = mapRouteArgs(req, res, route.callback);
-                    const eventName = 'someEvent';
-                    const event = {
-                        callback: route.callback,
-                    }
-                    const emitter = container.take('emitter');
-
-                    const listeners = Object.values(listenersWrapper);
-                    listeners.forEach(listener => {
-                        if(listener.event === eventName){
-                            emitter.on(eventName, listener.handler(req.params));
-                        }
-                    })
-                    emitter.emit(eventName, event);
+                    registerEvents('someEvent', Container.take('emitter'), route.callback, listeners, ...args);
                     return route.callback(...args);
                 })
                 .then((result) => res.json(result))
