@@ -4,10 +4,9 @@ import { ConnectionOptions, createConnection } from 'typeorm';
 import container from '../containers/container';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
-import routesToExpress from '../routing/hadronToExpress';
+import routesToExpress, { IRoutesConfig } from '../../packages/hadron-express';
 import { createDatabaseConnection } from '../typeorm/connectionHelper';
-import { IRoutesConfig } from '../types/routing';
-import jsonProvider from '../util/json-provider';
+import jsonProvider from '../../packages/hadron-json-provider';
 
 /*
 import BF from 'brainhub-framework';
@@ -31,9 +30,9 @@ setupDatabase()
   const expressApp = express();
   expressApp.use(bodyParser.json());
 
-  await jsonProvider(['./routing/**/*'], 'config', 'development', ['js'])
+  await jsonProvider(['./routing/**/*'], ['js'])
     .then(exampleRouting => {
-      routesToExpress(expressApp, exampleRouting as IRoutesConfig);
+      routesToExpress(exampleRouting as IRoutesConfig, container);
         // expressApp.use(bodyParser.urlencoded({extended: true}));
       expressApp.listen(port);
       return;
