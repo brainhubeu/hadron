@@ -8,6 +8,7 @@
   },
   "keywords": [
     "hadron",
+    "typeorm",
     "hadron-typeorm"
   ],
   "author": "brainhub",

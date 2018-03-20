@@ -37,23 +37,11 @@ const createConnection = (container: any, config: any) => {
     log = false,
   } = config;
 
-  createConnections(connectionArray)
+  return createConnections(connectionArray)
   .then(async connections => {
     const repositories: any = [];
-    connections.map(async connection => {
-      if (log) {
-        console.log(` - hadron-typeorm: ${ connection.name } connected`);
-      }
-
-      repositories[connection.name] = entityArray.reduce((obj: any, entity: any) => ({
-        ...obj,
-        [entity.name]: connection.getRepository(entity),
-      }), {});
-
-      if (log) {
-        console.log(`   hadron-typeorm: registered ` +
-          `${Object.keys(repositories[connection.name]).length} repositories`);
-      }
+    connections.map(connection => {
+      repositories[connection.name] = getRepositories(connection, entityArray);
     });
     // Register repositories inside container
     container.register('repositories', repositories);
@@ -61,5 +49,11 @@ const createConnection = (container: any, config: any) => {
     container.register('connections', connections);
   });
 }
+
+const getRepositories = (connection: any, entities: any) =>
+  entities.reduce((obj: any, entity: any) => ({
+    ...obj,
+    [entity.name]: connection.getRepository(entity),
+  }), {});
 
 export { createConnection, createDatabaseConnection, ConnectionOption };
