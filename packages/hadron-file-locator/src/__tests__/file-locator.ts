@@ -45,12 +45,12 @@ describe('locate', () => {
   });
 
   it('should return path files from mock/app/ext with js, json and xml extensions', () => {
-    return configLocate(['src/util/__tests__/mock/app/ext/*'],
+    return configLocate([`${packageDirPath}/mock/app/ext/*`],
                     'config', 'development', ['js', 'json', 'xml']).then(result => {
                       expect(result).to.deep.equal([
-                        'src/util/__tests__/mock/app/ext/config.js',
-                        'src/util/__tests__/mock/app/ext/config.json',
-                        'src/util/__tests__/mock/app/ext/config.xml',
+                        `${packageDirPath}/mock/app/ext/config.js`,
+                        `${packageDirPath}/mock/app/ext/config.json`,
+                        `${packageDirPath}/mock/app/ext/config.xml`,
                       ]);
                     });
   });

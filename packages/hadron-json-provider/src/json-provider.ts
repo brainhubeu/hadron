@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
-import locate, { configLocate } from '../../packages/hadron-file-locator';
+import locate, { configLocate } from '../../hadron-file-locator';
 
 const getExtension = (path: string): string => extname(path).substring(1);
 
