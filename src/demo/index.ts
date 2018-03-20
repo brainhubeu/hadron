@@ -6,7 +6,7 @@ import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import routesToExpress, { IRoutesConfig } from '../../packages/hadron-express';
 import { createDatabaseConnection } from '../typeorm/connectionHelper';
-import jsonProvider from '../util/json-provider';
+import jsonProvider from '../../packages/hadron-json-provider';
 
 /*
 import BF from 'brainhub-framework';
