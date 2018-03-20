@@ -14,7 +14,7 @@
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint:fix": "tslint  -c tslint.json -p tsconfig.json --fix",
     "test": "npm run -s test:unit && npm run -s test:e2e",
-    "test:unit": "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './src/**/__tests__/*.ts'",
+    "test:unit": "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './packages/**/__tests__/*.ts'",
     "test:unit:watch": "npm run test:unit -- --reporter min --watch-extensions ts --watch",
     "test:e2e": "./test.sh",
     "test:cucumber": "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",

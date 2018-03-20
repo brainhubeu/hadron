@@ -13,7 +13,8 @@
                 "src/*",
                 "lib/*",
                 "node_modules/*",
-                "types/*"
+                "types/*",
+                "packages/*"
             ]
         },
         "emitDecoratorMetadata": true,
@@ -26,7 +27,7 @@
     },
     "include": [
         "src/**/*",
-        "lib/**/*"
+        "lib/**/*",
     ],
     "exclude": [
         "node_modules",
