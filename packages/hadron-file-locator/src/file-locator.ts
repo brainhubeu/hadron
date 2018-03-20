@@ -1,13 +1,11 @@
 import glob from './glob-promise';
 
-const addExtension = (paths: string[], extensions: string[]): string[] => {
-  const pathsWithExtension: string[] = [];
-  extensions.map(ext => {
-    paths.map(path => pathsWithExtension.push(`${path}.${ext.toLowerCase()}`));
-  });
-
-  return pathsWithExtension;
-};
+const addExtension = (paths: string[], extensions: string[]): string[] =>
+  paths
+    .reduce((accumulator, currentPath) =>
+      [...accumulator, ...extensions.map(ext => `${currentPath}.${ext.toLowerCase()}`)],
+      [],
+    );
 
 const filterPaths = (data: string[], configName: string, type: string) =>
     new Promise((resolve, reject) => {

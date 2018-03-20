@@ -5,7 +5,7 @@ import { User } from '../../entity/User';
 import '../typeorm';
 
 const upload = multer({ dest: 'uploads/' });
-import { ISerializer } from 'types/serialization';
+import { ISerializer } from '../../../packages/hadron-serialization';
 
 const func = () => 'Hello world';
 
