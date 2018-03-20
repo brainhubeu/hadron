@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
-import registerEvents from '../registerEvents';
 import ICallbackEvent from '../ICallbackEvent';
 import IEventListener from '../IEventListener';
 
-import eventsRegister from '../registerEvents';
+import eventsRegister from '../eventsRegister';
 
 describe("events registration", () => {
     let listeners: IEventListener[] = null;
@@ -26,6 +25,7 @@ describe("events registration", () => {
                 event: 'someEvent', // event to listen to
                 handler: (...params:any[]) => (event: ICallbackEvent) => {
                   let original = event.callback;
+                  console.log('listener1');
                   event.callback = () => { 
                       return original(...params);    
                   };
@@ -37,7 +37,7 @@ describe("events registration", () => {
               name: 'my-listener-2',
               event: 'someEvent', // event to listen to
               handler: (...params:any[]) => (event: ICallbackEvent) => {
-                console.log('hihihihihihihi');
+                console.log('listener2')
                 return event.callback;
                 }
             },
@@ -48,6 +48,7 @@ describe("events registration", () => {
               handler: (...params:any[]) => (event: ICallbackEvent) => {
                 
                 let original = event.callback;
+                console.log('listener33');
                 event.callback = () => { 
                     return "sss";  
                 };
