@@ -50,10 +50,4 @@ const createConnection = (container: any, config: any) => {
   });
 }
 
-const getRepositories = (connection: any, entities: any) =>
-  entities.reduce((obj: any, entity: any) => ({
-    ...obj,
-    [entity.name]: connection.getRepository(entity),
-  }), {});
-
 export { createConnection, createDatabaseConnection, ConnectionOption };
