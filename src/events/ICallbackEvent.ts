@@ -1,3 +1,3 @@
-export default interface ICallbackEvent{
-    callback: Function,
-} 
+export default interface ICallbackEvent {
+  callback: (...args: any[]) => any,
+}

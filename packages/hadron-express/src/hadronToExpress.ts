@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import * as express from 'express';
 <<<<<<< HEAD:packages/hadron-express/src/hadronToExpress.ts
 import { getArgs } from './helpers/functionHelper';
@@ -9,6 +8,7 @@ import container from '../containers/container';
 import { getArgs } from '../helpers/functionHelper';
 import { IRoute, IRoutesConfig } from '../types/routing';
 import { validateMethods } from '../validators/routing';
+<<<<<<< HEAD:packages/hadron-express/src/hadronToExpress.ts
 =======
 import * as express from "express";
 import container from "../containers/container";
@@ -31,6 +31,8 @@ const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
 >>>>>>> add EventEmitter, pull out listeners from other file and make them subscribe to this event
 >>>>>>> add EventEmitter, pull out listeners from other file and make them subscribe to this event:src/routing/hadronToExpress.ts
 
+=======
+>>>>>>> fix tslint:src/routing/hadronToExpress.ts
 const generateMiddlewares = (route: IRoute) =>
   route.middleware && route.middleware.map((middleware: Middleware) =>
     (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -60,8 +62,11 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
 =======
 // tslint:disable-next-line:ban-types
 const createRoutes = (app: any, route: IRoute, middleware: Function[]) =>
+<<<<<<< HEAD:packages/hadron-express/src/hadronToExpress.ts
 <<<<<<< HEAD
 >>>>>>> add EventEmitter, pull out listeners from other file and make them subscribe to this event:src/routing/hadronToExpress.ts
+=======
+>>>>>>> fix tslint:src/routing/hadronToExpress.ts
   route.methods.map((method: string) => {
     app[method.toLowerCase()](route.path, ...middleware, (req: any, res: express.Response) => {
       Promise.resolve()
@@ -90,19 +95,6 @@ const convertToExpress = (app: Express.Application, routes: IRoutesConfig) =>
         // tslint:disable-next-line:ban-types
       const middlewares: Function[] = generateMiddlewares(route) || [];
       createRoutes(app, route, middlewares);
-=======
-    route.methods.map((method: string) => {
-        app[method.toLowerCase()](route.path, ...middleware, (req: any, res: express.Response) => {
-            Promise.resolve()
-            .then(() => {
-                    const args = mapRouteArgs(req, res, route.callback);
-                    registerEvents('someEvent', Container.take('emitter'), route.callback, listeners, ...args);
-                    return route.callback(...args);
-                })
-                .then((result) => res.json(result))
-                .catch((error) => res.send(500));
-        });
->>>>>>> add EventEmitter, pull out listeners from other file and make them subscribe to this event
     });
 >>>>>>> add EventEmitter, pull out listeners from other file and make them subscribe to this event:src/routing/hadronToExpress.ts
 

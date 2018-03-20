@@ -1,15 +1,17 @@
-import IEventListener from "events/IEventListener";
+/* tslint:disable */
+import IEventListener from 'events/IEventListener';
 import ICallbackEvent from './ICallbackEvent';
 
+
 const listeners: IEventListener[] = [
-    { 
-        name: 'my-listener-1',
-        event: 'someEvent', // event to listen to
-        handler: (...params:any[]) => (event: ICallbackEvent) => {
-          let original = event.callback;
-          event.callback = () => { 
-              return original(...params);    
-          };
+  { 
+    name: 'my-listener-1',
+    event: 'someEvent', // event to listen to
+    handler: (...params: any[]) => (event: ICallbackEvent) => {
+      const original = event.callback;
+      event.callback = () => {
+        return original(...params);
+      };
   
       }
     },

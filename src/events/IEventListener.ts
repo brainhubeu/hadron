@@ -1,5 +1,5 @@
-export default interface IEventListener{
-    name: string;
-    event: string;
-    handler: Function;
+export default interface IEventListener {
+  name: string;
+  event: string;
+  handler: (...args: any[]) => any;
 }

@@ -1,5 +1,5 @@
-export default interface EventEmitter{
-    listeners: Function;
-    on: Function;
-    emit: Function
+export default interface IEventEmitter {
+  listeners: (event: string) => any[];
+  on: (eventName: string, handler: () => any) => void;
+  emit: (eventName: string, event: object) => void;
 }

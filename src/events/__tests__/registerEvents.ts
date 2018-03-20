@@ -1,10 +1,12 @@
-import { expect } from "chai";
-import registerEvents from '../registerEvents';
-import IEventListener from '../IEventListener';
-import ICallbackEvent from '../ICallbackEvent';
+import { expect } from 'chai';
 import { EventEmitter } from 'events';
-import eventsRegister from "../registerEvents";
-import * as sinon from "sinon";
+import * as sinon from 'sinon';
+import registerEvents from '../registerEvents';
+import ICallbackEvent from '../ICallbackEvent';
+import IEventListener from '../IEventListener';
+
+import eventsRegister from '../registerEvents';
+
 describe("events registration", () => {
     let listeners: IEventListener[] = null;
     let emitter: EventEmitter = null;
