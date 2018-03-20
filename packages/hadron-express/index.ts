@@ -5,4 +5,4 @@ import { IContainer, IRoutesConfig } from './src/types';
 export default hadronExpress;
 
 export const register = (container: IContainer, config: any) =>
-  hadronExpress(config.routes as IRoutesConfig, container as any);
+  hadronExpress(config.routes as IRoutesConfig || {}, container);
