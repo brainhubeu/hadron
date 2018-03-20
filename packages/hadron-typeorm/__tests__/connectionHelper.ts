@@ -4,7 +4,7 @@ import * as typeorm from 'typeorm';
 import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
 
 describe('Connection helper', () => {
-  let items = {};
+  let items: any = {};
   const conn = createDatabaseConnection(
     'connName', 'MySQL', 'hostAddr',
     8080, 'userName', 'password',
