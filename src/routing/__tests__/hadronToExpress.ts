@@ -1,5 +1,4 @@
 import { expect } from "chai";
-
 import * as express from "express";
 import * as fs from "fs-extra";
 import * as HTTPStatus from "http-status";
@@ -11,6 +10,8 @@ import * as request from "supertest";
 import { json as bodyParser } from "body-parser";
 import RouterMethodError from "../../errors/HadronRouterError";
 import routesToExpress from "../hadronToExpress";
+
+import Container from '../../containers/container';
 
 let app = express();
 
@@ -29,10 +30,26 @@ const getRouteProp = (expressApp: any, prop: string) =>
         .map((r: any) => r.route[prop]);     // get all the props
 
 describe("router config", () => {
+
+    let emitterStub = null;
+
+    before(() => {
+        // tslint:disable
+        emitterStub = sinon.stub(Container, "take").callsFake(() => ({
+            on: () => { },
+            emit: () => {},
+            listeners: () => [],
+        })); 
+    });
+
     beforeEach(() => {
         app = express();
         app.use(bodyParser());
     });
+
+    after(() => {
+        emitterStub.restore();
+    })
     describe("generating routes", () => {
         it("should generate express route based on config file", () => {
             const testRoute = createTestRoute("/index", ["GET"], () => {});
