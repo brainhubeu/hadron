@@ -1,8 +1,9 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import exampleRouting from './example/routing/routesConfig';
+import { register as expressRegister } from '../packages/hadron-express';
+import Container from './containers/container';
 import './init';
-import hadronExpress from '../packages/hadron-express';
 
 /*
 import BF from 'brainhub-framework';
@@ -14,8 +15,8 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 expressApp.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded
 
-Container.register("server", expressApp);
+Container.register('server', expressApp);
 
-hadronExpress.register(Container, { routes: exampleRouting });
+expressRegister(Container, { routes: exampleRouting });
 
 expressApp.listen(port);

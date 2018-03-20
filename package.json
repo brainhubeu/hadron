@@ -31,8 +31,7 @@
     "mssql": "4.1.0",
     "mysql": "2.15.0",
     "pg": "7.4.1",
-    "pm2": "github:Unitech/pm2#development",
-    "hadron-express": "file:./packages/hadron-express"
+    "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
     "@types/body-parser": "1.16.8",

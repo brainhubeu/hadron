@@ -67,6 +67,7 @@
     "one-variable-per-declaration": true,
     "object-literal-key-quotes": [true, "as-needed"],
     "object-literal-sort-keys": false,
+    "ordered-imports": false,
     "quotemark": [true, "single", "jsx-double"],
     "semicolon": false,
     "space-before-function-paren": [true, "never"],
