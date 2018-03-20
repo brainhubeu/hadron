@@ -3,7 +3,7 @@ import { Team } from '../../../../src/entity/Team';
 import { User } from '../../../../src/entity/User';
 import validate from '../default-validate';
 
-describe.only('Validate', () => {
+describe('Validate', () => {
   it('should pass valid email', () => {
     const validEmail = {
       html: 'abc',
