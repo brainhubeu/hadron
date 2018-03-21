@@ -3,7 +3,7 @@ import * as express from 'express';
 import exampleRouting from './example/routing/routesConfig';
 import hadron, { IContainer } from '../packages/hadron-core';
 import './init';
-import { register as serializerRegister, schemaProvider, ISerializerConfig } from '../packages/hadron-serialization';
+import { schemaProvider, ISerializerConfig } from '../packages/hadron-serialization';
 
 /*
 import BF from 'brainhub-framework';
