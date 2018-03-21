@@ -1,7 +1,4 @@
 import IEventEmitter from './IEventEmitter';
-import IEventListener from './IEventListener';
-import { IRoutesConfig } from './types';
-import { eventNames } from 'cluster';
 
 /**
  * Provider function to inject emitter and config into variable scope

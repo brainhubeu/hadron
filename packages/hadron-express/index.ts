@@ -1,6 +1,6 @@
 import hadronExpress from './src/hadronToExpress';
 export { Callback, IRoutesConfig, IRoute, Middleware, IContainer } from './src/types';
-import { IContainer, IRoutesConfig } from './src/types';
+import { IRoutesConfig } from './src/types';
 
 export default hadronExpress;
 
