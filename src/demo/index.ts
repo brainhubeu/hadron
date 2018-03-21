@@ -4,8 +4,7 @@ import { Container as container } from '../../packages/hadron-core';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { register as expressRegister } from '../../packages/hadron-express';
-import { createDatabaseConnection, register as typeormRegister,
-  constants as typeormConstants } from '../../packages/hadron-typeorm';
+import { createDatabaseConnection, register as typeormRegister } from '../../packages/hadron-typeorm';
 import jsonProvider from '../../packages/hadron-json-provider';
 
 /*
@@ -36,8 +35,4 @@ const setupDatabase = (): Promise<void> => {
   });
 }
 
-setupDatabase()
-.then(async() => {
-  const conn = container.take(typeormConstants.CONNECTIONS);
-  console.log(`${conn[0].name} connected`);
-});
+setupDatabase();

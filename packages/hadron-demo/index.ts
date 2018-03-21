@@ -1,6 +1,5 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { register as expressRegister } from '../hadron-express';
 import hadron, { IContainer } from '../hadron-core';
 import expressConfig from './express';
 
