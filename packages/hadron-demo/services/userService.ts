@@ -1,7 +1,7 @@
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { Repository } from 'typeorm';
-// import validate from '../validation/validate';
+import validate from '../entity/validation/validate';
 
 class UserDto {
   constructor(public id: number, public name: string, public teamName: string) { }
@@ -17,7 +17,7 @@ const insertUser = async(userRepository: Repository<User>,
                           teamRepository: Repository<Team>,
                           body: {userName: string, teamId: number }) => {
   try {
-    // await validate('insertUser', body);
+    await validate('insertUser', body);
     return await teamRepository.findOneById(body.teamId)
       .then(team => userRepository.insert({ team, name: body.userName }))
       .then(() => userRepository.count())
@@ -29,7 +29,7 @@ const insertUser = async(userRepository: Repository<User>,
 
 const updateUser = async(userRepository: Repository<User>, body: {id: number, userName: string, teamId: number }) => {
   try {
-    // await validate('updateUser', body);
+    await validate('updateUser', body);
     return await userRepository.findOneById(body.id)
           .then(user => {
             user.name = body.userName;

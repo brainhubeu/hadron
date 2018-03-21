@@ -11,5 +11,6 @@
       "type": "number"
     }
   },
+  "required": ["id", "userName", "teamId"],
   "additionalProperties": false
 }

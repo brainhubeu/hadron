@@ -8,5 +8,6 @@
       "type": "number"
     }
   },
+  "required": ["userName", "teamId"],
   "additionalProperties": false
 }
