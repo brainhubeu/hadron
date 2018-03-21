@@ -30,7 +30,6 @@ const eventsProvider = (emitter: IEventEmitter, config: any) => {
     if (callback === null) {
       throw new Error('callback argument can not be null');
     }
-
     if (config.listeners === null) {
       throw new Error('listeners argument can not be null');
     }
