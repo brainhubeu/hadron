@@ -3,6 +3,8 @@ import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
 import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
 
+import { Team } from './mocks/entity/Team';
+
 describe('Connection helper', () => {
   let items: any = {};
   const conn = createDatabaseConnection(
@@ -36,17 +38,21 @@ describe('Connection helper', () => {
 
   describe('Create connection', () => {
     const stub = sinon.stub(typeorm, 'createConnections');
-    stub.returns(new Promise((resolve, reject) => {
+    stub.onFirstCall().returns(new Promise(resolve => {
+      resolve([{getRepository: () => false}])
+    }));
+    stub.onSecondCall().returns(new Promise(resolve => {
       resolve([conn]);
-    }))
+    }));
 
     const register = sinon.spy(containerMock, 'register');
 
-    it('Registering repositories', () => {
+    it('Registering teamRepository', () => {
       return createConnection(containerMock, {
         connections: [conn],
+        entities: [Team],
       }).then(() => {
-        sinon.assert.calledWith(register, 'repositories');
+        sinon.assert.calledWith(register, 'teamRepository');
       });
     });
 

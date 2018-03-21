@@ -36,7 +36,10 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
             return route.callback(...args);
           })
           .then(result => res.json(result))
-          .catch(error => res.send(500));
+          .catch(error => {
+            console.log(error);
+            res.send(500)
+          });
     });
   });
 

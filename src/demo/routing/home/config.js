@@ -4,14 +4,16 @@ const alterFunc = (testParam) => {
     return testParam;
 };
 
-const first = () => {
-    // tslint:disable-next-line:no-console
-    console.log("first middleware");
+const first = (req, res, next) => {
+// tslint:disable-next-line:no-console
+console.log('first middleware');
+next();
 };
 
-const second = () => {
-    // tslint:disable-next-line:no-console
-    console.log("second middleware");
+const second = (req, res, next) => {
+// tslint:disable-next-line:no-console
+console.log('second middleware');
+next();
 };
 
 const homeConfig = () => {
