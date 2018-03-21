@@ -1,3 +1,4 @@
 {
-    "status": "Development"
+    "status": "Development",
+    "onlyDevelopmentProp": "I am developer!"
 }

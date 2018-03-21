@@ -8,6 +8,7 @@ import './init';
 import { register } from '../packages/hadron-events';
 import ICallbackEvent from '../packages/hadron-events/src/ICallbackEvent';
 
+import { register as serializerRegister, schemaProvider, ISerializerConfig } from '../packages/hadron-serialization';
 
 /*
 import BF from 'brainhub-framework';
@@ -58,6 +59,17 @@ const listeners = [
 
 Container.register('server', expressApp);
 register(Container, { events: { listeners }});
+
+schemaProvider(['src/example/serialization/*'])
+  .then(schemas => {
+    const serializerConfig = {
+      schemas,
+      parsers: {
+        currency: (currencyValue: any) => `${currencyValue}$`,
+      },
+    } as ISerializerConfig;
+    serializerRegister(Container, { serializer: serializerConfig });
+  });
 
 expressRegister(Container, { routes: exampleRouting });
 
