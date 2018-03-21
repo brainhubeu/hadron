@@ -2,7 +2,6 @@ import * as express from 'express';
 import { getArgs } from './helpers/functionHelper';
 import { Callback, IContainer, IRoute, IRoutesConfig, Middleware } from './types';
 import { validateMethods } from './validators/routing';
-// import listenersWrapper from '../../app/listeners';
 import constants, {eventsNames} from '../../hadron-events/src/constants/constants';
 
 const generateMiddlewares = (route: IRoute) =>
@@ -35,7 +34,12 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
       Promise.resolve()
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
-            container.take(constants.EVENT_REGISTER)(eventsNames.CREATE_ROUTES_EVENT, route.callback, ...args);
+            try{ 
+              container.take(constants.EVENT_REGISTER)(eventsNames.CREATE_ROUTES_EVENT, route.callback, ...args);
+            } catch(error){
+
+            }
+            
             return route.callback(...args);
           })
           .then(result => res.json(result))
