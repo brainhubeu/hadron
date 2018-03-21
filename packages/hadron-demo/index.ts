@@ -2,16 +2,33 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import hadron, { IContainer } from '../hadron-core';
 import expressConfig from './express';
+import typeormConfig from './typeorm';
+import jsonProvider from '../hadron-json-provider';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-hadron(expressApp, [
-  import('../hadron-express'),
-], expressConfig)
-  .then((container: IContainer) => {
-    container.register('customValue', 'From Brainhub with ❤️');
-  });
+jsonProvider(['./routing/**/*'], ['js'])
+  .then(routes => {
 
-expressApp.listen(port);
+    const config = {
+      ...typeormConfig,
+      routes: {
+        ...routes,
+        ...expressConfig.routes,
+      },
+    }
+
+    hadron(expressApp, [
+      import('../hadron-express'),
+      import('../hadron-typeorm'),
+    ], config)
+      .then((container: IContainer) => {
+        container.register('customValue', 'From Brainhub with ❤️');
+
+        expressApp.listen(port);
+      });
+
+    return;
+  });

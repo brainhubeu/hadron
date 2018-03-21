@@ -1,32 +1,30 @@
-// const teamService = require("../../services/teamService")
-
-const foo = () => 'Not implemented yet...';
+const teamService = require("../services/teamService")
 
 const teamRoutsConfig = () => {
     return {
         getTeams: {
-            callback: foo,
+            callback: teamService.getAllTeams,
             methods: ["GET"],
             path: "/team/",
         },
         getTeamById: {
-            callback: foo,
+            callback: teamService.getTeamById,
             methods: ["GET"],
             path: "/team/:id",
         },
     
         insertTeam : {
-            callback: foo,
+            callback: teamService.insertTeam,
             methods: ["POST"],
             path: "/insertTeam",
         },
         updateTeam : {
-            callback: foo,
+            callback: teamService.updateTeam,
             methods: ["PUT"],
             path: "/updateTeam",
         },
         deleteTeam : {
-            callback : foo,
+            callback : teamService.deleteTeam,
             methods : ["DELETE"],
             path: "/deleteTeam/:id"
         }

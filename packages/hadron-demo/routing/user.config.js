@@ -1,31 +1,29 @@
-// const userService = require("../../services/userService");
-
-const foo = () => 'Not implemented yet...';
+const userService = require("../services/userService");
 
 const userRoutsConfig = () => {
     return {
         getAllUsers: {
-            callback: foo,
+            callback: userService.getAllUsers,
             methods: ["GET"],
             path: "/user/",
         },
         getUserById: {
-            callback: foo,
+            callback: userService.getUserById,
             methods: ["GET"],
             path: "/user/:id",
         },
         insertUser : {
-            callback: foo,
+            callback: userService.insertUser,
             methods: ["POST"],
             path: "/insertUser/",
         },
         updateUser : {
-            callback: foo,
+            callback: userService.updateUser,
             methods: ["PUT"],
             path: "/updateUser/",
         },
         deleteUser : {
-            callback : foo,
+            callback : userService.deleteUser,
             methods : ["DELETE"],
             path : "/deleteUser/:id"
         }
