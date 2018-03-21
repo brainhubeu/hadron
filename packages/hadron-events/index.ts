@@ -3,7 +3,7 @@ import eventsProvider from './src/eventsProvider';
 import { EventEmitter } from 'events';
 import { Lifetime } from '../hadron-core';
 
-
+export * from './src/types';
 export default eventsProvider;
 
 export const register = (container: any, config: any) => {
