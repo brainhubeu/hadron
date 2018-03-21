@@ -3,8 +3,7 @@ import * as express from 'express';
 import exampleRouting from './example/routing/routesConfig';
 import hadron, { IContainer } from '../packages/hadron-core';
 import './init';
-import { register } from '../packages/hadron-events';
-import ICallbackEvent from '../packages/hadron-events/src/ICallbackEvent';
+import { ICallbackEvent } from '../packages/hadron-events/src/types';
 import { schemaProvider, ISerializerConfig } from '../packages/hadron-serialization';
 
 /*
@@ -17,43 +16,37 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 expressApp.use(bodyParser.urlencoded({extended: true})); // parse application/x-www-form-urlencoded
 
-
-
 const listeners = [
-    { 
-        name: 'my-listener-1',
-        event: 'createRoutesEvent', // event to listen to
-        handler: (...params:any[]) => (event: ICallbackEvent) => {
-          let original = event.callback;
-          console.log('listener1');
-          event.callback = () => { 
-              return original(...params);
-          };
-  
-      }
+  {
+    name: 'my-listener-1',
+    event: 'createRoutesEvent', // event to listen to
+    handler: (...params: any[]) => (event: ICallbackEvent) => {
+      const original = event.callback;
+      console.log('listener1');
+      event.callback = () => {
+        return original(...params);
+      };
     },
-  
-     { //listener name
-      name: 'my-listener-2',
-      event: 'createRoutesEvent', // event to listen to
-      handler: (...params:any[]) => (event: ICallbackEvent) => {
-        console.log('listener2')
-        return event.callback;
-        }
+  },
+  {
+    name: 'my-listener-2',
+    event: 'createRoutesEvent', // event to listen to
+    handler: (...params: any[]) => (event: ICallbackEvent) => {
+      console.log('listener2')
+      return event.callback;
     },
-  
-    { 
-      name: 'my-listener-3',
-      event: 'createRoutesEvent', // event to listen to
-      handler: (...params:any[]) => (event: ICallbackEvent) => {
-        
-        let original = event.callback;
-        console.log('listener33');
-        event.callback = () => { 
-            return "sss";  
-        };
-    }
-  }
+  },
+  {
+    name: 'my-listener-3',
+    event: 'createRoutesEvent', // event to listen to
+    handler: (...params: any[]) => (event: ICallbackEvent) => {
+      const original = event.callback;
+      console.log('listener33');
+      event.callback = () => {
+        return 'sss';
+      };
+    },
+  },
 ]
 
 const config = { routes: exampleRouting, events: { listeners } };
