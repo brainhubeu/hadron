@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { Team } from '../../../../src/entity/Team';
-import { User } from '../../../../src/entity/User';
-import validate from '../default-validate';
+import { Team } from './__mocks__/Team';
+import { User } from './__mocks__/User';
+import validate from './__mocks__/test-validate';
 
 describe('Validate', () => {
   it('should pass valid email', () => {
