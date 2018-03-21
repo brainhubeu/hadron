@@ -1,6 +1,5 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { ConnectionOptions, createConnection } from 'typeorm';
 import { Container as container } from '../../packages/hadron-core';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
