@@ -1,16 +1,16 @@
-import * as express from 'express';
-
-export type Middleware = (req: express.Request, res: express.Response, next: express.NextFunction) => any;
-
-export type Callback = (...args: any[]) => any;
-
-export interface IRoute {
-  callback: Callback;
-  middleware?: Middleware[];
-  path: string;
-  methods: string[];
+export interface ICallbackEvent {
+  callback: (...args: any[]) => any,
 }
 
-export interface IRoutesConfig {
-  [key: string]: IRoute;
+export interface IEventEmitter {
+  listeners: (event: string) => any[];
+  on: (eventName: string, handler: () => any) => void;
+  emit: (eventName: string, event: object) => void;
+}
+
+
+export interface IEventListener {
+  name: string;
+  event: string;
+  handler: (...args: any[]) => any;
 }

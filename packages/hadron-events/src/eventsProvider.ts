@@ -1,4 +1,4 @@
-import IEventEmitter from './IEventEmitter';
+import { IEventEmitter } from './types';
 
 /**
  * Provider function to inject emitter and config into variable scope
