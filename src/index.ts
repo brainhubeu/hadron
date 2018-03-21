@@ -1,4 +1,3 @@
-/* tslint:disable */
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import exampleRouting from './example/routing/routesConfig';
