@@ -17,25 +17,24 @@ expressApp.use(bodyParser.urlencoded({extended: true})); // parse application/x-
 
 const config = { routes: exampleRouting };
 
-hadron(expressApp, [
-  import('../packages/hadron-express'),
-], config)
-  .then((container: IContainer) => {
-    // tslint:disable:no-console
-    console.log('We have Container!', container);
-  });
-
 schemaProvider(['src/example/serialization/*'])
-  .then(schemas => {
+  .then((schemas: any) => {
     const serializerConfig = {
       schemas,
       parsers: {
         currency: (currencyValue: any) => `${currencyValue}$`,
       },
     } as ISerializerConfig;
-    serializerRegister(Container, { serializer: serializerConfig });
-  });
-
-expressRegister(Container, { routes: exampleRouting });
-
-expressApp.listen(port);
+    (config as any).serializer = serializerConfig;
+  })
+  .then(() =>
+    hadron(expressApp, [
+      import('../packages/hadron-express'),
+      import('../packages/hadron-serialization'),
+    ], config)
+  .then((container: IContainer) => {
+    // tslint:disable:no-console
+    console.log('We have Container!', container);
+    expressApp.listen(port);
+  }),
+);
