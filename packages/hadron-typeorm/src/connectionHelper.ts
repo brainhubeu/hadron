@@ -18,7 +18,7 @@ class ConnectionOption {
 }
 
 const createDatabaseConnection = (connectionName: string, databaseType: string, hostAdress: string, hostPort: number,
-                                  username: string, userPassword: string, databaseNama: string, entities: string[],
+                                  username: string, userPassword: string, databaseNama: string, entities?: string[],
                                   migrations?: string[], subscribers?: string[]): ConnectionOption => {
   const newConnection = new ConnectionOption();
   newConnection.name = connectionName;
