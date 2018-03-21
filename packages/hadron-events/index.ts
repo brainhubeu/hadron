@@ -1,6 +1,5 @@
 import constants from './src/constants/constants'
 import eventsProvider from './src/eventsProvider';
-import { IRoutesConfig } from './src/types';
 
 export default eventsProvider;
 
