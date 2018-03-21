@@ -2,7 +2,6 @@ import * as multer from 'multer';
 import { Repository } from '../../../node_modules/typeorm/repository/Repository';
 import { Team } from '../../entity/Team';
 import { User } from '../../entity/User';
-import '../typeorm';
 
 const upload = multer({ dest: 'uploads/' });
 import { ISerializer } from '../../../packages/hadron-serialization';

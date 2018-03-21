@@ -1,3 +1,6 @@
+import { createConnections } from 'typeorm';
+import { CONNECTIONS, REPOSITORY_NAMES } from './constants';
+
 class ConnectionOption {
   public name: string;
   public type: string;
@@ -28,4 +31,22 @@ const createDatabaseConnection = (connectionName: string, databaseType: string, 
   return newConnection;
 };
 
-export { createDatabaseConnection };
+const createConnection = (container: any, config: any) => {
+  const {
+    connections: connectionArray = [],
+    entities: entityArray = [],
+  } = config;
+
+  return createConnections(connectionArray)
+  .then(async connections => {
+    // Register repositories inside container
+    entityArray.forEach((entity: any) => {
+      container.register(REPOSITORY_NAMES(entity.name), connections[0].getRepository(entity));
+    });
+
+    // Register connections inside container
+    container.register(CONNECTIONS, connections);
+  });
+}
+
+export { createConnection, createDatabaseConnection, ConnectionOption };
