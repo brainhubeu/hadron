@@ -61,14 +61,14 @@ const mapper: any = {
 const extensionMapper = (paths: string[]): Array<Promise<any>> => paths.map(path => mapper[getExtension(path)](path));
 
 
-export const configJsonProvider = (paths: string[], configName: string,
-                                   type: string, extensions: string[] = []): Promise<object> =>
+export const configJsonProvider = (paths: string[], configName: string, type: string,
+                                  extensions: string[] = [], concatResults: boolean = false): Promise<object> =>
   configLocate(paths, configName, type, extensions)
     .then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
-    .then(data => Object.assign({}, ...data));
+    .then(data => concatResults ? [...data] : Object.assign({}, ...data));
 
-export const jsonProvider = (paths: string[], extensions: string[]) =>
+export const jsonProvider = (paths: string[], extensions: string[], concatResults: boolean = false) =>
    locate(paths, extensions).then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
-    .then(data => Object.assign({}, ...data));
+    .then(data => concatResults ? [...data] : Object.assign({}, ...data));
 
 export default jsonProvider;
