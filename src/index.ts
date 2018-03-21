@@ -18,30 +18,33 @@ expressApp.use(bodyParser.urlencoded({extended: true})); // parse application/x-
 
 const listeners = [
   {
-    name: 'my-listener-1',
+    name: 'LISTENER-1',
     event: 'createRoutesEvent', // event to listen to
     handler: (...params: any[]) => (event: ICallbackEvent) => {
       const original = event.callback;
-      console.log('listener1');
+      // tslint:disable:no-console
+      console.log('my name is LISTENER-1 and I listen to event createRoutesEvent');
       event.callback = () => {
         return original(...params);
       };
     },
   },
   {
-    name: 'my-listener-2',
+    name: 'LISTENER-2',
     event: 'createRoutesEvent', // event to listen to
     handler: (...params: any[]) => (event: ICallbackEvent) => {
-      console.log('listener2')
+      // tslint:disable:no-console
+      console.log('my name is LISTENER-2 and I listen to event createRoutesEvent');
       return event.callback;
     },
   },
   {
-    name: 'my-listener-3',
+    name: 'LISTENER-3',
     event: 'createRoutesEvent', // event to listen to
     handler: (...params: any[]) => (event: ICallbackEvent) => {
-      const original = event.callback;
-      console.log('listener33');
+      // const original = event.callback;
+      // tslint:disable:no-console
+      console.log('my name is LISTENER-3 and I listen to event createRoutesEvent');
       event.callback = () => {
         return 'sss';
       };
@@ -63,7 +66,7 @@ schemaProvider(['src/example/serialization/*'])
   })
   .then(() =>
     hadron(expressApp, [
-      import('../packages/hadron-events'),  
+      import('../packages/hadron-events'),
       import('../packages/hadron-express'),
       import('../packages/hadron-serialization'),
     ], config)
