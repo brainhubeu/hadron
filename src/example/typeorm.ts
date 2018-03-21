@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { ConnectionOptions, createConnections } from 'typeorm';
-import container from '../containers/container';
+import { Container as container } from '../../packages/hadron-core';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { createDatabaseConnection } from '../typeorm/connectionHelper';
