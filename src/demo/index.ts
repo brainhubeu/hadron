@@ -1,10 +1,9 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { ConnectionOptions, createConnection } from 'typeorm';
 import container from '../containers/container';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
-import { IRoutesConfig, register as expressRegister } from '../../packages/hadron-express';
+import { register as expressRegister } from '../../packages/hadron-express';
 import { createDatabaseConnection, register as typeormRegister,
   constants as typeormConstants } from '../../packages/hadron-typeorm';
 import jsonProvider from '../../packages/hadron-json-provider';
