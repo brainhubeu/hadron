@@ -5,7 +5,7 @@ import { createConnection, createDatabaseConnection } from '../src/connectionHel
 
 import { Team } from './mocks/entity/Team';
 
-describe('Connection helper', () => {
+describe('typeORM', () => {
   let items: any = {};
   const conn = createDatabaseConnection(
     'connName', 'MySQL', 'hostAddr',
@@ -23,7 +23,7 @@ describe('Connection helper', () => {
     items = {};
   });
 
-  it('Create database connection object', () => {
+  it('should return ConnectionOption object with valid values', () => {
     expect(conn).to.deep.equal({
       ...conn,
       name: 'connName',
@@ -36,32 +36,30 @@ describe('Connection helper', () => {
     });
   });
 
-  describe('Create connection', () => {
-    const stub = sinon.stub(typeorm, 'createConnections');
-    stub.onFirstCall().returns(new Promise(resolve => {
-      resolve([{getRepository: () => false}])
-    }));
-    stub.onSecondCall().returns(new Promise(resolve => {
-      resolve([conn]);
-    }));
+  const stub = sinon.stub(typeorm, 'createConnections');
+  stub.onFirstCall().returns(new Promise(resolve => {
+    resolve([{getRepository: () => false}])
+  }));
+  stub.onSecondCall().returns(new Promise(resolve => {
+    resolve([conn]);
+  }));
 
-    const register = sinon.spy(containerMock, 'register');
+  const register = sinon.spy(containerMock, 'register');
 
-    it('Registering teamRepository', () => {
-      return createConnection(containerMock, {
-        connections: [conn],
-        entities: [Team],
-      }).then(() => {
-        sinon.assert.calledWith(register, 'teamRepository');
-      });
+  it('should register repository to container with key "teamRepository"', () => {
+    return createConnection(containerMock, {
+      connections: [conn],
+      entities: [Team],
+    }).then(() => {
+      sinon.assert.calledWith(register, 'teamRepository');
     });
+  });
 
-    it('Registering connections', () => {
-      return createConnection(containerMock, {
-        connections: [conn],
-      }).then(() => {
-        sinon.assert.calledWith(register, 'connections', [conn]);
-      });
+  it('should register connection array to container', () => {
+    return createConnection(containerMock, {
+      connections: [conn],
+    }).then(() => {
+      sinon.assert.calledWith(register, 'connections', [conn]);
     });
   });
 });
