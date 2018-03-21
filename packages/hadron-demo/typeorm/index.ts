@@ -1,7 +1,6 @@
-import { createDatabaseConnection, constants } from '../../hadron-typeorm';
+import { createDatabaseConnection } from '../../hadron-typeorm';
 import {User} from '../entity/User';
 import {Team} from '../entity/Team';
-import * as path from 'path';
 
 const connections = [
   createDatabaseConnection(
