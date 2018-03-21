@@ -1,5 +1,5 @@
-import containerItem from '../containers/containerItem';
-import { IContainerItem } from '../containers/IContainerItem';
+import containerItem from './containerItem';
+import { IContainerItem, IContainer } from './types';
 
 const containerRegister = new Array<IContainerItem>();
 
@@ -38,4 +38,4 @@ const container = {
   take,
 };
 
-export default container;
+export default container as IContainer;

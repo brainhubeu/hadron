@@ -1,5 +1,4 @@
-import container from '../containers/container';
-import { Lifetime } from '../containers/lifetime';
+import { Container as container, Lifetime } from '../../packages/hadron-core';
 // register value
 container.register('value', 18);
 const value = container.take('value');

@@ -1,7 +1,7 @@
-import container from '../containers/container';
-import { IContainerItem } from '../containers/IContainerItem';
-import { Lifetime } from '../containers/lifetime';
-import { getArgs } from '../helpers/functionHelper';
+import container from './container';
+import { IContainerItem } from './types';
+import { Lifetime } from './lifetime';
+import { getArgs } from '../../../../src/helpers/functionHelper';
 
 class ContainerItem implements IContainerItem {
     // tslint:disable-next-line:variable-name

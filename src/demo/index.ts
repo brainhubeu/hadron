@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { ConnectionOptions, createConnection } from 'typeorm';
-import container from '../containers/container';
+import { Container as container } from '../../packages/hadron-core';
 import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import routesToExpress, { IRoutesConfig } from '../../packages/hadron-express';
