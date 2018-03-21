@@ -1,4 +1,4 @@
-import { ConnectionOptions, createConnections, getRepository } from 'typeorm';
+import { createConnections } from 'typeorm';
 import { CONNECTIONS, REPOSITORY_NAMES } from './constants';
 
 class ConnectionOption {
@@ -35,7 +35,6 @@ const createConnection = (container: any, config: any) => {
   const {
     connections: connectionArray = [],
     entities: entityArray = [],
-    log = false,
   } = config;
 
   return createConnections(connectionArray)
