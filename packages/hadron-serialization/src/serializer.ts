@@ -147,7 +147,7 @@ const serializerProvider = (config: ISerializerConfig) => {
         return Promise.reject(new Error('Configuration not found'));
       }
       return Promise.resolve(foundConfiguration)
-        .then((schema: ISerializationSchema) => serialize(data, groups, schema.properties, parsers));
+        .then((schema: ISerializationSchema) => data && serialize(data, groups, schema.properties, parsers));
     },
   } as ISerializer;
 };

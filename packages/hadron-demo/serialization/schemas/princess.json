@@ -1,5 +1,5 @@
 {
-    "name": "princess",
+    "name": "Princess",
     "properties": [
         { "name": "name", "type": "string" },
         { "name": "address", "type": "string", "groups": ["admin"] },

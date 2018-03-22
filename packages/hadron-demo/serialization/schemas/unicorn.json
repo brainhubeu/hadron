@@ -1,18 +1,18 @@
 {
-    "name": "unicorn",
+    "name": "Unicorn",
     "properties": [
         { "name": "name", "type": "string" },
-        { "name": "hornLength", "type": "number", "groups": ["unicornExperts", "unicornBuyers"] },
+        { "name": "hornLength", "type": "number", "groups": ["expert", "admin", "buyer"] },
         {
             "name": "magicPower",
             "type": "object",
-            "groups": ["unicornExperts", "unicornBuyers"],
+            "groups": ["expert", "admin", "buyer"],
             "properties" : [
                 { "name": "name", "type": "string" },
                 { "name": "power", "type": "number", "serializationName": "powerLevel" },
-                { "name": "magicSchool", "type": "string", "groups": ["unicornExperts"] }
+                { "name": "magicSchool", "type": "string", "groups": ["expert"] }
             ]
         },
-        { "name": "price", "type": "number", "parsers": ["currency"], "groups": ["unicornBuyers"]}
+        { "name": "price", "type": "number", "parsers": ["currency"], "groups": ["buyer", "admin"]}
     ]
 }

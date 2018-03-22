@@ -5,6 +5,8 @@ import expressConfig from './express';
 import typeormConfig from './typeorm';
 import jsonProvider from '../hadron-json-provider';
 import emitterConfig from './event-emitter/config';
+import serializationRoutes from './serialization/routing';
+import { setupSerializer } from './serialization/serialization-demo';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -17,19 +19,21 @@ jsonProvider(['./routing/**/*'], ['js'])
       ...typeormConfig,
       events: emitterConfig,
       routes: {
+        ...serializationRoutes,
         ...routes,
         ...expressConfig.routes,
       },
-    }
+    };
 
     hadron(expressApp, [
       import('../hadron-events'),
+      import('../hadron-serialization'),
       import('../hadron-express'),
       import('../hadron-typeorm'),
     ], config)
       .then((container: IContainer) => {
         container.register('customValue', 'From Brainhub with ❤️');
-
+        setupSerializer();
         expressApp.listen(port);
       });
 

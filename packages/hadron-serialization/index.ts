@@ -15,7 +15,9 @@ export type ISerializationSchema = interfaces.ISerializationSchema;
 export type IProperty = interfaces.IProperty;
 
 export const register = (container: any, config: any) => {
-  const serializerConfig = config.serializer as interfaces.ISerializerConfig;
+  const serializerConfig: interfaces.ISerializerConfig = {
+    ...config.serializer,
+  };
   const serializer = serializerProvider(serializerConfig);
   container.register(CONTAINER_NAME, serializer);
 };
