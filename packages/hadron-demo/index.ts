@@ -4,6 +4,7 @@ import hadron, { IContainer } from '../hadron-core';
 import expressConfig from './express';
 import typeormConfig from './typeorm';
 import jsonProvider from '../hadron-json-provider';
+import emitterConfig from './event-emitter/config';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -14,6 +15,7 @@ jsonProvider(['./routing/**/*'], ['js'])
 
     const config = {
       ...typeormConfig,
+      events: emitterConfig,
       routes: {
         ...routes,
         ...expressConfig.routes,
@@ -21,6 +23,7 @@ jsonProvider(['./routing/**/*'], ['js'])
     }
 
     hadron(expressApp, [
+      import('../hadron-events'),
       import('../hadron-express'),
       import('../hadron-typeorm'),
     ], config)
