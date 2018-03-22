@@ -1,4 +1,3 @@
-import { ICallbackEvent } from '../../../hadron-events/src/types';
 import eventsProvider from '../../../hadron-events/src/eventsProvider';
 import { EventEmitter } from 'events';
 import emitterConfig from '../config';
@@ -6,7 +5,9 @@ import emitterConfig from '../config';
 const emitter = new EventEmitter();
 
 const callback = (...args: any[]) => {
+  // tslint:disable-next-line
   console.log('Im a callback');
+  // tslint:disable-next-line
   console.log();
 }
 
