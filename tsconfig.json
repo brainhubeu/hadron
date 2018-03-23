@@ -10,7 +10,7 @@
         "baseUrl": ".",
         "paths": {
             "*": [
-                "src/*",
+                // "src/*",
                 "lib/*",
                 "node_modules/*",
                 "types/*",
@@ -26,13 +26,13 @@
         ]
     },
     "include": [
-        "src/**/*",
+        // "src/**/*",
         "lib/**/*",
         "packages/**/*"
     ],
     "exclude": [
         "node_modules",
-        "src/**/__tests__/*",
+        // "src/**/__tests__/*",
         "packages/**/__tests__/*"
     ]
 }

@@ -12,7 +12,7 @@ const teamRoutsConfig = () => {
             methods: ["GET"],
             path: "/team/:id",
         },
-    
+
         insertTeam : {
             callback: teamService.insertTeam,
             methods: ["POST"],
