@@ -1,0 +1,4 @@
+for d in ./packages/* ; do
+  echo "compiling $d";
+  tsc --project $d/tsconfig.json
+done
