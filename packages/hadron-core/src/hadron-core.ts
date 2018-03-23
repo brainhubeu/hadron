@@ -13,8 +13,8 @@ export default (server: any, packages: Array<Promise<any>>, config: any) => {
             register(container, hadronConfig);
           }
         })
-        .catch(() => {
-          console.error('Package not found');
+        .catch(err => {
+          console.error('Problem with loading package', err);
         }),
       ),
     ).then(() => container);

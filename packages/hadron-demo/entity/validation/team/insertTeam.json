@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "teamName": {
+            "type": "string"
+        }
+    },
+    "required": ["teamName"],
+    "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+        "type": "number"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "teamId": {
+      "type": "number"
+    }
+  },
+  "required": ["id", "userName", "teamId"],
+  "additionalProperties": false
+}

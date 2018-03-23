@@ -1,0 +1,17 @@
+{
+    "name": "Princess",
+    "properties": [
+        { "name": "name", "type": "string" },
+        { "name": "address", "type": "string", "groups": ["admin"] },
+        { "name": "money", "type": "number", "parsers": ["currency"], "groups": ["admin"]},
+        {
+            "name": "friends",
+            "type": "array",
+            "properties": [
+                { "name": "name", "type": "string" },
+                { "name": "profession", "type": "string", "groups": ["admin"] },
+                { "name": "salary", "type": "number", "parsers": ["currency"] }
+            ]
+        }
+    ]
+}

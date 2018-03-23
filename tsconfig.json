@@ -28,9 +28,11 @@
     "include": [
         "src/**/*",
         "lib/**/*",
+        "packages/**/*"
     ],
     "exclude": [
         "node_modules",
-        "src/**/__tests__/*"
+        "src/**/__tests__/*",
+        "packages/**/__tests__/*"
     ]
 }
