@@ -10,4 +10,4 @@ const getArgs = (f: any): string[] => {
         .match(ARGUMENT_NAMES) || [];
 };
 
-export { getArgs };
+export default getArgs;
