@@ -1,11 +1,16 @@
 {
   "name": "hadron-events",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Hadron event emitter module",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-events"
+  ],
+  "author": "Brainhub",
+  "license": "MIT"
 }

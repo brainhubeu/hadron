@@ -1,7 +1,7 @@
 {
-  "name": "hadron-file-locator",
+  "name": "hadron-demo",
   "version": "0.0.1",
-  "description": "Hadron module for searching file paths in directories",
+  "description": "Hadron demo example app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,11 +9,8 @@
   "keywords": [
     "hadron",
     "brainhub",
-    "hadron-file-locator"
+    "hadron-demo"
   ],
   "author": "Brainhub",
-  "license": "MIT",
-  "dependencies": {
-    "glob": "7.1.2"
-  }
+  "license": "MIT"
 }

@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-json-provider"
+  ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "xml2js": "0.4.19"
+  }
 }

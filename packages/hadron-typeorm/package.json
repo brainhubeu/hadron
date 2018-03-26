@@ -12,5 +12,8 @@
     "hadron-typeorm"
   ],
   "author": "brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typeorm": "0.1.16"
+  }
 }
