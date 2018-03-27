@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getArgs } from './helpers/functionHelper';
+import { getArgs } from '../../hadron-utils';
 import { Callback, IContainer, IRoute, IRoutesConfig, Middleware } from './types';
 import { validateMethods } from './validators/routing';
 import constants, {eventsNames} from '../../hadron-events/src/constants/constants';
