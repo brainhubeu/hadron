@@ -35,7 +35,7 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
             try {
-              container.take(constants.EVENT_REGISTER)(eventsNames.CREATE_ROUTES_EVENT, route.callback, ...args);
+              container.take(constants.EVENTS_MANAGER)(eventsNames.CREATE_ROUTES_EVENT, route.callback, ...args);
             } catch (error) {
               console.warn('No event emitter specified!')
             }
