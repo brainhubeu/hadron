@@ -1,4 +1,4 @@
-const teamService = require("../services/teamService")
+const teamService = require("../services/teamService");
 
 const teamRoutsConfig = () => {
     return {
@@ -12,7 +12,6 @@ const teamRoutsConfig = () => {
             methods: ["GET"],
             path: "/team/:id",
         },
-
         insertTeam : {
             callback: teamService.insertTeam,
             methods: ["POST"],
@@ -26,9 +25,9 @@ const teamRoutsConfig = () => {
         deleteTeam : {
             callback : teamService.deleteTeam,
             methods : ["DELETE"],
-            path: "/deleteTeam/:id"
-        }
-    }
-}
+            path: "/deleteTeam/:id",
+        },
+    };
+};
 
 module.exports = teamRoutsConfig;

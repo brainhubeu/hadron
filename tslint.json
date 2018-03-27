@@ -40,5 +40,10 @@
     "prefer-array-literal": false,
     "no-parameter-reassignment": false,
     "align": false
-  }
+  },
+  "linterOptions": {
+    "exclude": [
+        "**/*.js"
+    ]
+  } 
 }

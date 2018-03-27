@@ -25,8 +25,8 @@ const userRoutsConfig = () => {
         deleteUser : {
             callback : userService.deleteUser,
             methods : ["DELETE"],
-            path : "/deleteUser/:id"
-        }
+            path : "/deleteUser/:id",
+        },
     };
 };
 
