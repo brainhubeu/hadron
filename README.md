@@ -71,3 +71,19 @@ declare module '<some-library>';
 
 ## Documentation
 1. [Directory structure](docs/directoryStructure)
+
+## Lerna
+1. To run `npm i` on all packages, just run
+```bash
+  lerna bootstrap
+```
+2. To run any command on all packages, just can use `exec` command.
+F.e. to compile all packages, you can run
+```bash
+  lerna exec tsc
+```
+3. To clean all `node_modules` in packages, run
+```bash
+  lerna clean
+```
+To get more command, please visit this [link](https://github.com/lerna/lerna).
