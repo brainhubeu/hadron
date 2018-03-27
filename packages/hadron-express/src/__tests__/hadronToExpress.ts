@@ -9,7 +9,8 @@ import * as sinon from 'sinon';
 import * as request from 'supertest';
 
 import { json as bodyParser } from 'body-parser';
-import RouterMethodError from '../errors/HadronRouterError';
+import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
+import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
 import routesToExpress from '../hadronToExpress';
 
 let app = express();
@@ -69,13 +70,23 @@ describe('router config', () => {
         .expect(HTTPStatus.OK);
     });
 
-    it('throws a RouterError if method specified in config doesn\'t exist', () => {
+    it('throws a NoRouterMethodSpecifiedError if no methods were specified', () => {
+      const testRoute = createTestRoute('/index', [], () => null);
+
+      try {
+        routesToExpress(testRoute, containerMock);
+      } catch (error) {
+        expect(error).to.be.instanceOf(NoRouterMethodSpecifiedError);
+      }
+    });
+
+    it('throws a InvalidRouteMethodError if method specified in config doesn\'t exist', () => {
       const testRoute = createTestRoute('/index', ['REPAIR'], () => null);
 
       try {
         routesToExpress(testRoute, containerMock);
       } catch (error) {
-        expect(error).to.be.instanceOf(RouterMethodError);
+        expect(error).to.be.instanceOf(InvalidRouteMethodError);
       }
     });
 

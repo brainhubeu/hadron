@@ -1,7 +1,6 @@
 import { HTTPRequestMethods } from '../constants/routing';
 import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
 import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
-import { IRoute } from '../types';
 
 export const validateMethods = (route: string, methods: string[]) => {
   if (methods.length === 0) {
