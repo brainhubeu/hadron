@@ -21,11 +21,6 @@
     "test:cucumber": "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",
     "docker:build": "docker build -t brainhub-framework-app ."
   },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ]
-  },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
@@ -80,5 +75,10 @@
     "tslint-eslint-rules": "5.1.0",
     "typeorm": "0.1.16",
     "typescript": "2.7.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ]
   }
 }
