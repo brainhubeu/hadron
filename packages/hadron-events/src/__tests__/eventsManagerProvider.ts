@@ -6,24 +6,18 @@ import eventsManagerProvider from '../eventsMaganerProvider';
 import { hasFunctionArgument } from '../helpers/functionHelper';
 
 describe('events registration', () => {
-  let listeners: IEventListener[] = null;
   let emitter: EventEmitter = null;
-  let args = null;
   let callback = null;
-  let config = null;
   let eventsManager = null;
 
   afterEach(() => {
-    listeners = null;
     emitter = null;
-    args = null;
     callback = null;
-    config = null;
     eventsManager = null;
   });
 
   it('throws an error if eventName is either null or empty string', () => {
-    listeners = [
+    const listeners: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -47,8 +41,8 @@ describe('events registration', () => {
       },
     ]
 
-    config = {};
-    config.listeners = listeners;
+
+    const config = { listeners };
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, config)
     expect(() => eventsManager.registerEvents('')).to.throw();
@@ -59,7 +53,7 @@ describe('events registration', () => {
     const spy2 = (callback, ...args) => sinon.spy();
     const tab = [spy1, spy2];
 
-    listeners = [
+    const listeners = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -84,11 +78,8 @@ describe('events registration', () => {
 /////////////////////////////////////////////////////
 
 describe('events emitting', () => {
-  let listeners: IEventListener[] = null;
   let emitter: EventEmitter = null;
-  let args = null;
   let callback = null;
-  let config = null;
   let eventsManager = null;
 
   beforeEach(() => {
@@ -98,15 +89,12 @@ describe('events emitting', () => {
   });
 
   afterEach(() => {
-    listeners = null;
     emitter = null;
-    args = null;
     callback = null;
-    config = null;
     eventsManager = null;
   });
   it('throws error when eventName argument is either null or empty string', () => {
-    listeners = [
+    const listeners: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -133,8 +121,7 @@ describe('events emitting', () => {
       },
     ]
 
-    config = {};
-    config.listeners = listeners;
+    const config = { listeners };
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, config)
     eventsManager.registerEvents('changeCallbackEvent');
@@ -145,7 +132,7 @@ describe('events emitting', () => {
 
   it('calls emitter.listeners with eventName argument', () => {
 
-    listeners = [
+    const listeners: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -172,8 +159,7 @@ describe('events emitting', () => {
       },
     ]
 
-    config = {};
-    config.listeners = listeners;
+    const config = { listeners };
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, config)
     eventsManager.registerEvents('changeCallbackEvent');
@@ -186,7 +172,7 @@ describe('events emitting', () => {
   });
 
   it('returns new callback function based on event listeners', () => {
-    listeners = [
+    const listeners: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -213,8 +199,7 @@ describe('events emitting', () => {
       },
     ]
 
-    config = {};
-    config.listeners = listeners;
+    const config = { listeners };
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, config)
     eventsManager.registerEvents('changeCallbackEvent');
@@ -230,7 +215,7 @@ describe('events emitting', () => {
   it('calls listeners handlers without "callback" argument', () => {
     const spy1 = sinon.spy();
     const spy2 = sinon.spy();
-    const listenersWithoutCallback = [
+    const listenersWithoutCallback: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
@@ -257,7 +242,7 @@ describe('events emitting', () => {
       return 'hello';
     }
 
-    const listeners = [
+    const listeners: IEventListener[] = [
       {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
