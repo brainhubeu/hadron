@@ -2,7 +2,11 @@
   "name": "hadron-express",
   "version": "0.0.1",
   "description": "Hadron module implementing express elements",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "directories": {
     "test": "tests"
   },
