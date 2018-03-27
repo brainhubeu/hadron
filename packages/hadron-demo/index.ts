@@ -1,6 +1,10 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import hadron, { IContainer } from '../hadron-core';
+import * as hadronEvents from '../hadron-events';
+import * as hadronSerialization from '../hadron-serialization';
+import * as hadronExpress from '../hadron-express';
+import * as hadronTypeORM from '../hadron-typeorm';
 import expressConfig from './express';
 import typeormConfig from './typeorm';
 import jsonProvider from '../hadron-json-provider';
@@ -25,20 +29,19 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
     },
   };
 
-  hadron(
-    expressApp,
-    [
-      import('../hadron-events'),
-      import('../hadron-serialization'),
-      import('../hadron-express'),
-      import('../hadron-typeorm'),
-      import('../hadron-logger'),
-    ],
-    config,
-  ).then((container: IContainer) => {
-    container.register('customValue', 'From Brainhub with ❤️');
-    setupSerializer();
-    expressApp.listen(port);
+    hadron(expressApp, [
+      hadronEvents,
+      hadronSerialization,
+      hadronExpress,
+      hadronTypeORM,
+    ], config)
+      .then((container: IContainer) => {
+        container.register('customValue', 'From Brainhub with ❤️');
+        setupSerializer();
+        expressApp.listen(port);
+      });
+
+    return;
   });
 
   return;
