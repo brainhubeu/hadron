@@ -50,9 +50,6 @@ const createConnection = (container: any, config: any) => {
 
     // Register connections inside container
     container.register(CONNECTIONS, connections);
-  })
-  .catch(error => {
-    console.log(error);
   });
 }
 
