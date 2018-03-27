@@ -34,7 +34,7 @@ describe('getArgs return list of arguments', () => {
     const args = getArgs(foo);
     expect(['bar', 'bar2']).to.deep.equal(args);
   });
-  it('static class method - should return [\'bar\', \'bar2\']', () => {
+  it('class method - should return [\'bar\', \'bar2\']', () => {
     class Foo {
       public bar(bar: any, bar2: any) { return null; }
     }
@@ -42,7 +42,7 @@ describe('getArgs return list of arguments', () => {
     const args = getArgs(bar);
     expect(['bar', 'bar2']).to.deep.equal(args);
   });
-  it('class method - should return [\'bar\', \'bar2\']', () => {
+  it('static class method - should return [\'bar\', \'bar2\']', () => {
     class Foo {
       public static bar(bar: any, bar2: any) { return null; }
     }
