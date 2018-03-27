@@ -7,13 +7,13 @@ import { hasFunctionArgument } from '../helpers/functionHelper';
 
 describe('events registration', () => {
   let emitter: EventEmitter = null;
-  let callback = null;
-  let eventsManager = null;
+
+  beforeEach(() => {
+    emitter = new EventEmitter();
+  });
 
   afterEach(() => {
     emitter = null;
-    callback = null;
-    eventsManager = null;
   });
 
   it('throws an error if eventName is either null or empty string', () => {
@@ -44,7 +44,7 @@ describe('events registration', () => {
 
     const config = { listeners };
     emitter = new EventEmitter();
-    eventsManager = eventsManagerProvider(emitter, config)
+    const eventsManager = eventsManagerProvider(emitter, config)
     expect(() => eventsManager.registerEvents('')).to.throw();
   });
   it('registers listeners functions from config', () => {
@@ -66,7 +66,7 @@ describe('events registration', () => {
       },
     ]
 
-    eventsManager = eventsManagerProvider(emitter, { listeners });
+    const eventsManager = eventsManagerProvider(emitter, { listeners });
     eventsManager.registerEvents('someEvent');
     expect(emitter.listeners('someEvent').length).to.equal(2);
     expect(emitter.listeners('someEvent')[0]).to.equal(spy1);
@@ -79,18 +79,14 @@ describe('events registration', () => {
 
 describe('events emitting', () => {
   let emitter: EventEmitter = null;
-  let callback = null;
   let eventsManager = null;
 
   beforeEach(() => {
-    callback = (...args) => {
-      return 'hello world';
-    }
+    emitter = new EventEmitter();
   });
 
   afterEach(() => {
     emitter = null;
-    callback = null;
     eventsManager = null;
   });
   it('throws error when eventName argument is either null or empty string', () => {
@@ -99,14 +95,14 @@ describe('events emitting', () => {
         name: 'my-listener-1',
         event: 'someEvent', // event to listen to
         handler: () => {
-          console.log('listener1');
+          return 'test';
         },
       },
       {
         name: 'my-listener-2',
         event: 'someEvent',
         handler: () => {
-          console.log('yo');
+          return 'test';
         },
       },
       {
@@ -126,47 +122,24 @@ describe('events emitting', () => {
     eventsManager = eventsManagerProvider(emitter, config)
     eventsManager.registerEvents('changeCallbackEvent');
     eventsManager.registerEvents('someEvent');
+
+    const callback = () => 'test';
 
     expect(() => eventsManager.emitEvent('', callback)).throw();
   });
 
   it('calls emitter.listeners with eventName argument', () => {
 
-    const listeners: IEventListener[] = [
-      {
-        name: 'my-listener-1',
-        event: 'someEvent', // event to listen to
-        handler: () => {
-          console.log('listener1');
-        },
-      },
-      {
-        name: 'my-listener-2',
-        event: 'someEvent',
-        handler: () => {
-          console.log('yo');
-        },
-      },
-      {
-        name: 'my-listener-3',
-        event: 'changeCallbackEvent', // event to listen to
-        handler: (callback, ...args) => {
-          const newCallback = (...args) => {
-            return 'changed';
-          }
-          return newCallback(...args);
-        },
-      },
-    ]
+    const listeners: IEventListener[] = [];
 
     const config = { listeners };
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, config)
-    eventsManager.registerEvents('changeCallbackEvent');
     eventsManager.registerEvents('someEvent');
 
     const eventName = 'someEvent';
     const listenersMethodSpy = sinon.spy(emitter, 'listeners');
+    const callback = () => 'test';
     eventsManager.emitEvent(eventName, callback);
     expect(listenersMethodSpy.alwaysCalledWithExactly(eventName)).to.equal(true);
   });
@@ -174,20 +147,6 @@ describe('events emitting', () => {
   it('returns new callback function based on event listeners', () => {
     const listeners: IEventListener[] = [
       {
-        name: 'my-listener-1',
-        event: 'someEvent', // event to listen to
-        handler: () => {
-          console.log('listener1');
-        },
-      },
-      {
-        name: 'my-listener-2',
-        event: 'someEvent',
-        handler: () => {
-          console.log('yo');
-        },
-      },
-      {
         name: 'my-listener-3',
         event: 'changeCallbackEvent', // event to listen to
         handler: (callback, ...args) => {
@@ -205,9 +164,7 @@ describe('events emitting', () => {
     eventsManager.registerEvents('changeCallbackEvent');
     eventsManager.registerEvents('someEvent');
 
-    callback = () => {
-      return 'original function';
-    }
+    const callback = () => 'original function';
     const cb = eventsManager.emitEvent('changeCallbackEvent', callback);
     expect(cb()).to.equal('changed');
   });
@@ -232,15 +189,14 @@ describe('events emitting', () => {
     emitter = new EventEmitter();
     eventsManager = eventsManagerProvider(emitter, { listeners: listenersWithoutCallback })
     eventsManager.registerEvents('someEvent');
+    const callback = () => 'test';
     eventsManager.emitEvent('someEvent', callback)();
 
     return expect(spy1.calledOnce) && expect(spy2.calledOnce);
   });
 
   it('works if handler returns callback call', () => {
-    callback = (...args) => {
-      return 'hello';
-    }
+    const callback = () => 'test';
 
     const listeners: IEventListener[] = [
       {
@@ -258,6 +214,5 @@ describe('events emitting', () => {
 
     expect(eventFunc()).to.equal(callback());
   });
-
 
 });
