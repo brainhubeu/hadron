@@ -9,8 +9,12 @@ import * as sinon from 'sinon';
 import * as request from 'supertest';
 
 import { json as bodyParser } from 'body-parser';
+
 import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
 import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
+import GenerateMiddlewareError from '../errors/GenerateMiddlewareError';
+import CreateRouteError from '../errors/CreateRouteError';
+
 import routesToExpress from '../hadronToExpress';
 
 let app = express();
@@ -100,6 +104,22 @@ describe('router config', () => {
 
       expect(getRouteProp(app, 'methods')[0].put).to.equal(true);
       expect(getRouteProp(app, 'methods')[1].delete).to.equal(true);
+    });
+
+    it('throws a CreateRouteError when route\'s callback is null', () => {
+      const testRoute = createTestRoute('/testRoute', ['GET'], null);
+
+      routesToExpress(testRoute, containerMock);
+
+      const errorSpy = sinon.spy(() => sinon.createStubInstance(CreateRouteError));
+
+      return request(app)
+        .get(`/testRoute`)
+        .expect(HTTPStatus[500])
+        .then(() => {
+          // tslint:disable-next-line:no-unused-expression
+          expect(errorSpy).to.have.been.calledWithNew;
+        });
     });
   });
 
@@ -256,7 +276,26 @@ describe('router config', () => {
           expect(secondSpy.called).to.be.eq(true);
         });
     });
+
+    it('throws a GenerateMiddlewareError when provided null as middleware', () => {
+      const callback = () => null;
+
+      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [null]);
+
+      routesToExpress(testRoute, containerMock);
+
+      const errorSpy = sinon.spy(() => sinon.createStubInstance(GenerateMiddlewareError));
+
+      return request(app)
+        .get(`/testRoute`)
+        .expect(HTTPStatus[500])
+        .then(() => {
+          // tslint:disable-next-line:no-unused-expression
+          expect(errorSpy).to.have.been.calledWithNew;
+        });
+    });
   });
+
   describe('file handling', () => {
     const upload = multer({ dest: `${__dirname}/testUploads` });
 
