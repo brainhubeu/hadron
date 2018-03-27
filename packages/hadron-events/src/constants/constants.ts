@@ -1,6 +1,6 @@
 export enum constants {
     EVENT_EMITTER = 'emitter',
-    EVENT_REGISTER = 'event-register',
+    EVENTS_MANAGER = 'events-manager',
 }
 
 export enum eventsNames {
