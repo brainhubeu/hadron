@@ -35,11 +35,12 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
             try {
-              container.take(constants.EVENTS_MANAGER)(eventsNames.CREATE_ROUTES_EVENT, route.callback, ...args);
+              const eventsManager = container.take(constants.EVENTS_MANAGER);
+              const newRouteCallback = eventsManager.emitEvent(eventsNames.CREATE_ROUTES_EVENT, route.callback);
+              return newRouteCallback(...args);
             } catch (error) {
-              console.warn('No event emitter specified!')
+              return route.callback(...args);
             }
-            return route.callback(...args);
           })
           .then(result => res.json(result))
           .catch(error => res.send(500));
