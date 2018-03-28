@@ -105,8 +105,10 @@ export const serializeEntry = (value: any, groups: string[], property: IProperty
 
   if (property.properties && property.type === DATA_TYPE.ARRAY) {
     serializedValue = value
-      .map((childValue: any) => serialize(childValue, groups, property.properties, availableParsers))
-      .reduce((result: object, currentValue: any) => ({ ...result, ...currentValue }), {});
+      .map((childValue: any) => {
+        return serialize(childValue, groups, property.properties, availableParsers);
+      })
+      .reduce((result: any[], currentValue: any) => [...result, currentValue], []);
   }
 
   if (parsers) {

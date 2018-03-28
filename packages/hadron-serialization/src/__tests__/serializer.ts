@@ -124,36 +124,60 @@ describe('serializer', () => {
       expect(result).to.have.property('ID');
     });
 
-    it('should serialize array with given properties', () => {
+    it('should serialize object with given properties', () => {
       const serializerProperties = {
-        name: 'arrayProperties',
+        name: 'objectProperty',
         properties: [
           { name: 'String', type: 'string' },
           { name: 'Number', type: 'number' },
         ],
-        type: 'array',
+        type: 'object',
       } as IProperty;
 
       const data = {
-        arrayProperties: [
-          { String: '123' },
-          { Number: 456 },
-        ],
+        objectProperty: {
+          String: '123',
+          Number: 456,
+        },
       };
       expect(serialize(data, ['common'], [serializerProperties], {}))
         .to.be.deep.equal({
-          arrayProperties: {
+          objectProperty: {
             Number: 456,
             String: '123',
           },
         });
     });
 
-    it('should exclude parameters from array, that doesn\'t belong to group', () => {
+    it('should exclude properties from other gorups from object serialization', () => {
+      const serializerProperties = {
+        name: 'objectProperty',
+        properties: [
+          { name: 'String', type: 'string' },
+          { name: 'Number', type: 'number', groups: ['uncommon'] },
+        ],
+        type: 'object',
+      } as IProperty;
+
+      const data = {
+        objectProperty: {
+          String: '123',
+          Number: 456,
+        },
+      };
+      expect(serialize(data, ['common'], [serializerProperties], {}))
+        .to.be.deep.equal({
+          objectProperty: {
+            String: '123',
+          },
+        });
+    });
+
+    it('should serialize array with given properties and groups', () => {
       const serializerProperties = {
         name: 'arrayProperties',
         properties: [
-          { name: 'String', type: 'string' },
+          { name: 'String', type: 'string', groups: ['common'] },
           { name: 'Number', type: 'number', groups: ['uncommon'] },
         ],
         type: 'array',
@@ -161,15 +185,84 @@ describe('serializer', () => {
 
       const data = {
         arrayProperties: [
-          { String: '123' },
-          { Number: 456 },
+          { String: '123', Number: 456 },
+          { String: '222', Number: 123 },
         ],
       };
       expect(serialize(data, ['common'], [serializerProperties], {}))
         .to.be.deep.equal({
-          arrayProperties: {
-            String: '123',
+          arrayProperties: [
+            {
+              String: '123',
+            },
+            {
+              String: '222',
+            },
+          ],
+        });
+    });
+
+    it('should parse array of serializable elements', () => {
+      const serializerProperties = {
+        name: 'arrayProperties',
+        properties: [
+          { name: 'CommonString', type: 'string' },
+          { name: 'String', type: 'string' },
+        ],
+        type: 'array',
+      } as IProperty;
+
+      const data = {
+        arrayProperties: [
+          {
+            CommonString: 'lorem ipsum',
+            String: 'dolor',
+            NoString: 'sit amet',
+            Number: 12,
           },
+        ],
+      };
+      expect(serialize(data, ['common'], [serializerProperties], {}))
+        .to.be.deep.equal({
+          arrayProperties: [
+            {
+              CommonString: 'lorem ipsum',
+              String: 'dolor',
+            },
+          ],
+        },
+      );
+    });
+
+    it('should exclude parameters from array, that doesn\'t belong to group', () => {
+      const serializerProperties = {
+        name: 'arrayProperties',
+        properties: [
+          { name: 'CommonString', type: 'string' },
+          { name: 'String', type: 'string', groups: ['common'] },
+          { name: 'Number', type: 'number', groups: ['uncommon'] },
+        ],
+        type: 'array',
+      } as IProperty;
+
+      const data = {
+        arrayProperties: [
+          {
+            CommonString: 'lorem ipsum',
+            String: 'dolor',
+            NoString: 'sit amet',
+            Number: 12,
+          },
+        ],
+      };
+      expect(serialize(data, ['common'], [serializerProperties], {}))
+        .to.be.deep.equal({
+          arrayProperties: [
+            {
+              CommonString: 'lorem ipsum',
+              String: 'dolor',
+            },
+          ],
         });
     });
   });
