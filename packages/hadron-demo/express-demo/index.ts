@@ -1,4 +1,4 @@
-import { Container as container } from '@hadron/core';
+import { Container as container } from '@brainhubeu/hadron-core';
 
 const getDate = () => {
   const d = new Date();

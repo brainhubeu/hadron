@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { getArgs } from '@hadron/utils';
+import { getArgs } from '@brainhubeu/hadron-utils';
 import { Callback, IContainer, IRoute, IRoutesConfig, Middleware } from './types';
 import { validateMethods } from './validators/routing';
-import { EVENTS_MANAGER, EVENT_NAME } from '@hadron/events';
+import { EVENTS_MANAGER, EVENT_NAME } from '@brainhubeu/hadron-events';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
 

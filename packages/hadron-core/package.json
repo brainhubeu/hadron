@@ -18,6 +18,6 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@hadron/utils": "0.0.1"
+    "@brainhubeu/hadron-utils": "file:../hadron-utils"
   }
 }

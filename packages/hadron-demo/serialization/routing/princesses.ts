@@ -1,6 +1,6 @@
-import { Container } from '@hadron/core';
+import { Container } from '@brainhubeu/hadron-core';
 import { princesses } from '../unicorns-and-princesses';
-import { ISerializer } from '@hadron/serialization';
+import { ISerializer } from '@brainhubeu/hadron-serialization';
 
 Container.register('princesses', princesses);
 
