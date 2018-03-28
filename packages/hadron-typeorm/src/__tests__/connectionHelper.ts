@@ -1,8 +1,7 @@
 import { expect, assert } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
-import { connect } from '../src/connectionHelper';
-import { CONNECTION } from '../src/constants';
+import { createConnection, createDatabaseConnection } from '../connectionHelper';
 
 import { Team } from './mocks/entity/Team';
 import { User } from './mocks/entity/User';
