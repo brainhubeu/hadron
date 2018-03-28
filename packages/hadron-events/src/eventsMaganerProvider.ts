@@ -7,15 +7,13 @@ import { IEventEmitter, IEventListener } from './types';
  * @param config config parameters
  */
 const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
-  registerEvents: (eventName: string, listeners: IEventListener[]) => {
-    if (eventName === '' || eventName === null) {
-      throw new Error('eventName can not be empty');
-    }
+  registerEvents: (listeners: IEventListener[]) => {
     listeners.forEach((listener: any) => {
-      if (listener.event === eventName) {
-        emitter.on(eventName, listener.handler);
+      if (listener.event === '' || listener.event === null) {
+        throw new Error('eventName can not be empty');
       }
-    });
+      emitter.on(listener.event, listener.handler);
+    })
   },
   emitEvent: (eventName: string, callback: () => any) => {
     if (eventName === '' || eventName === null) {
