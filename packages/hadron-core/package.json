@@ -16,5 +16,8 @@
     "hadron-core"
   ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "hadron-utils": "file:../hadron-utils"
+  }
 }

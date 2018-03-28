@@ -1,6 +1,6 @@
-import { Container } from '../../../hadron-core';
+import { Container } from 'hadron-core';
 import { unicorns } from '../unicorns-and-princesses';
-import { ISerializer } from '../../../hadron-serialization';
+import { ISerializer } from 'hadron-serialization';
 
 Container.register('unicorns', unicorns);
 

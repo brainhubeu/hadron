@@ -1,4 +1,18 @@
-for d in ./packages/* ; do
-  echo "compiling $d";
-  tsc --project $d/tsconfig.json
+declare -a packages=(
+  "hadron-utils"
+  "hadron-core"
+  "hadron-file-locator"
+  "hadron-json-provider"
+  "hadron-serialization"
+  "hadron-validation"
+  "hadron-typeorm"
+  "hadron-events"
+  "hadron-express"
+  "hadron-demo"
+)
+declare packagesDir=$PWD
+for pck in "${packages[@]}"; do
+  echo "compiling $pck";
+  declare path=$packagesDir/packages/$pck
+  cd $path && npm i && tsc
 done

@@ -16,5 +16,8 @@
     "hadron-serialization"
   ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "hadron-json-provider": "file:../hadron-json-provider"
+  }
 }

@@ -1,4 +1,4 @@
-import { ConnectionOptions } from 'typeorm';
+import { createDatabaseConnection } from 'hadron-typeorm';
 import { User } from '../entity/User';
 import { Team } from '../entity/Team';
 

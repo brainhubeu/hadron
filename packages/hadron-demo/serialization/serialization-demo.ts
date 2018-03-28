@@ -1,9 +1,5 @@
-import { Container } from '../../hadron-core';
-import {
-  schemaProvider,
-  CONTAINER_NAME,
-  ISerializer,
-} from '../../hadron-serialization';
+import { Container } from 'hadron-core';
+import { schemaProvider, CONTAINER_NAME, ISerializer } from 'hadron-serialization';
 import { resolve } from 'path';
 
 const paths = [resolve(__dirname, 'schemas/*')];

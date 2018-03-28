@@ -1,5 +1,5 @@
 import container from './container/container'
-import { IContainer } from 'container/types';
+import { IContainer } from './container/types';
 const hadronDefaultConfig = {};
 
 export default (server: any, packages: any[] = [], config: any = {}): Promise<IContainer> => {

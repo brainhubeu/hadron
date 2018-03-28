@@ -1,0 +1,5 @@
+lerna clean --yes
+for d in $PWD/packages/* ; do
+  echo "Clearing dist in $d";
+  cd $d && rm -rf dist
+done

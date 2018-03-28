@@ -1,13 +1,13 @@
-import constants from './src/constants/constants';
 import eventsManagerProvider from './src/eventsMaganerProvider';
+export * from './src/constants';
 import { EventEmitter } from 'events';
-import { Lifetime } from '../hadron-core';
+import { EVENT_EMITTER, EVENTS_MANAGER } from './src/constants';
 
 export * from './src/types';
 export default eventsManagerProvider;
 
 export const register = (container: any, config: any) => {
-  if (container.take(constants.EVENT_EMITTER) === null) {
+  if (container.take(EVENT_EMITTER) === null) {
     container.register(
       constants.EVENT_EMITTER,
       EventEmitter,
@@ -15,9 +15,9 @@ export const register = (container: any, config: any) => {
     );
   }
   const eventsManager = eventsManagerProvider(
-    container.take(constants.EVENT_EMITTER),
+    container.take(EVENT_EMITTER),
     config.events,
   );
   eventsManager.registerEvents(config.events.listeners);
-  container.register(constants.EVENTS_MANAGER, eventsManager);
+  container.register(EVENTS_MANAGER, eventsManager);
 };

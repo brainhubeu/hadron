@@ -19,7 +19,12 @@
   ],
   "author": "Brainhub",
   "license": "MIT",
+  "dependencies": {
+    "express": "4.16.2",
+    "hadron-events": "file:../hadron-events",
+    "hadron-utils": "file:../hadron-utils"
+  },
   "devDependencies": {
-    "express": "4.16.2"
+    "@types/express": "4.11.1"
   }
 }

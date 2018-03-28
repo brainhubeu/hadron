@@ -1,7 +1,7 @@
 import container from './container';
 import { IContainerItem } from './types';
 import { Lifetime } from './lifetime';
-import { getArgs } from '../../../hadron-utils';
+import { getArgs } from 'hadron-utils';
 
 class ContainerItem implements IContainerItem {
   // tslint:disable-next-line:variable-name

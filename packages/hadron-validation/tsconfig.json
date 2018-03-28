@@ -29,6 +29,6 @@
     ],
     "exclude": [
         "node_modules",
-        "src/__tests__/**"
+        "**/__tests__/**"
     ]
 }

@@ -23,12 +23,11 @@
         ]
     },
     "include": [
-        "src/**/*.*",
         "index.ts",
         "LICENSE"
     ],
     "exclude": [
-        "node_modules",
-        "src/__tests__/**"
+        "dist",
+        "node_modules"
     ]
 }
