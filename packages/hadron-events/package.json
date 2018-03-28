@@ -1,5 +1,5 @@
 {
-  "name": "@hadron/events",
+  "name": "@brainhubeu/hadron-events",
   "version": "0.0.1",
   "description": "Hadron event emitter module",
   "main": "dist/index.js",

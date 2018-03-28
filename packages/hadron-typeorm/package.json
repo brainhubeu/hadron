@@ -1,5 +1,5 @@
 {
-  "name": "@hadron/typeorm",
+  "name": "@brainhubeu/hadron-typeorm",
   "version": "0.0.1",
   "description": "Hadron typeorm module",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "typeorm",
     "hadron-typeorm"
   ],
-  "author": "brainhub",
+  "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
     "typeorm": "0.1.16"

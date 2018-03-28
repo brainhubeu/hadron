@@ -1,5 +1,5 @@
 {
-  "name": "@hadron/validation",
+  "name": "@brainhubeu/hadron-validation",
   "version": "0.0.1",
   "description": "Hadron validation layer module",
   "main": "dist/index.js",

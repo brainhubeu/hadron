@@ -1,5 +1,5 @@
 {
-  "name": "@hadron/core",
+  "name": "@brainhubeu/hadron-core",
   "version": "0.0.1",
   "description": "Hadron core module",
   "main": "dist/index.js",

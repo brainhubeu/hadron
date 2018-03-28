@@ -1,5 +1,5 @@
 {
-  "name": "@hadron/utils",
+  "name": "@brainhubeu/hadron-utils",
   "version": "0.0.1",
   "description": "Set of utility functions for hadron",
   "main": "dist/index.js",
