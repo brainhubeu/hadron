@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-serialization",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Hadron serialization module",
   "main": "dist/index.js",
   "files": [

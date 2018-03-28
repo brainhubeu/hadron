@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-validation",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Hadron validation layer module",
   "main": "dist/index.js",
   "files": [
