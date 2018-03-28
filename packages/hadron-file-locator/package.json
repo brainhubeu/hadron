@@ -1,6 +1,6 @@
 {
-  "name": "hadron-file-locator",
-  "version": "0.0.3",
+  "name": "@hadron/file-locator",
+  "version": "0.0.1",
   "description": "Hadron module for searching file paths in directories",
   "main": "dist/index.js",
   "files": [

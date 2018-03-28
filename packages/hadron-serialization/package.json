@@ -1,11 +1,11 @@
 {
-  "name": "hadron-serialization",
+  "name": "@hadron/serialization",
   "version": "0.0.1",
   "description": "Hadron serialization module",
   "main": "dist/index.js",
   "files": [
     "dist",
-    "LICENSE"
+    "./LICENSE"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +18,6 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "hadron-json-provider": "file:../hadron-json-provider"
+    "@hadron/json-provider": "0.0.1"
   }
 }

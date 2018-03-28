@@ -17,6 +17,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "inlineSources": true,
+        "types": ["packages/hadron-demo/declarations.d.ts"],
         "lib": [
             "es2017",
             "dom"

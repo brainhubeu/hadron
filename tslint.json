@@ -24,7 +24,7 @@
     "no-string-throw": true,
     "radix": true,
     "no-shadowed-variable": false,
-    "no-unused-variable": true,
+    "no-unused-variable": [true, { "ignore-pattern": "^I" }],
     "no-use-before-declare": true,
     "variable-name": true,
     "one-variable-per-declaration": true,

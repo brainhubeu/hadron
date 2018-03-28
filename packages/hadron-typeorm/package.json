@@ -1,7 +1,7 @@
 {
-  "name": "hadron-typeorm",
+  "name": "@hadron/typeorm",
   "version": "0.0.1",
-  "description": "",
+  "description": "Hadron typeorm module",
   "main": "dist/index.js",
   "files": [
     "dist",
