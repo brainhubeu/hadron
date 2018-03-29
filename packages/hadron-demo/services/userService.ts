@@ -2,14 +2,15 @@ import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
+import { successGet, successUpdate, validationError } from '../../hadron-express/src/customResponses';
 
 class UserDto {
   constructor(public id: number, public name: string, public teamName: string) { }
 }
 
 const getAllUsers = async(userRepository: Repository<User>) =>
-  await userRepository.find({relations : ['team']})
-    .then(users => users.map(user => new UserDto(user.id, user.name, user.team.name)));
+  successGet(await userRepository.find({relations : ['team']})
+    .then(users => users.map(user => new UserDto(user.id, user.name, user.team.name))));
 
 const getUserById = async(userRepository: Repository<User>, id: number) => await userRepository.findOneById(id);
 
@@ -21,9 +22,11 @@ const insertUser = async(userRepository: Repository<User>,
     return await teamRepository.findOneById(body.teamId)
       .then(team => userRepository.insert({ team, name: body.userName }))
       .then(() => userRepository.count())
-      .then(amount => `total amount of users: ${amount}`);
+      // .then(amount => `total amount of users: ${amount}`);
+      .then(amount => successUpdate(`total amount of users: ${amount}`))
   } catch (error) {
-    throw error;
+    // throw error;
+    throw validationError('Validation error on insertUser');
   }
 };
 
