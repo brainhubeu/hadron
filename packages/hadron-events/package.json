@@ -19,5 +19,8 @@
     "@types/events": "1.2.0"
   },
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

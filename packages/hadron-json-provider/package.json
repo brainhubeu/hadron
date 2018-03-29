@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "@types/xml2js": "0.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

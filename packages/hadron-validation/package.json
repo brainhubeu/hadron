@@ -19,5 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "6.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

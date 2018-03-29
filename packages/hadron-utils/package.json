@@ -16,5 +16,8 @@
     "brainhub"
   ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

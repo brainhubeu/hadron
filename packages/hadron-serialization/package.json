@@ -19,5 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "@brainhubeu/hadron-json-provider": "file:../hadron-json-provider"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

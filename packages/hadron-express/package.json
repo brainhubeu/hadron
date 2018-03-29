@@ -26,5 +26,8 @@
   },
   "devDependencies": {
     "@types/express": "4.11.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

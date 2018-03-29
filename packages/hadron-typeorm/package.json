@@ -19,5 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "typeorm": "0.1.16"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
