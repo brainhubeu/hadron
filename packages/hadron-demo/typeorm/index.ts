@@ -1,15 +1,19 @@
-import { createDatabaseConnection } from '../../hadron-typeorm';
+import { ConnectionOptions } from 'typeorm';
 import {User} from '../entity/User';
 import {Team} from '../entity/Team';
 
-const connections = [
-  createDatabaseConnection(
-    'mysql', 'mysql', 'localhost', 3306, 'root', 'my-secret-pw', 'test',
-    ['./entity/*.ts'], [''], [''],
-  ),
-];
+const connection: ConnectionOptions = {
+  name: 'mysql-connection',
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'my-secret-pw',
+  database: 'test',
+  entities: [User, Team],
+};
 
 export default {
-  connections,
+  connection,
   entities: [User, Team],
 }

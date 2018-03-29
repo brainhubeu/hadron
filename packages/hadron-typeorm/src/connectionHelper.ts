@@ -1,56 +1,34 @@
-import { createConnections } from 'typeorm';
-import { CONNECTIONS, REPOSITORY_NAMES } from './constants';
+import { createConnection, Connection } from 'typeorm';
+import { CONNECTION, REPOSITORY_NAME_FACTORY } from './constants';
+import { IContainer } from '../../hadron-core/src/container/types';
 
-class ConnectionOption {
-  public name: string;
-  public type: string;
-  public host: string;
-  public port: number;
-  public username: string;
-  public password: string;
-  public database: string;
-  public synchronize: boolean;
-  public logging: boolean = false;
-  public autoSchemaSync: boolean = true;
-  public entities: string[] = ['../../src/entity/**/*.ts'];
-  public migrations: string[] = ['../../src/migration/**/*.ts'];
-  public subscribers: string[] = ['../../src/subscriber/**/*.ts'];
-}
 
-const createDatabaseConnection = (connectionName: string, databaseType: string, hostAdress: string, hostPort: number,
-                                  username: string, userPassword: string, databaseNama: string, entities?: string[],
-                                  migrations?: string[], subscribers?: string[]): ConnectionOption => {
-  const newConnection = new ConnectionOption();
-  newConnection.name = connectionName;
-  newConnection.type = databaseType;
-  newConnection.host = hostAdress;
-  newConnection.port = hostPort;
-  newConnection.username = username;
-  newConnection.password = userPassword;
-  newConnection.database = databaseNama;
-  newConnection.entities = entities;
-  newConnection.migrations = migrations;
-  newConnection.subscribers = subscribers;
-
-  return newConnection;
-};
-
-const createConnection = (container: any, config: any) => {
-  const {
-    connections: connectionArray = [],
-    entities: entityArray = [],
-  } = config;
-
-  return createConnections(connectionArray)
-  .then(async connections => {
-    // Register repositories inside container
-    entityArray.forEach((entity: any) => {
-      container.register(REPOSITORY_NAMES(entity.name), connections[0].getRepository(entity));
-    });
-
-    // Register connections inside container
-    container.register(CONNECTIONS, connections);
+const registerRepositories = (container: IContainer, connection: Connection, entities: any[]) => {
+  // Register repositories inside container
+  entities.forEach((entity: any) => {
+    container.register(
+      REPOSITORY_NAME_FACTORY(entity.name),
+      connection.getRepository(entity),
+    );
   });
 }
 
-export { createConnection, createDatabaseConnection, ConnectionOption };
+const connect = (container: IContainer, config: any): Promise<any> => {
+  const {
+    entities = [],
+    connection = {},
+  } = config;
+
+  return createConnection(connection)
+    .then((connection: Connection) => {
+      container.register(CONNECTION, connection);
+      return connection;
+    })
+    .then((connection: Connection) => {
+      registerRepositories(container, connection, entities);
+      return connection;
+    });
+}
+
+export default connect;
+
