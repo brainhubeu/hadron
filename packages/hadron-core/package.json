@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hadron core module",
   "main": "dist/index.js",
   "files": [
