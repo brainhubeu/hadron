@@ -22,4 +22,4 @@ eventsManager.registerEvents(listeners);
 const callback = () => 'testcase';
 
 const newCallback = eventsManager.emitEvent('testEvent', callback);
-console.log(newCallback());
+newCallback();

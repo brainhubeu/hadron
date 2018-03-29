@@ -10,9 +10,7 @@ const listeners = [
   {
     name: 'LISTENER',
     event: 'testEvent', // event to listen to
-    handler: () => {
-      console.log('test console log');
-    },
+    handler: () => 'test console log',
   },
 ];
 
