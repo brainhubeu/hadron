@@ -1,15 +1,17 @@
 import constants from './src/constants/constants'
-import eventsProvider from './src/eventsProvider';
+import eventsManagerProvider from './src/eventsMaganerProvider';
 import { EventEmitter } from 'events';
 import { Lifetime } from '../hadron-core';
 
 export * from './src/types';
-export default eventsProvider;
+export default eventsManagerProvider;
+
 
 export const register = (container: any, config: any) => {
   if (container.take(constants.EVENT_EMITTER) === null) {
     container.register(constants.EVENT_EMITTER, EventEmitter, Lifetime.Singletone);
   }
-  const eventsRegister = eventsProvider(container.take(constants.EVENT_EMITTER), config.events);
-  container.register(constants.EVENT_REGISTER, eventsRegister);
+  const eventsManager = eventsManagerProvider(container.take(constants.EVENT_EMITTER), config.events);
+  eventsManager.registerEvents(config.events.listeners);
+  container.register(constants.EVENTS_MANAGER, eventsManager);
 }

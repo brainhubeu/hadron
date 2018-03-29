@@ -1,4 +1,4 @@
-import eventsProvider from '../../../hadron-events/src/eventsProvider';
+import eventsManagerProvider from '../../../hadron-events/src/eventsMaganerProvider';
 import { EventEmitter } from 'events';
 import emitterConfig from '../config';
 
@@ -11,7 +11,7 @@ const callback = (...args: any[]) => {
   console.log();
 }
 
-const eventsRegister = eventsProvider(emitter, emitterConfig);
-eventsRegister('someEvent', callback, 1, 2);
+const eventsManager = eventsManagerProvider(emitter, emitterConfig);
+eventsManager.emitEvent('someEvent', callback);
 callback();
 
