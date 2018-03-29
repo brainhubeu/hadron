@@ -20,6 +20,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@brainhubeu/hadron-error-handler": "file:../hadron-error-handler",
     "@brainhubeu/hadron-events": "file:../hadron-events",
     "@brainhubeu/hadron-utils": "file:../hadron-utils",
     "express": "4.16.2"

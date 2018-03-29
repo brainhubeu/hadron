@@ -1,0 +1,22 @@
+{
+  "name": "@brainhubeu/hadron-error-handler",
+  "version": "0.0.1",
+  "description": "Error handler for hadron",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
+  "keywords": [
+    "error",
+    "hadron"
+  ],
+  "author": "Brainhub",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

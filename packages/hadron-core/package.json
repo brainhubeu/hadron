@@ -18,6 +18,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@brainhubeu/hadron-error-handler": "file:../hadron-error-handler",
     "@brainhubeu/hadron-utils": "file:../hadron-utils"
   },
   "publishConfig": {

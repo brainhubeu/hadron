@@ -60,16 +60,8 @@ const createRoutes = (
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
             try {
-<<<<<<< HEAD
-              const eventsManager = container.take(constants.EVENTS_MANAGER);
-              const newRouteCallback = eventsManager.emitEvent(
-                eventsNames.CREATE_ROUTES_EVENT,
-                route.callback,
-              );
-=======
               const eventsManager = container.take(EVENTS_MANAGER);
-              const newRouteCallback = eventsManager.emitEvent(CREATE_ROUTES_EVENT, route.callback);
->>>>>>> changed scripts to deploy/clean + changed way packages are imported
+              const newRouteCallback = eventsManager.emitEvent(EVENT_NAME.CREATE_ROUTES_EVENT, route.callback);
               return newRouteCallback(...args);
             } catch (error) {
               return route.callback(...args);
