@@ -1,6 +1,6 @@
 {
   "name": "@brainhub/hadron-demo",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Hadron demo example app",
   "main": "index.js",
   "scripts": {

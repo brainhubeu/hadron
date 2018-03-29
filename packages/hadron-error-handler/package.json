@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-error-handler",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "description": "Error handler for hadron",
   "main": "dist/index.js",
   "scripts": {
