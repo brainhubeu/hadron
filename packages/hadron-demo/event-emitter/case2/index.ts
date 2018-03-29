@@ -10,9 +10,8 @@ const listeners = [
   {
     name: 'LISTENER',
     event: 'testEvent', // event to listen to
-    handler: (callback: any, ...args: any[]) => {
-      const result = callback(...args);
-      return `${result}-changed`;
+    handler: () => {
+      console.log('test console log');
     },
   },
 ];
@@ -22,4 +21,4 @@ eventsManager.registerEvents(listeners);
 const callback = () => 'testcase';
 
 const newCallback = eventsManager.emitEvent('testEvent', callback);
-console.log(newCallback());
+newCallback();
