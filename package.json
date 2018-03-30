@@ -18,7 +18,7 @@
     "precommit": "lint-staged",
     "lint": "tslint -c tslint.json -p tsconfig.lint.json --format stylish",
     "lint:fix":
-      "tslint  -c tslint.json -p tsconfig.lint.json --format stylish --fix",
+      "tslint -c tslint.json -p tsconfig.lint.json --format stylish --fix",
     "test": "npm run -s test:unit && npm run -s test:e2e",
     "test:unit":
       "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
