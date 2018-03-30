@@ -30,7 +30,8 @@
     "test:cucumber":
       "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",
     "docker:build": "docker build -t brainhub-framework-app .",
-    "format": "prettier --write \"*/**/*.ts\""
+    "format":
+      "prettier --write --ignore-path '*/**/package.json */**/package-lock.json' \"*/**/*.ts\""
   },
   "author": "Brainhub",
   "license": "MIT",
@@ -96,6 +97,9 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": ["npm run lint:fix", "git add"],
-    "*.{ts,js,json,css,md}": ["prettier --write", "git add"]
+    "*.{ts,js,json,css,md}": [
+      "prettier --write --ignore-path '*/**/package.json */**/package-lock.json'",
+      "git add"
+    ]
   }
 }
