@@ -15,13 +15,15 @@ export const jsLoader = (path: string) => {
     const data = require(`./${relative(__dirname, path)}`);
     data !== null ? resolve(data()) : reject(new Error('File not found'));
   });
-}
+};
 
 export const jsonLoader = (path: string) => {
   const supportsExtension: string = 'json';
   return new Promise((resolve, reject) => {
     if (getExtension(path) !== supportsExtension) {
-      reject(new Error(`${path} doesn't have a ${supportsExtension} extension`));
+      reject(
+        new Error(`${path} doesn't have a ${supportsExtension} extension`),
+      );
     }
 
     fs.readFile(path, 'utf8', (err, data) => {
@@ -58,17 +60,27 @@ const mapper: any = {
   xml: xmlLoader,
 };
 
-const extensionMapper = (paths: string[]): Array<Promise<any>> => paths.map(path => mapper[getExtension(path)](path));
+const extensionMapper = (paths: string[]): Array<Promise<any>> =>
+  paths.map((path) => mapper[getExtension(path)](path));
 
-
-export const configJsonProvider = (paths: string[], configName: string, type: string,
-                                  extensions: string[] = [], concatResults: boolean = false): Promise<object> =>
+export const configJsonProvider = (
+  paths: string[],
+  configName: string,
+  type: string,
+  extensions: string[] = [],
+  concatResults: boolean = false,
+): Promise<object> =>
   configLocate(paths, configName, type, extensions)
-    .then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
-    .then(data => concatResults ? [...data] : Object.assign({}, ...data));
+    .then((locatedPaths) => Promise.all(extensionMapper(locatedPaths)))
+    .then((data) => (concatResults ? [...data] : Object.assign({}, ...data)));
 
-export const jsonProvider = (paths: string[], extensions: string[], concatResults: boolean = false) =>
-   locate(paths, extensions).then(locatedPaths => Promise.all(extensionMapper(locatedPaths)))
-    .then(data => concatResults ? [...data] : Object.assign({}, ...data));
+export const jsonProvider = (
+  paths: string[],
+  extensions: string[],
+  concatResults: boolean = false,
+) =>
+  locate(paths, extensions)
+    .then((locatedPaths) => Promise.all(extensionMapper(locatedPaths)))
+    .then((data) => (concatResults ? [...data] : Object.assign({}, ...data)));
 
 export default jsonProvider;

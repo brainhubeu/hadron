@@ -1,5 +1,5 @@
 export interface ICallbackEvent {
-  callback: (...args: any[]) => any,
+  callback: (...args: any[]) => any;
 }
 
 export interface IEventEmitter {
@@ -7,7 +7,6 @@ export interface IEventEmitter {
   on: (eventName: string, handler: () => any) => void;
   emit: (eventName: string, event: object) => void;
 }
-
 
 export interface IEventListener {
   name: string;

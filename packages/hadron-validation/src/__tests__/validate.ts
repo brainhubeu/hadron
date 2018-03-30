@@ -10,7 +10,7 @@ describe('Validate', () => {
       text: 'abc',
     };
 
-    return validate('email', validEmail).then(data => {
+    return validate('email', validEmail).then((data) => {
       expect(data).to.be.deep.equal(validEmail);
     });
   });
@@ -21,7 +21,7 @@ describe('Validate', () => {
       text: 1,
     };
 
-    return validate('email', invalidEmail).catch(error => {
+    return validate('email', invalidEmail).catch((error) => {
       expect(error).to.be.an.instanceof(Error);
     });
   });
@@ -36,7 +36,7 @@ describe('Validate', () => {
     user.name = 'Max';
     user.team = team;
 
-    return validate('user', user).then(data => {
+    return validate('user', user).then((data) => {
       expect(data).to.be.deep.equal(user);
     });
   });
@@ -47,7 +47,7 @@ describe('Validate', () => {
     user.name = 'Max';
     user.team = null;
 
-    return validate('user', user).catch(error => {
+    return validate('user', user).catch((error) => {
       expect(error).to.be.an.instanceof(Error);
     });
   });
@@ -59,7 +59,7 @@ describe('Validate', () => {
     team.name = 'Team';
     team.users = dummyArr;
 
-    return validate('team', team).catch(error => {
+    return validate('team', team).catch((error) => {
       expect(error).to.be.an.instanceof(Error);
     });
   });

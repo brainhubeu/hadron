@@ -4,6 +4,6 @@ class HadronErrorHandler extends Error {
     super(message);
     Error.captureStackTrace(this, this.constructor);
   }
-};
+}
 
 export default HadronErrorHandler;

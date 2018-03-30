@@ -4,10 +4,14 @@ import jsonProvider, { configJsonProvider } from '../json-provider';
 describe('configJsonProvider', () => {
   const mockDirPath = 'packages/hadron-json-provider/src/__tests__';
   it('should return object', () => {
-    return configJsonProvider([`${mockDirPath}/mock/app/config/*`], 'config', 'development', ['js'])
-        .then(result => {
-          expect(result).to.be.an.instanceof(Object);
-        });
+    return configJsonProvider(
+      [`${mockDirPath}/mock/app/config/*`],
+      'config',
+      'development',
+      ['js'],
+    ).then((result) => {
+      expect(result).to.be.an.instanceof(Object);
+    });
   });
 
   it('should return JavaScript object with proper values', () => {
@@ -17,10 +21,14 @@ describe('configJsonProvider', () => {
       usernameJS: 'user-JS',
     };
 
-    return configJsonProvider([`${mockDirPath}/mock/app/config/*`], 'config', 'development', ['js'])
-        .then(result => {
-          expect(result).to.be.deep.equal(validObject);
-        });
+    return configJsonProvider(
+      [`${mockDirPath}/mock/app/config/*`],
+      'config',
+      'development',
+      ['js'],
+    ).then((result) => {
+      expect(result).to.be.deep.equal(validObject);
+    });
   });
 
   it('should return JavaScript object from json and xml files', () => {
@@ -33,10 +41,14 @@ describe('configJsonProvider', () => {
       status: 'Test',
     };
 
-    return configJsonProvider([`${mockDirPath}/mock/app/config/*`], 'config', 'development', ['json', 'xml'])
-        .then(result => {
-          expect(result).to.be.deep.equal(validObject);
-        });
+    return configJsonProvider(
+      [`${mockDirPath}/mock/app/config/*`],
+      'config',
+      'development',
+      ['json', 'xml'],
+    ).then((result) => {
+      expect(result).to.be.deep.equal(validObject);
+    });
   });
 
   it('should return JavaScript object from json and js files', () => {
@@ -52,9 +64,13 @@ describe('configJsonProvider', () => {
       usernameJS: 'user-JS',
     };
 
-    return configJsonProvider([`${mockDirPath}/mock/app/config/*`], 'config', 'development', ['json', 'js'])
-        .then(result => {
-          expect(result).to.be.deep.equal(validObject);
-        });
+    return configJsonProvider(
+      [`${mockDirPath}/mock/app/config/*`],
+      'config',
+      'development',
+      ['json', 'js'],
+    ).then((result) => {
+      expect(result).to.be.deep.equal(validObject);
+    });
   });
 });

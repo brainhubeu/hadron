@@ -7,7 +7,7 @@ export const validateMethods = (route: string, methods: string[]) => {
     throw new NoRouterMethodSpecifiedError(route);
   }
 
-  methods.map(method => {
+  methods.map((method) => {
     if (!(method.toUpperCase() in HTTPRequestMethods)) {
       throw new InvalidRouteMethodError(route, method);
     }

@@ -20,5 +20,9 @@ export interface ISerializerConfig {
 export interface ISerializer {
   addParser: (parser: (data: any) => any, key: string) => object;
   addSchema: (schema: ISerializationSchema) => ISerializationSchema[];
-  serialize: (data: any, groups: string[], configurationName?: string) => Promise<any>;
+  serialize: (
+    data: any,
+    groups: string[],
+    configurationName?: string,
+  ) => Promise<any>;
 }

@@ -12,14 +12,22 @@ export default {
   },
   getPrincessWithRole: {
     path: '/princesses/:role/:name',
-    callback: (princesses: any, serializer: ISerializer, role: string, name: string) =>
-      serializer.serialize(princesses[name], [role], 'Princess'),
+    callback: (
+      princesses: any,
+      serializer: ISerializer,
+      role: string,
+      name: string,
+    ) => serializer.serialize(princesses[name], [role], 'Princess'),
     methods: ['get'],
   },
   getPrincessWithRoleAndSerializer: {
     path: '/princesses/:role/:name',
-    callback: (princesses: any, princessSerializer: any, role: string, name: string) =>
-      princessSerializer(princesses[name], [role]),
+    callback: (
+      princesses: any,
+      princessSerializer: any,
+      role: string,
+      name: string,
+    ) => princessSerializer(princesses[name], [role]),
     methods: ['get'],
   },
 };

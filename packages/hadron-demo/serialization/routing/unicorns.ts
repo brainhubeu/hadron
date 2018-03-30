@@ -12,14 +12,22 @@ export default {
   },
   getUnicornWithRole: {
     path: '/unicorns/:role/:name',
-    callback: (unicorns: any, serializer: ISerializer, role: string, name: string) =>
-      serializer.serialize(unicorns[name], [role], 'Unicorn'),
+    callback: (
+      unicorns: any,
+      serializer: ISerializer,
+      role: string,
+      name: string,
+    ) => serializer.serialize(unicorns[name], [role], 'Unicorn'),
     methods: ['get'],
   },
   getUnicornWithRoleAndSerializer: {
     path: '/unicorns/:role/:name',
-    callback: (unicorns: any, unicornSerializer: any, role: string, name: string) =>
-      unicornSerializer(unicorns[name], [role]),
+    callback: (
+      unicorns: any,
+      unicornSerializer: any,
+      role: string,
+      name: string,
+    ) => unicornSerializer(unicorns[name], [role]),
     methods: ['get'],
   },
 };

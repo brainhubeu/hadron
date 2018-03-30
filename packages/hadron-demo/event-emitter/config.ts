@@ -1,4 +1,3 @@
-
 const emitterConfig: any = {};
 emitterConfig.listeners = [
   {
