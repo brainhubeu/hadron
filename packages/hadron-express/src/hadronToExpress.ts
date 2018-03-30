@@ -25,7 +25,10 @@ const mapRouteArgs = (req: any, res: any, routeCallback: Callback, container: IC
         return req.body;
       }
       if (name === 'req') {
-        return req.files || req.file;
+        return req;
+      }
+      if (name === 'res') {
+        return res;
       }
       return req.params[name]
             || req.query[name]
@@ -47,10 +50,9 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
               return route.callback(...args);
             }
           })
-          .then(result => res.json(result))
           .catch(error => {
             console.error(new CreateRouteError(routeName, error));
-            res.sendStatus(500);
+            res.status(error.status || 500).json({});
           });
     });
   });
