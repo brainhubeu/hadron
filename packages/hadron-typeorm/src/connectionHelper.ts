@@ -1,4 +1,4 @@
-import { createConnection, Connection } from 'typeorm';
+import { createConnection, Connection, ConnectionOptions } from 'typeorm';
 import { CONNECTION, REPOSITORY_NAME_FACTORY } from './constants';
 import { IContainer } from '../../hadron-core/src/container/types';
 
@@ -13,22 +13,25 @@ const registerRepositories = (container: IContainer, connection: Connection, ent
   });
 }
 
+const registerConnection = (container: IContainer, connection: Connection) => {
+  container.register(CONNECTION, connection);
+  return connection;
+};
+
 const connect = (container: IContainer, config: any): Promise<any> => {
   const {
-    entities = [],
     connection = {},
   } = config;
 
   return createConnection(connection)
+    .then(connection => registerConnection(container, connection))
     .then((connection: Connection) => {
-      container.register(CONNECTION, connection);
-      return connection;
-    })
-    .then((connection: Connection) => {
-      registerRepositories(container, connection, entities);
+      registerRepositories(container, connection, config.connection.entities || []);
       return connection;
     });
 }
 
-export default connect;
-
+export {
+  connect,
+  registerRepositories,
+}

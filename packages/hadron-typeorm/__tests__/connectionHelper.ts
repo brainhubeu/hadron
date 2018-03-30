@@ -1,65 +1,59 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
-import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
+// import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
+import { connect } from '../src/connectionHelper';
+import containerMock, { clear as clearContainer, items } from './mocks/container';
+import { CONNECTION, REPOSITORY_NAME_FACTORY } from '../src/constants';
 
 import { Team } from './mocks/entity/Team';
+import { User } from './mocks/entity/User';
 
-describe('typeORM', () => {
-  let items: any = {};
-  const conn = createDatabaseConnection(
-    'connName', 'MySQL', 'hostAddr',
-    8080, 'userName', 'password',
-    'dbName',
-  );
-  const containerMock = {
-    register: (key: string, value: any) => {
-      items[key] = value;
-    },
-    take: (key: string) => items[key],
-  }
+const connection: typeorm.ConnectionOptions = {
+  name: 'mysql-connection',
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'my-secret-pw',
+  database: 'test',
+  entities: [Team, User],
+};
 
-  before(() => {
-    items = {};
-  });
+describe('TypeORM connection helper', () => {
 
-  it('should return ConnectionOption object with valid values', () => {
-    expect(conn).to.deep.equal({
-      ...conn,
-      name: 'connName',
-      type: 'MySQL',
-      host: 'hostAddr',
-      port: 8080,
-      username: 'userName',
-      password: 'password',
-      database: 'dbName',
-    });
-  });
-
-  const stub = sinon.stub(typeorm, 'createConnections');
-  stub.onFirstCall().returns(new Promise(resolve => {
-    resolve([{getRepository: () => false}])
+  const createConnectionStub = sinon.stub(typeorm, 'createConnection');
+  createConnectionStub.returns(new Promise(resolve => {
+    resolve(new typeorm.Connection(connection));
   }));
-  stub.onSecondCall().returns(new Promise(resolve => {
-    resolve([conn]);
-  }));
+  const getRepositoryStub = sinon.stub(typeorm.Connection.prototype, 'getRepository');
+  getRepositoryStub.returns(true);
 
-  const register = sinon.spy(containerMock, 'register');
+  beforeEach(() => {
+    clearContainer();
+  });
+  after(() => {
+    createConnectionStub.restore();
+    getRepositoryStub.restore();
+  });
 
-  it('should register repository to container with key "teamRepository"', () => {
-    return createConnection(containerMock, {
-      connections: [conn],
-      entities: [Team],
-    }).then(() => {
-      sinon.assert.calledWith(register, 'teamRepository');
+  it('should return connection', () => {
+    connect(containerMock, { connection }).then((connection: any) => {
+      expect(connection instanceof typeorm.Connection).to.be.eq(true);
     });
   });
 
-  it('should register connection array to container', () => {
-    return createConnection(containerMock, {
-      connections: [conn],
-    }).then(() => {
-      sinon.assert.calledWith(register, 'connections', [conn]);
+  it('should register connection to container', () => {
+    connect(containerMock, { connection }).then((connection: any) => {
+      expect(containerMock.take(CONNECTION) instanceof typeorm.Connection)
+      .to.be.eq(true);
     });
+  });
+
+  it('should register Team repository to container as teamRepository', () => {
+    connect(containerMock, { connection }).then((connection: any) => {
+      expect(containerMock.take('teamRepository'))
+      .to.be.eq(true);
+    })
   });
 });
