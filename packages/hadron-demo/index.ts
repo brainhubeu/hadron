@@ -7,10 +7,12 @@ import jsonProvider from '../hadron-json-provider';
 import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
+import { customResponses } from '../hadron-express';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
+expressApp.use(customResponses);
 
 jsonProvider(['./routing/**/*'], ['js'])
   .then(routes => {

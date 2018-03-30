@@ -2,35 +2,33 @@ import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
-import { successGet, successUpdate, validationError } from '../../hadron-express/src/customResponses';
 
 class UserDto {
   constructor(public id: number, public name: string, public teamName: string) { }
 }
 
 const getAllUsers = async(userRepository: Repository<User>) =>
-  successGet(await userRepository.find({relations : ['team']})
-    .then(users => users.map(user => new UserDto(user.id, user.name, user.team.name))));
+  await userRepository.find({relations : ['team']})
+    .then(users => users.map(user => new UserDto(user.id, user.name, user.team.name)));
 
-const getUserById = async(userRepository: Repository<User>, id: number) => await userRepository.findOneById(id);
+const getUserById = async(res: any, userRepository: Repository<User>, id: number) =>
+  res.successGet(await userRepository.findOneById(id));
 
-const insertUser = async(userRepository: Repository<User>,
-                          teamRepository: Repository<Team>,
-                          body: {userName: string, teamId: number }) => {
+const insertUser = async(req: any, res: any, userRepository: Repository<User>,
+  teamRepository: Repository<Team>) => {
   try {
-    await validate('insertUser', body);
-    return await teamRepository.findOneById(body.teamId)
-      .then(team => userRepository.insert({ team, name: body.userName }))
+    await validate('insertUser', req.body);
+    return await teamRepository.findOneById(req.body.teamId)
+      .then(team => userRepository.insert({ team, name: req.body.userName }))
       .then(() => userRepository.count())
-      // .then(amount => `total amount of users: ${amount}`);
-      .then(amount => successUpdate(`total amount of users: ${amount}`))
+      .then(amount => res.successUpdate(`Amount of users: ${amount}`));
   } catch (error) {
-    // throw error;
-    throw validationError('Validation error on insertUser');
+    res.entityValidationError(error);
   }
 };
 
-const updateUser = async(userRepository: Repository<User>, body: {id: number, userName: string, teamId: number }) => {
+const updateUser = async(res: any, userRepository: Repository<User>,
+  body: {id: number, userName: string, teamId: number }) => {
   try {
     await validate('updateUser', body);
     return await userRepository.findOneById(body.id)
@@ -38,14 +36,14 @@ const updateUser = async(userRepository: Repository<User>, body: {id: number, us
             user.name = body.userName;
             return userRepository.save(user);
           })
-          .then(() => `user id: ${body.id} has new name ${body.userName}`);
+          .then(() => res.successUpdate(`user id: ${body.id} has new name: ${body.userName}`));
   } catch (error) {
-    throw error;
+    res.entityValidationError(error);
   }
 };
 
-const deleteUser = async(userRepository: Repository<User>, id: number) => {
-  await userRepository.removeById(id);
+const deleteUser = async(res: any, userRepository: Repository<User>, id: number) => {
+  res.successUpdate(await userRepository.removeById(id));
 };
 
 export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser };
