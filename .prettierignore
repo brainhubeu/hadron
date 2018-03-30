@@ -5,3 +5,5 @@
 /dist
 */**/*.temp
 */**/*.temp.*
+*/**/package.json
+*/**/package-lock.json
