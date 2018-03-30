@@ -4,31 +4,22 @@
   "description": "Brainhub framework app",
   "main": "dist",
   "scripts": {
-    "start:production":
-      "NODE_ENV=production NODE_PATH=./dist/hadron-demo:./dist/lib node dist/hadron-demo",
-    "start:development":
-      "npm run build && concurrently --kill-others --prefix \"[{name}]\" --names \"build,node\" --prefix-colors \"blue.bold,green.bold\" \"npm run build:watch\" \"sleep 3 && npm run start:watch\"",
-    "start:test":
-      "NODE_ENV=development NODE_PATH=./dist/hadron-demo:./dist/lib node dist/hadron-demo",
+    "start:production": "NODE_ENV=production NODE_PATH=./dist/hadron-demo:./dist/lib node dist/hadron-demo",
+    "start:development": "npm run build && concurrently --kill-others --prefix \"[{name}]\" --names \"build,node\" --prefix-colors \"blue.bold,green.bold\" \"npm run build:watch\" \"sleep 3 && npm run start:watch\"",
+    "start:test": "NODE_ENV=development NODE_PATH=./dist/hadron-demo:./dist/lib node dist/hadron-demo",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start:watch":
-      "NODE_ENV=development NODE_PATH=./dist/hadron-demo:./dist/lib nodemon --watch ./dist/ ./dist/hadron-demo",
+    "start:watch": "NODE_ENV=development NODE_PATH=./dist/hadron-demo:./dist/lib nodemon --watch ./dist/ ./dist/hadron-demo",
     "prestart": "npm run build",
     "precommit": "lint-staged",
     "lint": "tslint -c tslint.json -p tsconfig.lint.json --format stylish",
-    "lint:fix":
-      "tslint -c tslint.json -p tsconfig.lint.json --format stylish --fix",
+    "lint:fix": "tslint -c tslint.json -p tsconfig.lint.json --format stylish --fix",
     "test": "npm run -s test:unit && npm run -s test:e2e",
-    "test:unit":
-      "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
-    "test:unit:watch":
-      "npm run test:unit -- --reporter min --watch-extensions ts --watch",
-    "test:unit:coverage":
-      "NODE_ENV=test NODE_PATH=src:lib nyc mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
+    "test:unit": "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
+    "test:unit:watch": "npm run test:unit -- --reporter min --watch-extensions ts --watch",
+    "test:unit:coverage": "NODE_ENV=test NODE_PATH=src:lib nyc mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
     "test:e2e": "./test.sh",
-    "test:cucumber":
-      "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",
+    "test:cucumber": "NODE_ENV=test ./node_modules/.bin/cucumberjs --compiler=ts:ts-node/register",
     "docker:build": "docker build -t brainhub-framework-app .",
     "format": "prettier --write \"*/**/*.ts\""
   },
@@ -92,10 +83,18 @@
     "typescript": "2.7.2"
   },
   "nyc": {
-    "extension": [".ts"]
+    "extension": [
+      ".ts"
+    ]
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["npm run lint:fix", "git add"],
-    "*.{ts,js,json,css,md}": ["prettier --write", "git add"]
+    "*.{ts,tsx}": [
+      "npm run lint:fix",
+      "git add"
+    ],
+    "*.{ts,js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
