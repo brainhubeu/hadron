@@ -16,8 +16,8 @@
       "NODE_ENV=development NODE_PATH=./dist/hadron-demo:./dist/lib nodemon --watch ./dist/ ./dist/hadron-demo",
     "prestart": "npm run build",
     "precommit": "lint-staged",
-    "lint": "tslint -c tslint.json -p tsconfig.json --format stylish",
-    "lint:fix": "tslint  -c tslint.json -p tsconfig.json --fix",
+    "lint": "tslint -c tslint.json -p tsconfig.lint.json --format stylish",
+    "lint:fix": "tslint  -c tslint.json -p tsconfig.lint.json --fix",
     "test": "npm run -s test:unit && npm run -s test:e2e",
     "test:unit":
       "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
@@ -94,7 +94,7 @@
     "extension": [".ts"]
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["npm run lint:fix", "npm run lint", "git add"],
+    "*.{ts,tsx}": ["npm run lint:fix", "git add"],
     "*.{ts,js,json,css,md}": ["prettier --write", "git add"]
   }
 }

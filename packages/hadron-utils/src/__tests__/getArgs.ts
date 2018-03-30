@@ -13,6 +13,7 @@ describe('getArgs return list of arguments', () => {
   it("function expression - should return ['bar', 'bar2']", () => {
     const foo = (bar: any, bar2: any) => {
       const t = '';
+      return t;
     };
     const args = getArgs(foo);
     expect(['bar', 'bar2']).to.deep.equal(args);
@@ -30,6 +31,7 @@ describe('getArgs return list of arguments', () => {
     const foo = class {
       constructor(bar: any, bar2: any) {
         const t = '';
+        return t;
       }
     };
     const args = getArgs(foo);
