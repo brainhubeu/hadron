@@ -5,7 +5,7 @@ import serializerProvider, {
   serialize,
   serializeEntry,
 } from '../serializer';
-import { carConfiguration, fruitConfiguration, options } from './mocks';
+import { carConfiguration, fruitConfiguration } from './mocks';
 
 import { IProperty, ISerializer } from '../types';
 
@@ -119,12 +119,9 @@ describe('serializer', () => {
       const parsers = {
         number: sinon.spy(Number),
       };
-      const result = serialize(
-        data,
-        ['common'],
-        fruitConfiguration.properties,
-        parsers,
-      );
+
+      serialize(data, ['common'], fruitConfiguration.properties, parsers);
+
       expect(parsers.number.calledThrice).to.eql(true);
     });
 

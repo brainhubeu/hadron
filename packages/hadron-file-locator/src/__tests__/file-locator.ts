@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import locate, { configLocate } from '../file-locator';
+import { configLocate } from '../file-locator';
 
 describe('locate', () => {
   const packageDirPath = 'packages/hadron-file-locator/src/__tests__';

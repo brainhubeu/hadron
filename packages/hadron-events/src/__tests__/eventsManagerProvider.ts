@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
-import { ICallbackEvent, IEventEmitter, IEventListener } from '../types';
+import { IEventListener } from '../types';
 import eventsManagerProvider from '../eventsMaganerProvider';
-import { hasFunctionArgument } from '../helpers/functionHelper';
 
 describe('events registration', () => {
   let emitter: EventEmitter = null;
@@ -48,7 +47,6 @@ describe('events registration', () => {
   it('registers listeners', () => {
     const spy1 = () => sinon.spy();
     const spy2 = (callback, ...args) => sinon.spy();
-    const tab = [spy1, spy2];
 
     const listeners = [
       {

@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { ISerializationSchema, ISerializerConfig } from '../types';
 import * as jsonProvider from '../../../hadron-json-provider';
 import schemaProvider from '../schema-provider';
 
@@ -14,10 +13,6 @@ describe('schemaProvider', () => {
     const jsonProviderStub = sinon
       .stub(jsonProvider, 'default')
       .callsFake(() => Promise.resolve(mockResponse));
-
-    const mockOptions = {
-      schemaPaths: ['./test/location'],
-    } as ISerializerConfig;
 
     const result = schemaProvider(['./test/location']);
     jsonProviderStub.restore();

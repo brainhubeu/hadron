@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import jsonProvider, { configJsonProvider } from '../json-provider';
+import { configJsonProvider } from '../json-provider';
 
 describe('configJsonProvider', () => {
   const mockDirPath = 'packages/hadron-json-provider/src/__tests__';
