@@ -69,10 +69,14 @@ const createRoutes = (
             const args = mapRouteArgs(req, res, route.callback, container);
             try {
               const eventsManager = container.take(constants.EVENTS_MANAGER);
+<<<<<<< HEAD
               const newRouteCallback = eventsManager.emitEvent(
                 eventsNames.CREATE_ROUTES_EVENT,
                 route.callback,
               );
+=======
+              const newRouteCallback = eventsManager.emitEvent(eventsNames.HANDLE_REQUEST_EVENT, route.callback);
+>>>>>>> change event name
               return newRouteCallback(...args);
             } catch (error) {
               return route.callback(...args);
