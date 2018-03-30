@@ -26,8 +26,12 @@ const connect = (container: IContainer, config: any): Promise<any> => {
   return createConnection(connection)
     .then(connection => registerConnection(container, connection))
     .then((connection: Connection) => {
-      registerRepositories(container, connection, config.connection.entities || []);
+      const entities = config.connection.entities || config.connection.entitySchemas || [];
+      registerRepositories(container, connection, entities);
       return connection;
+    })
+    .catch(err => {
+      console.error(err);
     });
 }
 
