@@ -12,7 +12,7 @@ export default {
     //
     helloWorldRoute: {
       path: '/',
-      callback: () => 'Hello world',
+      callback: (res: any) => res.successGet('Hello world'),
       methods: ['get'],
     },
 
@@ -21,7 +21,7 @@ export default {
     //
     singleMiddleware: {
       path: '/singleMiddleware',
-      callback: () => `Hey! See console`,
+      callback: (res: any) => res.successGet(`Hey! See console`),
       methods: ['get'],
       middleware: [
         (req: any, res: any, next: any) => {
@@ -37,7 +37,7 @@ export default {
     //
     multipleMiddlewares: {
       path: '/multipleMiddlewares',
-      callback: () => `Hey! See console`,
+      callback: (res: any) => res.successGet(`Hey! See console`),
       methods: ['get'],
       middleware: [
         (req: any, res: any, next: any) => {
@@ -61,7 +61,7 @@ export default {
     containerKey: {
       path: '/getContainerValue',
       methods: ['get'],
-      callback: (customValue: any) => customValue,
+      callback: (res: any, customValue: any) => res.status(200).json(customValue),
     },
 
     //
@@ -70,7 +70,7 @@ export default {
     customContainerKey: {
       path: '/getContainerValue/:key',
       methods: ['get'],
-      callback: (key: string) => container.take(key),
+      callback: (res: any, key: string) => res.successGet(container.take(key)),
     },
 
     //
@@ -79,7 +79,7 @@ export default {
     routeWithParam: {
       path: '/:param',
       methods: ['get'],
-      callback: (param: any) => `First route param: ${param}`,
+      callback: (res: any, param: any) => res.status(200).json(`First route param: ${param}`),
     },
 
     //
@@ -88,7 +88,8 @@ export default {
     routeWithMultipleParams: {
       path: '/:param/:param2',
       methods: ['get'],
-      callback: (param: any, param2: any) => `First param value: ${param}; Second param value: ${param2}`,
+      callback: (res: any, param: any, param2: any) => res.status(200)
+        .json(`First param value: ${param}; Second param value: ${param2}`),
     },
 
     //
@@ -97,9 +98,9 @@ export default {
     registerCustomValue: {
       path: '/:key',
       methods: ['post'],
-      callback: (key: string, body: { value: any, }) => {
+      callback: (res: any, key: string, body: { value: any, }) => {
         container.register(key, body.value);
-        return `Value under key '${key}' is registered`;
+        res.status(200).json(`Value under key '${key}' is registered`);
       },
     },
 
@@ -109,9 +110,9 @@ export default {
     deleteCustomValue: {
       path: '/:key',
       methods: ['delete'],
-      callback: (key: string) => {
+      callback: (res: any, key: string) => {
         container.register(key, null);
-        return `Value under key '${key}' has been deleted`;
+        res.status(200).json(`Value under key '${key}' has been deleted`);
       },
     },
   },
