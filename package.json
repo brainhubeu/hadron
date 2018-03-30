@@ -95,7 +95,7 @@
     "extension": [".ts"]
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["npm run lint", "git add"],
+    "*.{ts,tsx}": ["npm run lint:fix", "git add"],
     "*.{ts,js,json,css,md}": ["prettier --write", "git add"]
   }
 }

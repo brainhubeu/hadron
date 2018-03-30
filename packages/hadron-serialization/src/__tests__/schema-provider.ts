@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import * as jsonProvider from '../../../hadron-json-provider';
 import schemaProvider from '../schema-provider';
 
