@@ -4,7 +4,7 @@ import { IContainerItem, IContainer } from './types';
 const containerRegister = new Array<IContainerItem>();
 
 const takeContainerByKey = (key: string): IContainerItem[] =>
-    containerRegister.filter(x => x.getKey() === key);
+  containerRegister.filter((x) => x.getKey() === key);
 
 /* method for registering items in container */
 /**

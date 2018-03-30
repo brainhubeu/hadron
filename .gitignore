@@ -6,3 +6,4 @@
 .idea/
 .env
 .vscode
+.nyc_output

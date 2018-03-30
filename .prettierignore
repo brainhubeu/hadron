@@ -1,0 +1,7 @@
+/.history
+/node_modules
+/.vscode
+/.idea
+/dist
+*/**/*.temp
+*/**/*.temp.*

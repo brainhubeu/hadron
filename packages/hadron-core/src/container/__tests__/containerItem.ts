@@ -9,11 +9,19 @@ describe('containerItem set lifetime', () => {
     expect(item.constructor.name).to.equal('ContainerItem');
   });
   it('should be transient', () => {
-    const item = containerItem.containerItemFactory('object1', Object, 'transient');
+    const item = containerItem.containerItemFactory(
+      'object1',
+      Object,
+      'transient',
+    );
     expect(item.constructor.name).to.equal('ContainerItemTransient');
   });
   it('should be singletone', () => {
-    const item = containerItem.containerItemFactory('object2', Object, Lifetime.Singletone);
+    const item = containerItem.containerItemFactory(
+      'object2',
+      Object,
+      Lifetime.Singletone,
+    );
     expect(item.constructor.name).to.equal('ContainerItemSingletone');
   });
 });
@@ -22,11 +30,11 @@ describe('containerItem set value', () => {
     const item = containerItem.containerItemFactory('number', 5);
     expect(item.Item).to.equal(5);
   });
-  it('should return \'oko\'', () => {
+  it("should return 'oko'", () => {
     const item = containerItem.containerItemFactory('string', 'oko');
     expect(item.Item).to.equal('oko');
   });
-  it('should return \'{}\'', () => {
+  it("should return '{}'", () => {
     const item = containerItem.containerItemFactory('object', {});
     expect(item.Item).to.deep.equal({});
   });
@@ -35,22 +43,30 @@ describe('containerItem set value', () => {
     class Foo {
       public value: string;
       constructor() {
-        this.value = (new Date()).getTime().toString();
+        this.value = new Date().getTime().toString();
       }
     }
-    const item = containerItem.containerItemFactory('Fooooo', Foo, Lifetime.Singletone);
+    const item = containerItem.containerItemFactory(
+      'Fooooo',
+      Foo,
+      Lifetime.Singletone,
+    );
     const item1 = item.Item;
     const item2 = item.Item;
     expect(item1).to.equal(item2);
   });
-  it('should always return new instance of given type', done => {
+  it('should always return new instance of given type', (done) => {
     class Foo {
       public value: string;
       constructor() {
-        this.value = (new Date()).getTime().toString();
+        this.value = new Date().getTime().toString();
       }
     }
-    const item = containerItem.containerItemFactory('Foo', Foo, Lifetime.Transient);
+    const item = containerItem.containerItemFactory(
+      'Foo',
+      Foo,
+      Lifetime.Transient,
+    );
     const item1 = item.Item;
 
     setTimeout(() => {
@@ -63,10 +79,14 @@ describe('containerItem set value', () => {
     class Foo {
       public value: string;
       constructor() {
-        this.value = (new Date()).getTime().toString();
+        this.value = new Date().getTime().toString();
       }
     }
-    const item = containerItem.containerItemFactory('Foo', Foo, Lifetime.Transient);
+    const item = containerItem.containerItemFactory(
+      'Foo',
+      Foo,
+      Lifetime.Transient,
+    );
     const item1 = item.Item;
     const item2 = item.Item;
     expect(item1).to.not.equal(item2);

@@ -1,5 +1,7 @@
-
-import { createConnection, createDatabaseConnection } from './src/connectionHelper';
+import {
+  createConnection,
+  createDatabaseConnection,
+} from './src/connectionHelper';
 import * as constants from './src/constants';
 
 export default createDatabaseConnection;

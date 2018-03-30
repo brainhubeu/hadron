@@ -41,41 +41,45 @@ export class Princess {
     this.money = money;
     this.name = name;
   }
-};
+}
 
 export const princesses = {
-  jasmine: new Princess(
-    {
-      address: 'Górnych Wałów 26/5',
-      friends: [
-          { name: 'Francesca', salary: '5120', profession: 'Cooker', id: '123' },
-          { name: 'Marina', salary: '2010', profession: 'Gardener' },
-          { name: 'Robin', salary: '0', profession: 'Crime Fighter' },
-      ],
-      id: '10002',
-      money: '21000',
-      name: 'Jasmine',
-    },
-  ),
-  veronica: new Princess(
-    {
-      address: 'Red Lanterns 66/6',
-      friends: [
-          { name: 'Hilary', salary: '6000', profession: 'Not President', id: '123' },
-          { name: 'Andrzej L', salary: '3678.23', profession: 'Farmer', lpr: false },
-      ],
-      id: 'RT123',
-      money: '12000',
-      name: 'Veronic',
-    },
-  ),
-  jozin: new Princess(
-    {
-      address: 'Bazin',
-      friends: [],
-      id: '222',
-      money: 0,
-      name: 'Jozin',
-    },
-  ),
+  jasmine: new Princess({
+    address: 'Górnych Wałów 26/5',
+    friends: [
+      { name: 'Francesca', salary: '5120', profession: 'Cooker', id: '123' },
+      { name: 'Marina', salary: '2010', profession: 'Gardener' },
+      { name: 'Robin', salary: '0', profession: 'Crime Fighter' },
+    ],
+    id: '10002',
+    money: '21000',
+    name: 'Jasmine',
+  }),
+  veronica: new Princess({
+    address: 'Red Lanterns 66/6',
+    friends: [
+      {
+        name: 'Hilary',
+        salary: '6000',
+        profession: 'Not President',
+        id: '123',
+      },
+      {
+        name: 'Andrzej L',
+        salary: '3678.23',
+        profession: 'Farmer',
+        lpr: false,
+      },
+    ],
+    id: 'RT123',
+    money: '12000',
+    name: 'Veronic',
+  }),
+  jozin: new Princess({
+    address: 'Bazin',
+    friends: [],
+    id: '222',
+    money: 0,
+    name: 'Jozin',
+  }),
 };
