@@ -9,9 +9,6 @@ const containerMock = {
 
 const clear = () => {
   items = {};
-}
-
-export {
-  clear,
-  containerMock as default,
 };
+
+export { clear, containerMock as default };

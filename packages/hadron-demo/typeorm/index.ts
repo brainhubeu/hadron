@@ -1,6 +1,6 @@
 import { ConnectionOptions } from 'typeorm';
-import {User} from '../entity/User';
-import {Team} from '../entity/Team';
+import { User } from '../entity/User';
+import { Team } from '../entity/Team';
 
 const connection: ConnectionOptions = {
   name: 'mysql-connection',
@@ -16,4 +16,4 @@ const connection: ConnectionOptions = {
 export default {
   connection,
   entities: [User, Team],
-}
+};
