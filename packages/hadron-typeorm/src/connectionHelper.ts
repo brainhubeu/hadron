@@ -1,4 +1,4 @@
-import { createConnection, Connection, ConnectionOptions } from 'typeorm';
+import { createConnection, Connection } from 'typeorm';
 import { CONNECTION, REPOSITORY_NAME_FACTORY } from './constants';
 import { IContainer } from '../../hadron-core/src/container/types';
 

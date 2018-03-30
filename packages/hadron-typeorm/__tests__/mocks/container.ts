@@ -13,6 +13,5 @@ const clear = () => {
 
 export {
   clear,
-  items,
   containerMock as default,
 };

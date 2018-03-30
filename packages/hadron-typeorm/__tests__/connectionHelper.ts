@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
 // import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
 import { connect } from '../src/connectionHelper';
-import containerMock, { clear as clearContainer, items } from './mocks/container';
+import containerMock, { clear as clearContainer } from './mocks/container';
 import { CONNECTION, REPOSITORY_NAME_FACTORY } from '../src/constants';
 
 import { Team } from './mocks/entity/Team';
