@@ -22,7 +22,6 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
 
     return emitter
     .listeners(eventName)
-    .reverse()
     .reduce((prevCallback, currentHandler) => {
     // is first argument called "callback?"
       if (!hasFunctionArgument(currentHandler, 'callback')) {
