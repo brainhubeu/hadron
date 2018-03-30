@@ -11,8 +11,10 @@ const listeners = [
     name: 'LISTENER',
     event: 'testEvent', // event to listen to
     handler: (callback: any, ...args: any[]) => {
-      const result = callback(...args);
-      return `${result}-changed`;
+      const time1 = Date.now();
+      callback(...args);
+      const time2 = Date.now();
+      return time2 - time1;
     },
   },
 ];

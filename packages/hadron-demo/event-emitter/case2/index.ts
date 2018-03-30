@@ -10,10 +10,7 @@ const listeners = [
   {
     name: 'LISTENER',
     event: 'testEvent', // event to listen to
-    handler: (callback: any, ...args: any[]) => {
-      const result = callback(...args);
-      return `${result}-changed`;
-    },
+    handler: () => 'test console log',
   },
 ];
 

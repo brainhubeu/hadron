@@ -12,30 +12,31 @@ const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-jsonProvider(['./routing/**/*'], ['js'])
-  .then(routes => {
+jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
+  const config = {
+    ...typeormConfig,
+    events: emitterConfig,
+    routes: {
+      ...serializationRoutes,
+      ...routes,
+      ...expressConfig.routes,
+    },
+  };
 
-    const config = {
-      ...typeormConfig,
-      events: emitterConfig,
-      routes: {
-        ...serializationRoutes,
-        ...routes,
-        ...expressConfig.routes,
-      },
-    };
-
-    hadron(expressApp, [
+  hadron(
+    expressApp,
+    [
       import('../hadron-events'),
       import('../hadron-serialization'),
       import('../hadron-express'),
       import('../hadron-typeorm'),
-    ], config)
-      .then((container: IContainer) => {
-        container.register('customValue', 'From Brainhub with ❤️');
-        setupSerializer();
-        expressApp.listen(port);
-      });
-
-    return;
+    ],
+    config,
+  ).then((container: IContainer) => {
+    container.register('customValue', 'From Brainhub with ❤️');
+    setupSerializer();
+    expressApp.listen(port);
   });
+
+  return;
+});

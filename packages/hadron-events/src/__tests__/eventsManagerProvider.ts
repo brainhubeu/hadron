@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
-import { ICallbackEvent, IEventEmitter, IEventListener } from '../types';
+import { IEventListener } from '../types';
 import eventsManagerProvider from '../eventsMaganerProvider';
-import { hasFunctionArgument } from '../helpers/functionHelper';
 
 describe('events registration', () => {
   let emitter: EventEmitter = null;
@@ -39,17 +38,15 @@ describe('events registration', () => {
           return callback(...args);
         },
       },
-    ]
-
+    ];
 
     const config = {};
-    const eventsManager = eventsManagerProvider(emitter, config)
+    const eventsManager = eventsManagerProvider(emitter, config);
     expect(() => eventsManager.registerEvents(listeners)).to.throw();
   });
   it('registers listeners', () => {
     const spy1 = () => sinon.spy();
     const spy2 = (callback, ...args) => sinon.spy();
-    const tab = [spy1, spy2];
 
     const listeners = [
       {
@@ -62,7 +59,7 @@ describe('events registration', () => {
         event: 'someEvent',
         handler: spy2,
       },
-    ]
+    ];
 
     const eventsManager = eventsManagerProvider(emitter, { listeners });
     eventsManager.registerEvents(listeners);
@@ -71,7 +68,6 @@ describe('events registration', () => {
     expect(emitter.listeners('someEvent')[1]).to.equal(spy2);
   });
 });
-
 
 /////////////////////////////////////////////////////
 
@@ -109,14 +105,14 @@ describe('events emitting', () => {
         handler: (callback, ...args) => {
           const newCallback = (...args) => {
             return 'changed';
-          }
+          };
           return newCallback(...args);
         },
       },
-    ]
+    ];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config)
+    eventsManager = eventsManagerProvider(emitter, config);
     eventsManager.registerEvents(listeners);
 
     const callback = () => 'test';
@@ -125,18 +121,19 @@ describe('events emitting', () => {
   });
 
   it('calls emitter.listeners with eventName argument', () => {
-
     const listeners: IEventListener[] = [];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config)
+    eventsManager = eventsManagerProvider(emitter, config);
     eventsManager.registerEvents(listeners);
 
     const eventName = 'someEvent';
     const listenersMethodSpy = sinon.spy(emitter, 'listeners');
     const callback = () => 'test';
     eventsManager.emitEvent(eventName, callback);
-    expect(listenersMethodSpy.alwaysCalledWithExactly(eventName)).to.equal(true);
+    expect(listenersMethodSpy.alwaysCalledWithExactly(eventName)).to.equal(
+      true,
+    );
   });
 
   it('returns new callback function based on event listeners', () => {
@@ -147,14 +144,14 @@ describe('events emitting', () => {
         handler: (callback, ...args) => {
           const newCallback = (...args) => {
             return 'changed';
-          }
+          };
           return newCallback(...args);
         },
       },
-    ]
+    ];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config)
+    eventsManager = eventsManagerProvider(emitter, config);
     eventsManager.registerEvents(listeners);
 
     const callback = () => 'original function';
@@ -179,7 +176,9 @@ describe('events emitting', () => {
         handler: () => spy2(),
       },
     ];
-    eventsManager = eventsManagerProvider(emitter, { listeners: listenersWithoutCallback })
+    eventsManager = eventsManagerProvider(emitter, {
+      listeners: listenersWithoutCallback,
+    });
     eventsManager.registerEvents(listenersWithoutCallback);
     const callback = () => 'test';
     eventsManager.emitEvent('someEvent', callback)();
@@ -206,5 +205,4 @@ describe('events emitting', () => {
 
     expect(eventFunc()).to.equal(callback());
   });
-
 });

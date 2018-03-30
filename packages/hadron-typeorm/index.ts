@@ -1,4 +1,3 @@
-
 import { connect } from './src/connectionHelper';
 import * as constants from './src/constants';
 

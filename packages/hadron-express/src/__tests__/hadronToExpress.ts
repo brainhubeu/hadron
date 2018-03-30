@@ -42,9 +42,9 @@ const containerMock = {
 };
 
 const getRouteProp = (expressApp: any, prop: string) =>
-  expressApp._router.stack         // registered routes
-    .filter((r: any) => r.route)     // take out all the middleware
-    .map((r: any) => r.route[prop]);   // get all the props
+  expressApp._router.stack // registered routes
+    .filter((r: any) => r.route) // take out all the middleware
+    .map((r: any) => r.route[prop]); // get all the props
 
 describe('router config', () => {
   describe('generating routes', () => {
@@ -84,7 +84,7 @@ describe('router config', () => {
       }
     });
 
-    it('throws a InvalidRouteMethodError if method specified in config doesn\'t exist', () => {
+    it("throws a InvalidRouteMethodError if method specified in config doesn't exist", () => {
       const testRoute = createTestRoute('/index', ['REPAIR'], () => null);
 
       try {
@@ -95,10 +95,16 @@ describe('router config', () => {
     });
 
     it('generate multiple methods based on config', () => {
-      const callback = (req: any, res: any) => req.params.testParam + req.params.anotherParam;
+      const callback = (req: any, res: any) =>
+        req.params.testParam + req.params.anotherParam;
 
       const middle = sinon.spy();
-      const testRoute = createTestRoute('/testRoute', ['PUT', 'DELETE'], callback, [middle]);
+      const testRoute = createTestRoute(
+        '/testRoute',
+        ['PUT', 'DELETE'],
+        callback,
+        [middle],
+      );
 
       routesToExpress(testRoute, containerMock);
 
@@ -106,12 +112,14 @@ describe('router config', () => {
       expect(getRouteProp(app, 'methods')[1].delete).to.equal(true);
     });
 
-    it('throws a CreateRouteError when route\'s callback is null', () => {
+    it("throws a CreateRouteError when route's callback is null", () => {
       const testRoute = createTestRoute('/testRoute', ['GET'], null);
 
       routesToExpress(testRoute, containerMock);
 
-      const errorSpy = sinon.spy(() => sinon.createStubInstance(CreateRouteError));
+      const errorSpy = sinon.spy(() =>
+        sinon.createStubInstance(CreateRouteError),
+      );
 
       return request(app)
         .get(`/testRoute`)
@@ -164,7 +172,11 @@ describe('router config', () => {
       const testParam = 'This is a test';
       const secondParam = ' This is a second param';
 
-      const testRoute = createTestRoute('/index/:valueA/:valueB', ['GET'], callback);
+      const testRoute = createTestRoute(
+        '/index/:valueA/:valueB',
+        ['GET'],
+        callback,
+      );
 
       routesToExpress(testRoute, containerMock);
 
@@ -201,7 +213,7 @@ describe('router config', () => {
       return request(app)
         .get(`/index/?foo=${testQuery}`)
         .expect(HTTPStatus.OK)
-        .then(res => {
+        .then((res) => {
           expect(res.body).to.equal(testQuery);
         });
     });
@@ -221,13 +233,12 @@ describe('router config', () => {
         .post(`/index`)
         .send(postData)
         .expect(HTTPStatus.OK)
-        .then(res => {
+        .then((res) => {
           expect(res.body).to.equal(postData.testData);
         });
     });
   });
   describe('router middleware', () => {
-
     it('calls middleware passed in router config', () => {
       const callback = () => null;
 
@@ -238,7 +249,9 @@ describe('router config', () => {
         next();
       };
 
-      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [middle]);
+      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [
+        middle,
+      ]);
 
       routesToExpress(testRoute, containerMock);
 
@@ -264,7 +277,10 @@ describe('router config', () => {
         next();
       };
 
-      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [firstMiddleware, secondMiddleware]);
+      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [
+        firstMiddleware,
+        secondMiddleware,
+      ]);
 
       routesToExpress(testRoute, containerMock);
 
@@ -280,11 +296,15 @@ describe('router config', () => {
     it('throws a GenerateMiddlewareError when provided null as middleware', () => {
       const callback = () => null;
 
-      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [null]);
+      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [
+        null,
+      ]);
 
       routesToExpress(testRoute, containerMock);
 
-      const errorSpy = sinon.spy(() => sinon.createStubInstance(GenerateMiddlewareError));
+      const errorSpy = sinon.spy(() =>
+        sinon.createStubInstance(GenerateMiddlewareError),
+      );
 
       return request(app)
         .get(`/testRoute`)
@@ -309,7 +329,9 @@ describe('router config', () => {
     });
 
     it('should save file passed to route', () => {
-      const testRoute = createTestRoute('/testUploads', ['POST'], callback, [uploadMiddleware]);
+      const testRoute = createTestRoute('/testUploads', ['POST'], callback, [
+        uploadMiddleware,
+      ]);
 
       routesToExpress(testRoute, containerMock);
       const mockDir = `${__dirname}/testUploads`;
@@ -325,7 +347,9 @@ describe('router config', () => {
     });
 
     it('should pass file to callback func', () => {
-      const testRoute = createTestRoute('/testUpload', ['POST'], callback, [uploadMiddleware]);
+      const testRoute = createTestRoute('/testUpload', ['POST'], callback, [
+        uploadMiddleware,
+      ]);
 
       routesToExpress(testRoute, containerMock);
 
@@ -333,15 +357,14 @@ describe('router config', () => {
         .post('/testUpload')
         .attach('image', `${__dirname}/__mocks__/sample.jpeg`)
         .expect(HTTPStatus.OK)
-        .then(res => {
-          expect(R.omit(['filename', 'path', 'size'], res.body[0])).to.eql(
-            {
-              destination: `${__dirname}/testUploads`,
-              encoding: '7bit',
-              fieldname: 'image',
-              mimetype: 'image/jpeg',
-              originalname: 'sample.jpeg',
-            });
+        .then((res) => {
+          expect(R.omit(['filename', 'path', 'size'], res.body[0])).to.eql({
+            destination: `${__dirname}/testUploads`,
+            encoding: '7bit',
+            fieldname: 'image',
+            mimetype: 'image/jpeg',
+            originalname: 'sample.jpeg',
+          });
         });
     });
   });
