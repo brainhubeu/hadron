@@ -1,15 +1,22 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
-import { createConnection, createDatabaseConnection } from '../src/connectionHelper';
+import {
+  createConnection,
+  createDatabaseConnection,
+} from '../src/connectionHelper';
 
 import { Team } from './mocks/entity/Team';
 
 describe('typeORM', () => {
   let items: any = {};
   const conn = createDatabaseConnection(
-    'connName', 'MySQL', 'hostAddr',
-    8080, 'userName', 'password',
+    'connName',
+    'MySQL',
+    'hostAddr',
+    8080,
+    'userName',
+    'password',
     'dbName',
   );
   const containerMock = {
@@ -17,7 +24,7 @@ describe('typeORM', () => {
       items[key] = value;
     },
     take: (key: string) => items[key],
-  }
+  };
 
   before(() => {
     items = {};
@@ -37,12 +44,16 @@ describe('typeORM', () => {
   });
 
   const stub = sinon.stub(typeorm, 'createConnections');
-  stub.onFirstCall().returns(new Promise(resolve => {
-    resolve([{getRepository: () => false}])
-  }));
-  stub.onSecondCall().returns(new Promise(resolve => {
-    resolve([conn]);
-  }));
+  stub.onFirstCall().returns(
+    new Promise((resolve) => {
+      resolve([{ getRepository: () => false }]);
+    }),
+  );
+  stub.onSecondCall().returns(
+    new Promise((resolve) => {
+      resolve([conn]);
+    }),
+  );
 
   const register = sinon.spy(containerMock, 'register');
 

@@ -11,7 +11,9 @@ defineSupportCode(function({ Given, When, Then }) {
 
   Then('the result is {string}', function(result) {
     if (this.result !== parseInt(result)) {
-      throw new Error(`Expected result to be equal ${result} but it is ${this.result}`);
+      throw new Error(
+        `Expected result to be equal ${result} but it is ${this.result}`,
+      );
     }
   });
 

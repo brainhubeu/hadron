@@ -1,11 +1,11 @@
-import Response from "./Response";
+import Response from './Response';
 
 const METHOD = {
-  DELETE: "del",
-  GET: "get",
-  PATCH: "patch",
-  POST: "post",
-  PUT: "put",
+  DELETE: 'del',
+  GET: 'get',
+  PATCH: 'patch',
+  POST: 'post',
+  PUT: 'put',
 };
 
 export default class Client {
@@ -33,17 +33,15 @@ export default class Client {
 
     this.addRequestHeaders(request);
 
-    const createdRequest = method.toLowerCase() !== "get"
-      ? request.send(body)
-      : request;
+    const createdRequest =
+      method.toLowerCase() !== 'get' ? request.send(body) : request;
 
     //
-    return createdRequest
-      .then(
-        // tslint:disable:no-shadowed-variable
-        ({ body, status }) => new Response(body, status),
-        ({ response: { body, status } }) => new Response(body, status),
-      );
+    return createdRequest.then(
+      // tslint:disable:no-shadowed-variable
+      ({ body, status }) => new Response(body, status),
+      ({ response: { body, status } }) => new Response(body, status),
+    );
   }
 
   public addRequestHeaders(request) {

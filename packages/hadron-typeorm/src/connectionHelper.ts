@@ -17,9 +17,18 @@ class ConnectionOption {
   public subscribers: string[] = ['../../src/subscriber/**/*.ts'];
 }
 
-const createDatabaseConnection = (connectionName: string, databaseType: string, hostAdress: string, hostPort: number,
-                                  username: string, userPassword: string, databaseNama: string, entities?: string[],
-                                  migrations?: string[], subscribers?: string[]): ConnectionOption => {
+const createDatabaseConnection = (
+  connectionName: string,
+  databaseType: string,
+  hostAdress: string,
+  hostPort: number,
+  username: string,
+  userPassword: string,
+  databaseNama: string,
+  entities?: string[],
+  migrations?: string[],
+  subscribers?: string[],
+): ConnectionOption => {
   const newConnection = new ConnectionOption();
   newConnection.name = connectionName;
   newConnection.type = databaseType;
@@ -41,16 +50,18 @@ const createConnection = (container: any, config: any) => {
     entities: entityArray = [],
   } = config;
 
-  return createConnections(connectionArray)
-  .then(async connections => {
+  return createConnections(connectionArray).then(async (connections) => {
     // Register repositories inside container
     entityArray.forEach((entity: any) => {
-      container.register(REPOSITORY_NAMES(entity.name), connections[0].getRepository(entity));
+      container.register(
+        REPOSITORY_NAMES(entity.name),
+        connections[0].getRepository(entity),
+      );
     });
 
     // Register connections inside container
     container.register(CONNECTIONS, connections);
   });
-}
+};
 
 export { createConnection, createDatabaseConnection, ConnectionOption };

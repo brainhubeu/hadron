@@ -1,15 +1,15 @@
-import {
-  IProperty,
-  ISerializationSchema,
-  ISerializerConfig,
-} from '../types';
+import { IProperty, ISerializationSchema, ISerializerConfig } from '../types';
 
 export const fruitConfiguration = {
   name: 'Fruit',
   properties: [
     { name: '_id', type: 'string', serializedName: 'ID' } as IProperty,
     { name: 'name', type: 'string' } as IProperty,
-    { name: 'price', groups: ['common', 'seller'], type: 'number' } as IProperty,
+    {
+      name: 'price',
+      groups: ['common', 'seller'],
+      type: 'number',
+    } as IProperty,
     {
       groups: ['seller'],
       name: 'funkyName',
@@ -37,7 +37,11 @@ export const carConfiguration = {
   name: 'Car',
   properties: [
     { name: 'name', groups: ['common', 'seller'], type: 'string' } as IProperty,
-    { name: 'price', groups: ['common', 'seller'], type: 'number' } as IProperty,
+    {
+      name: 'price',
+      groups: ['common', 'seller'],
+      type: 'number',
+    } as IProperty,
     {
       groups: ['seller'],
       name: 'type',

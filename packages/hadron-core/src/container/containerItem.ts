@@ -4,8 +4,8 @@ import { Lifetime } from './lifetime';
 import { getArgs } from '../../../hadron-utils';
 
 class ContainerItem implements IContainerItem {
-    // tslint:disable-next-line:variable-name
-  constructor(protected key: string, protected item: any) { }
+  // tslint:disable-next-line:variable-name
+  constructor(protected key: string, protected item: any) {}
 
   get Item(): any {
     return this.item;
@@ -24,7 +24,7 @@ class ContainerItem implements IContainerItem {
 
 // tslint:disable-next-line:max-classes-per-file
 class ContainerItemSingletone extends ContainerItem {
-    // tslint:disable-next-line:variable-name
+  // tslint:disable-next-line:variable-name
   private _itemInstanse: any;
 
   constructor(key: string, item: any) {
@@ -38,7 +38,9 @@ class ContainerItemSingletone extends ContainerItem {
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
-      const parameterInstances = parameters.map(paramName => container.take(paramName));
+      const parameterInstances = parameters.map((paramName) =>
+        container.take(paramName),
+      );
       if (this._itemInstanse === null) {
         try {
           this._itemInstanse = new this.item(...parameterInstances);
@@ -71,7 +73,9 @@ class ContainerItemTransient extends ContainerItem {
   get Item(): any {
     const parameters = this.getArgs();
     if (parameters.length > 0) {
-      const parameterInstances = parameters.map(paramName => container.take(paramName));
+      const parameterInstances = parameters.map((paramName) =>
+        container.take(paramName),
+      );
       try {
         return new this.item(...parameterInstances);
       } catch (error) {
@@ -87,7 +91,11 @@ class ContainerItemTransient extends ContainerItem {
   }
 }
 
-const containerItemFactory = (key: string, item: any, lifetime?: string): ContainerItem => {
+const containerItemFactory = (
+  key: string,
+  item: any,
+  lifetime?: string,
+): ContainerItem => {
   switch (lifetime) {
     case Lifetime.Singletone:
       return new ContainerItemSingletone(key, item);

@@ -11,7 +11,8 @@ describe('schemaProvider', () => {
       { name: 'Second', properties: [] },
     ];
 
-    const jsonProviderStub = sinon.stub(jsonProvider, 'default')
+    const jsonProviderStub = sinon
+      .stub(jsonProvider, 'default')
       .callsFake(() => Promise.resolve(mockResponse));
 
     const mockOptions = {
@@ -19,9 +20,8 @@ describe('schemaProvider', () => {
     } as ISerializerConfig;
 
     const result = schemaProvider(['./test/location']);
-    jsonProviderStub.restore() ;
+    jsonProviderStub.restore();
 
     return expect(result).to.eventually.be.eql(mockResponse);
   });
-
 });

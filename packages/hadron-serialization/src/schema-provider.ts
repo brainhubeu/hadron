@@ -1,4 +1,4 @@
-import jsonProvider from '../../hadron-json-provider'
+import jsonProvider from '../../hadron-json-provider';
 
 export default (paths: string[]) => {
   if (paths.length >= 0) {

@@ -1,6 +1,10 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import serializerProvider, { hasIntersection, serialize, serializeEntry } from '../serializer';
+import serializerProvider, {
+  hasIntersection,
+  serialize,
+  serializeEntry,
+} from '../serializer';
 import { carConfiguration, fruitConfiguration, options } from './mocks';
 
 import { IProperty, ISerializer } from '../types';
@@ -53,12 +57,14 @@ describe('serializer', () => {
   describe('serialize()', () => {
     it('should exclude properties not belonging to configuration', () => {
       const data = {
-        absent: 'I shouldn\'t be here',
+        absent: "I shouldn't be here",
         name: 'Civic',
         price: '12000',
         type: 'hatchback',
       };
-      expect(serialize(data, ['seller'], carConfiguration.properties, {})).to.not.contain.keys(['absent']);
+      expect(
+        serialize(data, ['seller'], carConfiguration.properties, {}),
+      ).to.not.contain.keys(['absent']);
     });
 
     it('should include properties belonging to group', () => {
@@ -67,7 +73,9 @@ describe('serializer', () => {
         price: '12000',
         type: 'hatchback',
       };
-      expect(serialize(data, ['common'], carConfiguration.properties, {})).to.contain.keys(['name', 'price']);
+      expect(
+        serialize(data, ['common'], carConfiguration.properties, {}),
+      ).to.contain.keys(['name', 'price']);
     });
 
     it('should run parsers before returning value', () => {
@@ -90,7 +98,12 @@ describe('serializer', () => {
         name: 'Pear',
         price: '20',
       };
-      const result = serialize(data, ['common'], fruitConfiguration.properties, {});
+      const result = serialize(
+        data,
+        ['common'],
+        fruitConfiguration.properties,
+        {},
+      );
       expect(result).to.have.property('flavour');
     });
 
@@ -106,7 +119,12 @@ describe('serializer', () => {
       const parsers = {
         number: sinon.spy(Number),
       };
-      const result = serialize(data, ['common'], fruitConfiguration.properties, parsers);
+      const result = serialize(
+        data,
+        ['common'],
+        fruitConfiguration.properties,
+        parsers,
+      );
       expect(parsers.number.calledThrice).to.eql(true);
     });
 
@@ -120,7 +138,12 @@ describe('serializer', () => {
         name: 'Pear',
         price: '20',
       };
-      const result = serialize(data, ['common'], fruitConfiguration.properties, {});
+      const result = serialize(
+        data,
+        ['common'],
+        fruitConfiguration.properties,
+        {},
+      );
       expect(result).to.have.property('ID');
     });
 
@@ -140,13 +163,14 @@ describe('serializer', () => {
           Number: 456,
         },
       };
-      expect(serialize(data, ['common'], [serializerProperties], {}))
-        .to.be.deep.equal({
-          objectProperty: {
-            Number: 456,
-            String: '123',
-          },
-        });
+      expect(
+        serialize(data, ['common'], [serializerProperties], {}),
+      ).to.be.deep.equal({
+        objectProperty: {
+          Number: 456,
+          String: '123',
+        },
+      });
     });
 
     it('should exclude properties from other gorups from object serialization', () => {
@@ -165,12 +189,13 @@ describe('serializer', () => {
           Number: 456,
         },
       };
-      expect(serialize(data, ['common'], [serializerProperties], {}))
-        .to.be.deep.equal({
-          objectProperty: {
-            String: '123',
-          },
-        });
+      expect(
+        serialize(data, ['common'], [serializerProperties], {}),
+      ).to.be.deep.equal({
+        objectProperty: {
+          String: '123',
+        },
+      });
     });
 
     it('should serialize array with given properties and groups', () => {
@@ -189,17 +214,18 @@ describe('serializer', () => {
           { String: '222', Number: 123 },
         ],
       };
-      expect(serialize(data, ['common'], [serializerProperties], {}))
-        .to.be.deep.equal({
-          arrayProperties: [
-            {
-              String: '123',
-            },
-            {
-              String: '222',
-            },
-          ],
-        });
+      expect(
+        serialize(data, ['common'], [serializerProperties], {}),
+      ).to.be.deep.equal({
+        arrayProperties: [
+          {
+            String: '123',
+          },
+          {
+            String: '222',
+          },
+        ],
+      });
     });
 
     it('should parse array of serializable elements', () => {
@@ -222,19 +248,19 @@ describe('serializer', () => {
           },
         ],
       };
-      expect(serialize(data, ['common'], [serializerProperties], {}))
-        .to.be.deep.equal({
-          arrayProperties: [
-            {
-              CommonString: 'lorem ipsum',
-              String: 'dolor',
-            },
-          ],
-        },
-      );
+      expect(
+        serialize(data, ['common'], [serializerProperties], {}),
+      ).to.be.deep.equal({
+        arrayProperties: [
+          {
+            CommonString: 'lorem ipsum',
+            String: 'dolor',
+          },
+        ],
+      });
     });
 
-    it('should exclude parameters from array, that doesn\'t belong to group', () => {
+    it("should exclude parameters from array, that doesn't belong to group", () => {
       const serializerProperties = {
         name: 'arrayProperties',
         properties: [
@@ -255,15 +281,16 @@ describe('serializer', () => {
           },
         ],
       };
-      expect(serialize(data, ['common'], [serializerProperties], {}))
-        .to.be.deep.equal({
-          arrayProperties: [
-            {
-              CommonString: 'lorem ipsum',
-              String: 'dolor',
-            },
-          ],
-        });
+      expect(
+        serialize(data, ['common'], [serializerProperties], {}),
+      ).to.be.deep.equal({
+        arrayProperties: [
+          {
+            CommonString: 'lorem ipsum',
+            String: 'dolor',
+          },
+        ],
+      });
     });
   });
 
@@ -276,7 +303,9 @@ describe('serializer', () => {
         price: '12000',
         type: 'hatchback',
       };
-      expect(serializer.serialize(data, ['common'], 'Car')).to.eventually.contain.keys(['name', 'price']);
+      expect(
+        serializer.serialize(data, ['common'], 'Car'),
+      ).to.eventually.contain.keys(['name', 'price']);
     });
 
     it('should add parser dynamically', () => {
@@ -285,7 +314,11 @@ describe('serializer', () => {
           {
             name: 'Test',
             properties: [
-              { name: 'parsesParams', parsers: ['testParser'], type: 'Something'},
+              {
+                name: 'parsesParams',
+                parsers: ['testParser'],
+                type: 'Something',
+              },
             ],
           },
         ],
@@ -295,9 +328,9 @@ describe('serializer', () => {
       const data = {
         parsesParams: 'smth',
       };
-      return serializer.serialize(data, ['common'], 'Test').then(() =>
-        expect(parserSpy.called).to.eql(true),
-      );
+      return serializer
+        .serialize(data, ['common'], 'Test')
+        .then(() => expect(parserSpy.called).to.eql(true));
     });
   });
 });

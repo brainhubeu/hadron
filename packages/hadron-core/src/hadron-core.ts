@@ -1,4 +1,4 @@
-import container from './container/container'
+import container from './container/container';
 import LoadingPackageError from './errors/LoadingPackageError';
 const hadronDefaultConfig = {};
 
@@ -14,9 +14,9 @@ export default (server: any, packages: Array<Promise<any>>, config: any) => {
             register(container, hadronConfig);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(new LoadingPackageError(err));
         }),
-      ),
-    ).then(() => container);
+    ),
+  ).then(() => container);
 };

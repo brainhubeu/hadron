@@ -1,6 +1,10 @@
 import * as express from 'express';
 
-export type Middleware = (req: express.Request, res: express.Response, next: express.NextFunction) => any;
+export type Middleware = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => any;
 
 export type Callback = (...args: any[]) => any;
 

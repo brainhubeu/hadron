@@ -1,5 +1,3 @@
 import getArgs from './src/getArgs';
 
-export {
-  getArgs,
-};
+export { getArgs };

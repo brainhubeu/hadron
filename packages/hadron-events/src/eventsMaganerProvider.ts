@@ -13,7 +13,7 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
         throw new Error('eventName can not be empty');
       }
       emitter.on(listener.event, listener.handler);
-    })
+    });
   },
   emitEvent: (eventName: string, callback: () => any) => {
     if (eventName === '' || eventName === null) {
@@ -21,20 +21,19 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
     }
 
     return emitter
-    .listeners(eventName)
-    .reduce((prevCallback, currentHandler) => {
-    // is first argument called "callback?"
-      if (!hasFunctionArgument(currentHandler, 'callback')) {
-        return (...args: any[]) => {
-          currentHandler(...args);
-        // manually run callback
-          return prevCallback(...args);
-        };
-      }
-      return (...args: any[]) => currentHandler(prevCallback, ...args);
-    }, callback)
+      .listeners(eventName)
+      .reduce((prevCallback, currentHandler) => {
+        // is first argument called "callback?"
+        if (!hasFunctionArgument(currentHandler, 'callback')) {
+          return (...args: any[]) => {
+            currentHandler(...args);
+            // manually run callback
+            return prevCallback(...args);
+          };
+        }
+        return (...args: any[]) => currentHandler(prevCallback, ...args);
+      }, callback);
   },
 });
-
 
 export default eventsManagerProvider;
