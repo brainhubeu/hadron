@@ -10,7 +10,6 @@ const register = (container: any, config: any) => {
     if (!logger.name) return;
     const log = bunyan.createLogger(logger);
 
-    /* tslint:disable-next-line:strict-boolean-expressions */
     let { name } = logger;
     if (!name.match(/(.*)logger$/gi)) name += ' logger';
     name = toCamelCase(name);
