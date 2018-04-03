@@ -8,13 +8,7 @@ import {
   Middleware,
 } from './types';
 import { validateMethods } from './validators/routing';
-<<<<<<< HEAD
-import constants, {
-  eventsNames,
-} from '../../hadron-events/src/constants/constants';
-=======
 import { eventsNames } from './constants/eventsNames';
->>>>>>> remove constants, add hardcoded names
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
 
@@ -71,29 +65,15 @@ const createRoutes = (
         Promise.resolve()
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
-            try {
-<<<<<<< HEAD
-              const eventsManager = container.take(constants.EVENTS_MANAGER);
-<<<<<<< HEAD
-              const newRouteCallback = eventsManager.emitEvent(
-                eventsNames.CREATE_ROUTES_EVENT,
-                route.callback,
-              );
-=======
-              const newRouteCallback = eventsManager.emitEvent(eventsNames.HANDLE_REQUEST_EVENT, route.callback);
->>>>>>> change event name
-=======
-              const eventsManager = container.take('events-manager');
-              if (!eventsManager) {
-                return route.callback(...args);
-              }
-              const newRouteCallback = eventsManager.emitEvent(eventsNames.HANDLE_REQUEST_CALLBACK_EVENT,
-                 route.callback);
->>>>>>> remove constants, add hardcoded names
-              return newRouteCallback(...args);
-            } catch (error) {
+            const eventsManager = container.take('events-manager');
+            if (!eventsManager) {
               return route.callback(...args);
             }
+            const newRouteCallback = eventsManager.emitEvent(
+              eventsNames.HANDLE_REQUEST_CALLBACK_EVENT,
+              route.callback,
+            );
+            return newRouteCallback(...args);
           })
           .then((result) => res.json(result))
           .catch((error) => {

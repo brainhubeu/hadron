@@ -18,24 +18,23 @@ export default (server: any, packages: Array<Promise<any>>, config: any) => {
         .catch((err) => {
           console.error(new LoadingPackageError(err));
         }),
-<<<<<<< HEAD
     ),
-  ).then(() => container);
-=======
-      ),
-    ).then(() => {
-      const eventsManager = container.take('events-manager');
-      if (eventsManager) {
-        eventsManager.emitEvent(eventsNames.HANDLE_INITIALIZE_APPLICATION_EVENT)();
-        const terminateApplicationCallback = () => {
-          process.exit();
-        };
-        const newTerminateApplicationCallback = eventsManager.
-          emitEvent(eventsNames.HANDLE_TERMINATE_APPLICATION_EVENT, terminateApplicationCallback);
-        process.on('SIGINT', newTerminateApplicationCallback);
-      }
+  ).then(() => {
+    const eventsManager = container.take('events-manager');
+    if (eventsManager) {
+      eventsManager.emitEvent(
+        eventsNames.HANDLE_INITIALIZE_APPLICATION_EVENT,
+      )();
+      const terminateApplicationCallback = () => {
+        process.exit();
+      };
+      const newTerminateApplicationCallback = eventsManager.emitEvent(
+        eventsNames.HANDLE_TERMINATE_APPLICATION_EVENT,
+        terminateApplicationCallback,
+      );
+      process.on('SIGINT', newTerminateApplicationCallback);
+    }
 
-      return container;
-    });
->>>>>>> emit event when packages are loaded
+    return container;
+  });
 };

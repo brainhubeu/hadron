@@ -205,8 +205,6 @@ describe('events emitting', () => {
 
     expect(eventFunc()).to.equal(callback());
   });
-<<<<<<< HEAD
-=======
 
   it('does not throw an error when callback parameter is not passed', () => {
     const listeners: IEventListener[] = [
@@ -222,8 +220,5 @@ describe('events emitting', () => {
     eventsManager = eventsManagerProvider(emitter, config);
     eventsManager.registerEvents(listeners);
     expect(eventsManager.emitEvent('someEvent')).to.not.throw();
-
   });
-
->>>>>>> add test case
 });
