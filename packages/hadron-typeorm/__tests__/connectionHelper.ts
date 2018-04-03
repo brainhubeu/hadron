@@ -1,8 +1,7 @@
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
 import { connect } from '../src/connectionHelper';
-import containerMock, { clear as clearContainer } from './mocks/container';
 import { CONNECTION } from '../src/constants';
 
 import { Team } from './mocks/entity/Team';
@@ -20,43 +19,51 @@ const connection: typeorm.ConnectionOptions = {
 };
 
 describe('TypeORM connection helper', () => {
+  // createConnection stub
   const createConnectionStub = sinon.stub(typeorm, 'createConnection');
   createConnectionStub.returns(
     new Promise((resolve) => {
       resolve(new typeorm.Connection(connection));
     }),
   );
+
+  // getRepository stub
   const getRepositoryStub = sinon.stub(
     typeorm.Connection.prototype,
     'getRepository',
   );
   getRepositoryStub.returns(true);
 
+  // container stub
+  const containerStub = {
+    register: sinon.stub(),
+    take: () => null,
+  };
+
   beforeEach(() => {
-    clearContainer();
+    containerStub.register.reset();
   });
+
   after(() => {
     createConnectionStub.restore();
     getRepositoryStub.restore();
   });
 
   it('should return connection', () => {
-    connect(containerMock, { connection }).then((connection: any) => {
+    connect(containerStub, { connection }).then((connection: any) => {
       expect(connection instanceof typeorm.Connection).to.be.eq(true);
     });
   });
 
   it('should register connection to container', () => {
-    connect(containerMock, { connection }).then((connection: any) => {
-      expect(
-        containerMock.take(CONNECTION) instanceof typeorm.Connection,
-      ).to.be.eq(true);
+    connect(containerStub, { connection }).then((connection: any) => {
+      assert(containerStub.register.calledWith(CONNECTION));
     });
   });
 
   it('should register Team repository to container as teamRepository', () => {
-    connect(containerMock, { connection }).then((connection: any) => {
-      expect(containerMock.take('teamRepository')).to.be.eq(true);
+    connect(containerStub, { connection }).then((connection: any) => {
+      assert(containerStub.register.calledWith('teamRepository'));
     });
   });
 });
