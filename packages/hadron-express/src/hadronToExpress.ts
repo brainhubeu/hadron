@@ -51,9 +51,10 @@ const createRoutes = (app: any, route: IRoute, middleware: Middleware[], contain
             }
           })
           .then(result => {
-            if (typeof result !== 'function') {
-              res.status(200).json(result);
-            }
+            // if (typeof result !== 'function') {
+            //   res.status(200).json(result);
+            // }
+            res.status(200).json(result);
           })
           .catch(error => {
             console.error(new CreateRouteError(routeName, error));

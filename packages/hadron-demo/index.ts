@@ -34,6 +34,8 @@ jsonProvider(['./routing/**/*'], ['js'])
       import('../hadron-typeorm'),
     ], config)
       .then((container: IContainer) => {
+        // @ts-ignore
+        expressApp.use((req, res, next) => res.notFound('Request not found.'));
         container.register('customValue', 'From Brainhub with ❤️');
         setupSerializer();
         expressApp.listen(port);

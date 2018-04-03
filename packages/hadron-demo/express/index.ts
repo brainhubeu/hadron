@@ -61,7 +61,7 @@ export default {
     containerKey: {
       path: '/getContainerValue',
       methods: ['get'],
-      callback: (res: any, customValue: any) => res.status(200).json(customValue),
+      callback: (customValue: any) => customValue,
     },
 
     //
