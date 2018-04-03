@@ -34,10 +34,13 @@ const createTestRoute = (
 });
 
 const containerMock = {
-  take: () => {
-    app = express();
-    app.use(bodyParser());
-    return app;
+  take: (name) => {
+    if (name === 'server') {
+      app = express();
+      app.use(bodyParser());
+      return app;
+    }
+    return null;
   },
 };
 
