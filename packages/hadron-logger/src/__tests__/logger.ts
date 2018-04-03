@@ -1,34 +1,46 @@
 import { assert } from 'chai';
-import container from '../../../hadron-core/src/container/container';
 import { register } from '../logger';
 
+let items: any = {};
+
 describe('logger', () => {
+  const containerMock = {
+    register: (key: string, value: any) => {
+      items[key] = value
+    },
+    take: (key: string) => items[key],
+  }
+
+  beforeEach(() => {
+    items = {};
+  });
+
   it('should register logger', () => {
-    register(container, {
+    register(containerMock, {
       logger: {
         name: 'first logger',
       },
     });
-    assert(container.take('firstLogger'));
+    assert(containerMock.take('firstLogger'));
   });
   it('should register "hello world" under helloWorldLogger', () => {
-    register(container, {
+    register(containerMock, {
       logger: {
         name: 'hello world',
       },
     });
-    assert(container.take('helloWorldLogger'));
+    assert(containerMock.take('helloWorldLogger'));
   });
   it('should register "hello world logger" under helloWorldLogger', () => {
-    register(container, {
+    register(containerMock, {
       logger: {
         name: 'hello world logger',
       },
     });
-    assert(container.take('helloWorldLogger'));
+    assert(containerMock.take('helloWorldLogger'));
   });
   it('should register multiple loggers', () => {
-    register(container, {
+    register(containerMock, {
       logger: [
         {
           name: 'firstLogger',
@@ -39,13 +51,13 @@ describe('logger', () => {
       ],
     });
 
-    assert(container.take('firstLogger'));
-    assert(container.take('secondLogger'));
+    assert(containerMock.take('firstLogger'));
+    assert(containerMock.take('secondLogger'));
   })
   it('should not register without name', () => {
-    register(container, {
+    register(containerMock, {
       logger: {},
     });
-    assert(!container.take('logger'));
+    assert(!containerMock.take('logger'));
   })
 })
