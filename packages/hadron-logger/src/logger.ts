@@ -1,5 +1,5 @@
 import * as bunyan from 'bunyan';
-import { toCamelCase } from '../../hadron-utils/';
+import LoggerNameIsRequiredError from './errors/LoggerNameIsRequiredError';
 
 const register = (container: any, config: any) => {
   let { logger: loggers } = config;
@@ -7,13 +7,13 @@ const register = (container: any, config: any) => {
   loggers = loggers instanceof Array ? loggers : [loggers];
 
   loggers.forEach((logger: any) => {
-    if (!logger.name) return;
+    if (!logger.name) {
+      throw new LoggerNameIsRequiredError();
+    }
+
     const log = bunyan.createLogger(logger);
 
-    let { name } = logger;
-    if (!name.match(/(.*)logger$/gi)) name += ' logger';
-    name = toCamelCase(name);
-    container.register(name, log);
+    container.register(logger.name, log);
   });
 };
 

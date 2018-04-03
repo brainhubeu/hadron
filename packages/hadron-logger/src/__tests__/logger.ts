@@ -1,6 +1,7 @@
-import { assert } from 'chai';
+import { expect, assert } from 'chai';
 import * as sinon from 'sinon';
 import { register } from '../logger';
+import LoggerNameIsRequiredError from '../errors/LoggerNameIsRequiredError';
 
 describe('logger', () => {
   const containerMock = {
@@ -12,29 +13,13 @@ describe('logger', () => {
     containerMock.register.reset();
   });
 
-  it('should register logger under firstLogger', () => {
+  it('should register logger under "first logger"', () => {
     register(containerMock, {
       logger: {
         name: 'first logger',
       },
     });
-    assert(containerMock.register.calledWith('firstLogger'));
-  });
-  it('should register "hello world" under helloWorldLogger', () => {
-    register(containerMock, {
-      logger: {
-        name: 'hello world',
-      },
-    });
-    assert(containerMock.register.calledWith('helloWorldLogger'));
-  });
-  it('should register "hello world logger" under helloWorldLogger', () => {
-    register(containerMock, {
-      logger: {
-        name: 'hello world logger',
-      },
-    });
-    assert(containerMock.register.calledWith('helloWorldLogger'));
+    assert(containerMock.register.calledWith('first logger'));
   });
   it('should register multiple loggers', () => {
     register(containerMock, {
@@ -52,9 +37,10 @@ describe('logger', () => {
     assert(containerMock.register.calledWith('secondLogger'));
   });
   it('should not register logger without name', () => {
-    register(containerMock, {
-      logger: {},
-    });
-    assert(!containerMock.register.calledWith('logger'));
+    expect(() => {
+      register(containerMock, {
+        logger: {},
+      });
+    }).to.throw(LoggerNameIsRequiredError);
   });
 });
