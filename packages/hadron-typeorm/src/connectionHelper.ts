@@ -1,6 +1,8 @@
 import { createConnection, Connection } from 'typeorm';
-import { CONNECTION, REPOSITORY_NAME_FACTORY } from './constants';
+import { CONNECTION } from './constants';
 import { IContainer } from '../../hadron-core/src/container/types';
+
+const repositoryName = (name: string) => `${name.toLowerCase()}Repositorys`;
 
 const registerRepositories = (
   container: IContainer,
@@ -9,7 +11,7 @@ const registerRepositories = (
 ) => {
   entities.forEach((entity: any) => {
     container.register(
-      REPOSITORY_NAME_FACTORY(entity.name),
+      repositoryName(entity.name),
       connection.getRepository(entity),
     );
   });
