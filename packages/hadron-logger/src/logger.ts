@@ -7,13 +7,14 @@ const register = (container: any, config: any) => {
   loggers = loggers instanceof Array ? loggers : [loggers];
 
   loggers.forEach((logger: any) => {
+    if (!logger.name) return;
     const log = bunyan.createLogger(logger);
 
     /* tslint:disable-next-line:strict-boolean-expressions */
-    let itemName = logger.name || '';
-    if (!itemName.match(/(.*)logger$/gi)) itemName += ' logger';
-    itemName = toCamelCase(itemName);
-    container.register(itemName, log);
+    let { name } = logger;
+    if (!name.match(/(.*)logger$/gi)) name += ' logger';
+    name = toCamelCase(name);
+    container.register(name, log);
   });
 };
 
