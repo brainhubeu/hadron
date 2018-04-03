@@ -19,8 +19,10 @@ const defaultParsers = {
  * @param key "name" of current property
  * @param properties list of available properties
  */
-export const getPropertyForKey = (key: string, properties: IProperty[] = []): IProperty =>
-  properties.find((property: IProperty) => property.name === key);
+export const getPropertyForKey = (
+  key: string,
+  properties: IProperty[] = [],
+): IProperty => properties.find((property: IProperty) => property.name === key);
 
 /**
  * Searches for parser
@@ -31,9 +33,10 @@ export const getPropertyForKey = (key: string, properties: IProperty[] = []): IP
  */
 export const getParsers = (names: string[], availableParsers: object) => {
   const namesSet = new Set(names);
-  return (Object as any).entries(availableParsers)
-      .filter(([key, parser]: [string, any]) => namesSet.has(key))
-      .map(([key, parser]: [string, any]) => parser);
+  return (Object as any)
+    .entries(availableParsers)
+    .filter(([key, parser]: [string, any]) => namesSet.has(key))
+    .map(([key, parser]: [string, any]) => parser);
 };
 
 /**
@@ -42,8 +45,13 @@ export const getParsers = (names: string[], availableParsers: object) => {
  * @param type "name" of current serialization
  * @param configurations list of available configurations
  */
-export const getConfigurationForType = (type: string, configurations: ISerializationSchema[]) =>
-  configurations.find((configuration: ISerializationSchema) => configuration.name === type);
+export const getConfigurationForType = (
+  type: string,
+  configurations: ISerializationSchema[],
+) =>
+  configurations.find(
+    (configuration: ISerializationSchema) => configuration.name === type,
+  );
 
 /**
  * Checks if given arrays have at least one common memer
@@ -51,11 +59,14 @@ export const getConfigurationForType = (type: string, configurations: ISerializa
  * @param firstArray
  * @param secondArray
  */
-export const hasIntersection = (firstArray: any[], secondArray: any[]): boolean => {
+export const hasIntersection = (
+  firstArray: any[],
+  secondArray: any[],
+): boolean => {
   const secondArraySet = new Set(secondArray);
-  return firstArray.filter(
-      (value: any) => secondArraySet.has(value),
-  ).length > 0;
+  return (
+    firstArray.filter((value: any) => secondArraySet.has(value)).length > 0
+  );
 };
 
 /**
@@ -66,26 +77,32 @@ export const hasIntersection = (firstArray: any[], secondArray: any[]): boolean 
  * @param properties list of available properties
  * @param parsers list of available parsers
  */
-export const serialize = (data: object, groups: string[], properties: IProperty[], parsers: object) =>
-  (Object as any).entries(data)
+export const serialize = (
+  data: object,
+  groups: string[],
+  properties: IProperty[],
+  parsers: object,
+) =>
+  (Object as any)
+    .entries(data)
     // exclude properties not present in schema or not containing proper group
     .filter(([key, value]: [string, any]) => {
       const property = getPropertyForKey(key, properties);
       // if parameter has no groups, its public
-      return property && (!property.groups || hasIntersection(property.groups, groups));
+      return (
+        property &&
+        (!property.groups || hasIntersection(property.groups, groups))
+      );
     })
-    .reduce(
-      (result: any, [key, value]: [string, any]) => {
-        const property = getPropertyForKey(key, properties);
-        const propertyKey = property.serializedName || key;
-        return Object.assign(
-            result,
-            // tslint:disable:no-use-before-declare
-            { [propertyKey]: serializeEntry(value, groups, property, parsers) },
-        );
-      },
-      {},
-    );
+    .reduce((result: any, [key, value]: [string, any]) => {
+      const property = getPropertyForKey(key, properties);
+      const propertyKey = property.serializedName || key;
+      return Object.assign(
+        result,
+        // tslint:disable:no-use-before-declare
+        { [propertyKey]: serializeEntry(value, groups, property, parsers) },
+      );
+    }, {});
 
 /**
  *  Serializes one single entry
@@ -95,23 +112,43 @@ export const serialize = (data: object, groups: string[], properties: IProperty[
  * @param property instance of property, which contains informations about serialization
  * @param availableParsers all available parsers
  */
-export const serializeEntry = (value: any, groups: string[], property: IProperty, availableParsers: object): any => {
-  const parsers = getParsers([...(property.parsers || []), property.type], availableParsers);
+export const serializeEntry = (
+  value: any,
+  groups: string[],
+  property: IProperty,
+  availableParsers: object,
+): any => {
+  const parsers = getParsers(
+    [...(property.parsers || []), property.type],
+    availableParsers,
+  );
   let serializedValue = value;
 
   if (property.properties && property.type === DATA_TYPE.OBJECT) {
-    serializedValue = serialize(value, groups, property.properties, availableParsers);
+    serializedValue = serialize(
+      value,
+      groups,
+      property.properties,
+      availableParsers,
+    );
   }
 
   if (property.properties && property.type === DATA_TYPE.ARRAY) {
     serializedValue = value
-      .map((childValue: any) => serialize(childValue, groups, property.properties, availableParsers))
-      .reduce((result: any[], currentValue: any) => [...result, currentValue], []);
+      .map((childValue: any) =>
+        serialize(childValue, groups, property.properties, availableParsers),
+      )
+      .reduce(
+        (result: any[], currentValue: any) => [...result, currentValue],
+        [],
+      );
   }
 
   if (parsers) {
-    serializedValue = parsers
-      .reduce((accumulator: any, parser: (data: any) => any) => parser(accumulator), serializedValue);
+    serializedValue = parsers.reduce(
+      (accumulator: any, parser: (data: any) => any) => parser(accumulator),
+      serializedValue,
+    );
   }
   return serializedValue;
 };
@@ -141,13 +178,16 @@ const serializerProvider = (config: ISerializerConfig) => {
     serialize: (data: any, groups: string[], configurationName?: string) => {
       // if configurationName is not defined, we are trying to get name from instance of object
       const name = configurationName || data.constructor.name;
-      const foundConfiguration = schemas
-        .find((configuration: ISerializationSchema) => configuration.name === name);
+      const foundConfiguration = schemas.find(
+        (configuration: ISerializationSchema) => configuration.name === name,
+      );
       if (!foundConfiguration) {
         return Promise.reject(new Error('Configuration not found'));
       }
-      return Promise.resolve(foundConfiguration)
-        .then((schema: ISerializationSchema) => data && serialize(data, groups, schema.properties, parsers));
+      return Promise.resolve(foundConfiguration).then(
+        (schema: ISerializationSchema) =>
+          data && serialize(data, groups, schema.properties, parsers),
+      );
     },
   } as ISerializer;
 };

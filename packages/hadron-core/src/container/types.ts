@@ -6,7 +6,7 @@ interface IContainerItem {
 }
 
 interface IContainer {
-  take: (key: string) => any,
+  take: (key: string) => any;
   register: (key: string, value: any, lifetime?: string) => any;
 }
 

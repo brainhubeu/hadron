@@ -3,7 +3,7 @@ import { Container as container } from '../../hadron-core';
 const getDate = () => {
   const d = new Date();
   return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
-}
+};
 
 export default {
   routes: {
@@ -42,14 +42,18 @@ export default {
       middleware: [
         (req: any, res: any, next: any) => {
           // tslint:disable:no-console
-          console.log(`${getDate()}> First middleware, jump to next middleware in one second.`);
+          console.log(
+            `${getDate()}> First middleware, jump to next middleware in one second.`,
+          );
           setTimeout(() => {
             next();
           }, 1000);
         },
         (req: any, res: any, next: any) => {
           // tslint:disable:no-console
-          console.log(`${getDate()}> Finally second middleware. One second passed i think !`);
+          console.log(
+            `${getDate()}> Finally second middleware. One second passed i think !`,
+          );
           next();
         },
       ],
@@ -88,7 +92,8 @@ export default {
     routeWithMultipleParams: {
       path: '/:param/:param2',
       methods: ['get'],
-      callback: (param: any, param2: any) => `First param value: ${param}; Second param value: ${param2}`,
+      callback: (param: any, param2: any) =>
+        `First param value: ${param}; Second param value: ${param2}`,
     },
 
     //
@@ -115,4 +120,4 @@ export default {
       },
     },
   },
-}
+};

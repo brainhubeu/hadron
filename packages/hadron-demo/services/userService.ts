@@ -4,14 +4,23 @@ import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
 
 class UserDto {
-  constructor(public id: number, public name: string, public teamName: string) { }
+  constructor(
+    public id: number,
+    public name: string,
+    public teamName: string,
+  ) {}
 }
 
-const getAllUsers = async(userRepository: Repository<User>) =>
-  await userRepository.find({relations : ['team']})
-    .then(users => users.map(user => new UserDto(user.id, user.name, user.team.name)));
+const getAllUsers = async (userRepository: Repository<User>) =>
+  await userRepository
+    .find({ relations: ['team'] })
+    .then((users) =>
+      users.map((user) => new UserDto(user.id, user.name, user.team.name)),
+    );
 
-const getUserById = async(res: any, userRepository: Repository<User>, id: number) =>
+const getUserById = async(res: any,
+  userRepository: Repository<User>,
+  id: number) =>
   res.successGet(await userRepository.findOneById(id));
 
 const insertUser = async(req: any, res: any, userRepository: Repository<User>,
@@ -27,7 +36,8 @@ const insertUser = async(req: any, res: any, userRepository: Repository<User>,
   }
 };
 
-const updateUser = async(res: any, userRepository: Repository<User>,
+const updateUser = async(res: any, 
+  userRepository: Repository<User>,
   body: {id: number, userName: string, teamId: number }) => {
   try {
     await validate('updateUser', body);
@@ -46,4 +56,11 @@ const deleteUser = async(res: any, userRepository: Repository<User>, id: number)
   res.successUpdate(await userRepository.removeById(id));
 };
 
-export { UserDto, getAllUsers, getUserById, insertUser, updateUser, deleteUser };
+export {
+  UserDto,
+  getAllUsers,
+  getUserById,
+  insertUser,
+  updateUser,
+  deleteUser,
+};

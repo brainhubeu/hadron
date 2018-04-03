@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
 
 class TeamDto {
-  constructor(public id: number, public name: string, public amount: number) { }
+  constructor(public id: number, public name: string, public amount: number) {}
 }
 
 const getAllTeams = async(res: any, teamRepository: Repository<Team>) =>
@@ -28,10 +28,13 @@ const updateTeam = async(res: any, teamRepository: Repository<Team>, body: { id:
   }
 };
 
-const insertTeam = async(res: any, teamRepository: Repository<Team>, body: { teamName: string }) => {
+const insertTeam = async(res: any, 
+  teamRepository: Repository<Team>, 
+  body: { teamName: string }) => {
   try {
     await validate('insertTeam', body);
-    return await teamRepository.insert({name: body.teamName})
+    return await teamRepository
+      .insert({ name: body.teamName })
       .then(() => teamRepository.count())
       .then(amount => res.successUpdate(`total amount of teams: ${amount}`));
   } catch (error) {

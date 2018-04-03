@@ -15,7 +15,7 @@ describe('container register', () => {
     class Foo {
       public value: string;
       constructor() {
-        this.value = (new Date()).getTime().toString();
+        this.value = new Date().getTime().toString();
       }
     }
     container.register(itemName, Foo, Lifetime.Singletone);
