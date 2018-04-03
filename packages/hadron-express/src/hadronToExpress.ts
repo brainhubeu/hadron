@@ -31,23 +31,29 @@ const generateMiddlewares = (route: IRoute) =>
     },
   );
 
-const mapRouteArgs = (req: any, res: any, routeCallback: Callback, container: IContainer) =>
-  getArgs(routeCallback)
-    .map((name: string) => {
-      if (name === 'body') {
-        return req.body;
-      }
-      if (name === 'req') {
-        return req;
-      }
-      if (name === 'res') {
-        return res;
-      }
-      return req.params[name]
-            || req.query[name]
-            || res.locals[name]
-            || container.take(name);
-    });
+const mapRouteArgs = (
+  req: any,
+  res: any,
+  routeCallback: Callback,
+  container: IContainer,
+) =>
+  getArgs(routeCallback).map((name: string) => {
+    if (name === 'body') {
+      return req.body;
+    }
+    if (name === 'req') {
+      return req;
+    }
+    if (name === 'res') {
+      return res;
+    }
+    return (
+      req.params[name] ||
+      req.query[name] ||
+      res.locals[name] ||
+      container.take(name)
+    );
+  });
 
 const createRoutes = (
   app: any,
@@ -75,10 +81,10 @@ const createRoutes = (
               return route.callback(...args);
             }
           })
-          .then(result => {
+          .then((result) => {
             res.status(200).json(result);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(new CreateRouteError(routeName, error));
             res.sendStatus(500);
           });

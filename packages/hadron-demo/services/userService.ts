@@ -14,45 +14,62 @@ class UserDto {
 const getAllUsers = async (userRepository: Repository<User>) =>
   await userRepository
     .find({ relations: ['team'] })
-    .then((users) =>
-      users.map((user) => new UserDto(user.id, user.name, user.team.name)),
+    .then((users: User[]) =>
+      users.map(
+        (user: User) => new UserDto(user.id, user.name, user.team.name),
+      ),
     );
 
-const getUserById = async(res: any,
+const getUserById = async (
+  res: any,
   userRepository: Repository<User>,
-  id: number) =>
-  res.successGet(await userRepository.findOneById(id));
+  id: number,
+) => res.successGet(await userRepository.findOneById(id));
 
-const insertUser = async(req: any, res: any, userRepository: Repository<User>,
-  teamRepository: Repository<Team>) => {
+const insertUser = async (
+  req: any,
+  res: any,
+  userRepository: Repository<User>,
+  teamRepository: Repository<Team>,
+) => {
   try {
     await validate('insertUser', req.body);
-    return await teamRepository.findOneById(req.body.teamId)
-      .then(team => userRepository.insert({ team, name: req.body.userName }))
+    return await teamRepository
+      .findOneById(req.body.teamId)
+      .then((team) => userRepository.insert({ team, name: req.body.userName }))
       .then(() => userRepository.count())
-      .then(amount => res.successUpdate(`Amount of users: ${amount}`));
+      .then((amount) => res.successUpdate(`Amount of users: ${amount}`));
   } catch (error) {
     res.entityValidationError(error);
   }
 };
 
-const updateUser = async(res: any, 
+const updateUser = async (
+  res: any,
   userRepository: Repository<User>,
-  body: {id: number, userName: string, teamId: number }) => {
+  body: { id: number; userName: string; teamId: number },
+) => {
   try {
     await validate('updateUser', body);
-    return await userRepository.findOneById(body.id)
-          .then(user => {
-            user.name = body.userName;
-            return userRepository.save(user);
-          })
-          .then(() => res.successUpdate(`user id: ${body.id} has new name: ${body.userName}`));
+    return await userRepository
+      .findOneById(body.id)
+      .then((user: User) => {
+        user.name = body.userName;
+        return userRepository.save(user);
+      })
+      .then(() =>
+        res.successUpdate(`user id: ${body.id} has new name: ${body.userName}`),
+      );
   } catch (error) {
     res.entityValidationError(error);
   }
 };
 
-const deleteUser = async(res: any, userRepository: Repository<User>, id: number) => {
+const deleteUser = async (
+  res: any,
+  userRepository: Repository<User>,
+  id: number,
+) => {
   res.successUpdate(await userRepository.removeById(id));
 };
 

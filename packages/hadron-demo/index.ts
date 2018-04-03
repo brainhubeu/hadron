@@ -32,15 +32,15 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
       import('../hadron-serialization'),
       import('../hadron-express'),
       import('../hadron-typeorm'),
-    ], config)
-      .then((container: IContainer) => {
-        // @ts-ignore
-        expressApp.use((req, res, next) => res.notFound('Request not found.'));
-        container.register('customValue', 'From Brainhub with ❤️');
-        setupSerializer();
-        expressApp.listen(port);
-      });
-
-    return;
+    ],
+    config,
+  ).then((container: IContainer) => {
+    // @ts-ignore
+    expressApp.use((req, res, next) => res.notFound('Request not found.'));
+    container.register('customValue', 'From Brainhub with ❤️');
+    setupSerializer();
+    expressApp.listen(port);
   });
 
+  return;
+});

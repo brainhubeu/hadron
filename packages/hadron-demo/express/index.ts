@@ -102,7 +102,7 @@ export default {
     registerCustomValue: {
       path: '/:key',
       methods: ['post'],
-      callback: (res: any, key: string, body: { value: any, }) => {
+      callback: (res: any, key: string, body: { value: any }) => {
         container.register(key, body.value);
         res.status(200).json(`Value under key '${key}' is registered`);
       },
