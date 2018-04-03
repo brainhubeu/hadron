@@ -1,11 +1,22 @@
 const emitterConfig: any = {};
 emitterConfig.listeners = [
   {
-    name: 'LISTENER-2',
-    event: 'createRoutesEvent', // event to listen to
+    name: 'LISTENER-1',
+    event: 'handleTerminateApplicationEvent', // event to listen to
     handler: (callback: any, ...args: any[]) => {
-      const result = callback(...args);
-      return result;
+      const cb = () => {
+        console.log('------------app ended---------------');
+        callback(...args);
+      }
+      return cb();
+    },
+  },
+
+  {
+    name: 'LISTENER-2',
+    event: 'handleInitializeApplicationEvent', // event to listen to
+    handler: () => {
+      console.log('-----------app started-----------')
     },
   },
 ];
