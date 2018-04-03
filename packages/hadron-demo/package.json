@@ -1,10 +1,11 @@
 {
-  "name": "@brainhub/hadron-demo",
+  "name": "@brainhubeu/hadron-demo",
   "version": "0.0.5",
   "description": "Hadron demo example app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
   "keywords": [
     "hadron",
@@ -12,14 +13,14 @@
     "hadron-demo"
   ],
   "dependencies": {
-    "@brainhubeu/hadron-core": "file:../hadron-core",
-    "@brainhubeu/hadron-events": "file:../hadron-events",
-    "@brainhubeu/hadron-express": "file:../hadron-express",
-    "@brainhubeu/hadron-json-provider": "file:../hadron-json-provider",
-    "@brainhubeu/hadron-serialization": "file:../hadron-serialization",
-    "@brainhubeu/hadron-typeorm": "file:../hadron-typeorm",
-    "@brainhubeu/hadron-utils": "file:../hadron-utils",
-    "@brainhubeu/hadron-validation": "file:../hadron-validation",
+    "@brainhubeu/hadron-core": "^0.0.4",
+    "@brainhubeu/hadron-events": "^0.0.4",
+    "@brainhubeu/hadron-express": "^0.0.4",
+    "@brainhubeu/hadron-json-provider": "^0.0.4",
+    "@brainhubeu/hadron-serialization": "^0.0.4",
+    "@brainhubeu/hadron-typeorm": "^0.0.4",
+    "@brainhubeu/hadron-utils": "^0.0.4",
+    "@brainhubeu/hadron-validation": "^0.0.4",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",

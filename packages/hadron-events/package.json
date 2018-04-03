@@ -8,7 +8,8 @@
     "./LICENSE"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
   "keywords": [
     "hadron",
@@ -24,6 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@brainhubeu/hadron-utils": "file:../hadron-utils"
+    "@brainhubeu/hadron-utils": "^0.0.4"
   }
 }

@@ -11,7 +11,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
   "keywords": [
     "hadron",
@@ -20,9 +21,9 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-error-handler": "file:../hadron-error-handler",
-    "@brainhubeu/hadron-events": "file:../hadron-events",
-    "@brainhubeu/hadron-utils": "file:../hadron-utils",
+    "@brainhubeu/hadron-error-handler": "^0.0.1",
+    "@brainhubeu/hadron-events": "^0.0.4",
+    "@brainhubeu/hadron-utils": "^0.0.4",
     "express": "4.16.2"
   },
   "devDependencies": {

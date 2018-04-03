@@ -8,7 +8,8 @@
     "./LICENSE"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
   "keywords": [
     "hadron",
@@ -18,7 +19,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-json-provider": "file:../hadron-json-provider"
+    "@brainhubeu/hadron-json-provider": "^0.0.4"
   },
   "publishConfig": {
     "access": "public"
