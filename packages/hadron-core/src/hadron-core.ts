@@ -32,10 +32,9 @@ export default (server: any, packages: Array<Promise<any>>, config: any) => {
         };
         const newTerminateApplicationCallback = eventsManager.
           emitEvent(eventsNames.HANDLE_TERMINATE_APPLICATION_EVENT, terminateApplicationCallback);
-
-        process.on('exit', newTerminateApplicationCallback);
         process.on('SIGINT', newTerminateApplicationCallback);
       }
+
       return container;
     });
 >>>>>>> emit event when packages are loaded
