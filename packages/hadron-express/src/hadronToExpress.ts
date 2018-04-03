@@ -84,6 +84,9 @@ const createRoutes = (
 >>>>>>> change event name
 =======
               const eventsManager = container.take('events-manager');
+              if (!eventsManager) {
+                return route.callback(...args);
+              }
               const newRouteCallback = eventsManager.emitEvent(eventsNames.HANDLE_REQUEST_CALLBACK_EVENT,
                  route.callback);
 >>>>>>> remove constants, add hardcoded names
