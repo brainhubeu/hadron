@@ -7,6 +7,7 @@ import jsonProvider from '../hadron-json-provider';
 import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
+import loggerConfig from './logger';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -15,6 +16,7 @@ expressApp.use(bodyParser.json());
 jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
   const config = {
     ...typeormConfig,
+    ...loggerConfig,
     events: emitterConfig,
     routes: {
       ...serializationRoutes,
@@ -30,6 +32,7 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
       import('../hadron-serialization'),
       import('../hadron-express'),
       import('../hadron-typeorm'),
+      import('../hadron-logger'),
     ],
     config,
   ).then((container: IContainer) => {
