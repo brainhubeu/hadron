@@ -7,20 +7,15 @@ class TeamDto {
   constructor(public id: number, public name: string, public amount: number) {}
 }
 
-const getAllTeams = async (res: any, teamRepository: Repository<Team>) =>
-  res.successGet(
-    await teamRepository
-      .find({ relations: ['users'] })
-      .then((teams) =>
-        teams.map((team) => new TeamDto(team.id, team.name, team.users.length)),
-      ),
-  );
+const getAllTeams = async (teamRepository: Repository<Team>) =>
+  await teamRepository
+    .find({ relations: ['users'] })
+    .then((teams) =>
+      teams.map((team) => new TeamDto(team.id, team.name, team.users.length)),
+    );
 
-const getTeamById = async (
-  res: any,
-  teamRepository: Repository<Team>,
-  id: number,
-) => res.successGet(await teamRepository.findOneById(id));
+const getTeamById = async (teamRepository: Repository<Team>, id: number) =>
+  await teamRepository.findOneById(id);
 
 const updateTeam = async (
   res: any,
@@ -36,10 +31,12 @@ const updateTeam = async (
         return teamRepository.save(team);
       })
       .then(() =>
-        res.successUpdate(`team id: ${body.id} has new name ${body.teamName}`),
+        res
+          .status(201)
+          .json(`team id: ${body.id} has new name ${body.teamName}`),
       );
   } catch (error) {
-    res.entityValidationError(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -53,9 +50,11 @@ const insertTeam = async (
     return await teamRepository
       .insert({ name: body.teamName })
       .then(() => teamRepository.count())
-      .then((amount) => res.successUpdate(`total amount of teams: ${amount}`));
+      .then((amount) =>
+        res.status(201).json(`total amount of teams: ${amount}`),
+      );
   } catch (error) {
-    res.entityValidationError(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -70,7 +69,7 @@ const deleteTeam = async (
     .then((team) =>
       userRepository.removeByIds(team.users.map((user) => user.id)),
     )
-    .then(() => res.successUpdate(teamRepository.removeById(id)));
+    .then(() => res.status(201).json(teamRepository.removeById(id)));
 };
 
 export { getAllTeams, getTeamById, updateTeam, insertTeam, deleteTeam };

@@ -20,11 +20,8 @@ const getAllUsers = async (userRepository: Repository<User>) =>
       ),
     );
 
-const getUserById = async (
-  res: any,
-  userRepository: Repository<User>,
-  id: number,
-) => res.successGet(await userRepository.findOneById(id));
+const getUserById = async (userRepository: Repository<User>, id: number) =>
+  await userRepository.findOneById(id);
 
 const insertUser = async (
   req: any,
@@ -38,9 +35,11 @@ const insertUser = async (
       .findOneById(req.body.teamId)
       .then((team) => userRepository.insert({ team, name: req.body.userName }))
       .then(() => userRepository.count())
-      .then((amount) => res.successUpdate(`Amount of users: ${amount}`));
+      .then((amount) =>
+        res.status(201).json({ message: `Amount of users: ${amount}` }),
+      );
   } catch (error) {
-    res.entityValidationError(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -58,10 +57,12 @@ const updateUser = async (
         return userRepository.save(user);
       })
       .then(() =>
-        res.successUpdate(`user id: ${body.id} has new name: ${body.userName}`),
+        res
+          .status(201)
+          .json(`user id: ${body.id} has new name: ${body.userName}`),
       );
   } catch (error) {
-    res.entityValidationError(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -70,7 +71,7 @@ const deleteUser = async (
   userRepository: Repository<User>,
   id: number,
 ) => {
-  res.successUpdate(await userRepository.removeById(id));
+  res.status(201).json(await userRepository.removeById(id));
 };
 
 export {

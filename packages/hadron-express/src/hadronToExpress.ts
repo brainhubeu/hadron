@@ -13,6 +13,7 @@ import constants, {
 } from '../../hadron-events/src/constants/constants';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
+import { ServerResponse } from 'http';
 
 const generateMiddlewares = (route: IRoute) =>
   route.middleware &&
@@ -82,7 +83,9 @@ const createRoutes = (
             }
           })
           .then((result) => {
-            res.status(200).json(result);
+            if (!(result instanceof ServerResponse)) {
+              res.status(200).json(result);
+            }
           })
           .catch((error) => {
             console.error(new CreateRouteError(routeName, error));

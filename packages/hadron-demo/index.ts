@@ -7,12 +7,10 @@ import jsonProvider from '../hadron-json-provider';
 import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
-import { customResponses } from '../hadron-express';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
-expressApp.use(customResponses);
 
 jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
   const config = {
@@ -35,8 +33,9 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes) => {
     ],
     config,
   ).then((container: IContainer) => {
-    // @ts-ignore
-    expressApp.use((req, res, next) => res.notFound('Request not found.'));
+    expressApp.use((req, res, next) =>
+      res.status(404).json('Request not found.'),
+    );
     container.register('customValue', 'From Brainhub with ❤️');
     setupSerializer();
     expressApp.listen(port);
