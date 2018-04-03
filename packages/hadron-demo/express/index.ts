@@ -12,7 +12,7 @@ export default {
     //
     helloWorldRoute: {
       path: '/',
-      callback: (res: any) => res.successGet('Hello world'),
+      callback: () => 'Hello world',
       methods: ['get'],
     },
 
@@ -79,7 +79,7 @@ export default {
     routeWithParam: {
       path: '/:param',
       methods: ['get'],
-      callback: (res: any, param: any) => res.status(200).json(`First route param: ${param}`),
+      callback: (param: any) => `First route param: ${param}`,
     },
 
     //
@@ -88,8 +88,7 @@ export default {
     routeWithMultipleParams: {
       path: '/:param/:param2',
       methods: ['get'],
-      callback: (res: any, param: any, param2: any) => res.status(200)
-        .json(`First param value: ${param}; Second param value: ${param2}`),
+      callback: (param: any, param2: any) => `First param value: ${param}; Second param value: ${param2}`,
     },
 
     //
