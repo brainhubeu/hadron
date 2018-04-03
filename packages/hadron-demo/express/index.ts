@@ -21,7 +21,7 @@ export default {
     //
     singleMiddleware: {
       path: '/singleMiddleware',
-      callback: (res: any) => res.successGet(`Hey! See console`),
+      callback: () => `Hey! See console`,
       methods: ['get'],
       middleware: [
         (req: any, res: any, next: any) => {
@@ -37,7 +37,7 @@ export default {
     //
     multipleMiddlewares: {
       path: '/multipleMiddlewares',
-      callback: (res: any) => res.successGet(`Hey! See console`),
+      callback: () => `Hey! See console`,
       methods: ['get'],
       middleware: [
         (req: any, res: any, next: any) => {
@@ -74,7 +74,7 @@ export default {
     customContainerKey: {
       path: '/getContainerValue/:key',
       methods: ['get'],
-      callback: (res: any, key: string) => res.successGet(container.take(key)),
+      callback: (key: string) => container.take(key),
     },
 
     //
@@ -102,9 +102,9 @@ export default {
     registerCustomValue: {
       path: '/:key',
       methods: ['post'],
-      callback: (res: any, key: string, body: { value: any }) => {
+      callback: (key: string, body: { value: any }) => {
         container.register(key, body.value);
-        res.status(200).json(`Value under key '${key}' is registered`);
+        return `Value under key '${key}' is registered`;
       },
     },
 
@@ -114,9 +114,9 @@ export default {
     deleteCustomValue: {
       path: '/:key',
       methods: ['delete'],
-      callback: (res: any, key: string) => {
+      callback: (key: string) => {
         container.register(key, null);
-        res.status(200).json(`Value under key '${key}' has been deleted`);
+        return `Value under key '${key}' has been deleted`;
       },
     },
   },
