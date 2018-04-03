@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ISerializationSchema, ISerializerConfig } from '../types';
-import * as jsonProvider from '@hadron/json-provider';
+import * as jsonProvider from '@brainhubeu/hadron-json-provider';
 import schemaProvider from '../schema-provider';
 
 describe('schemaProvider', () => {
