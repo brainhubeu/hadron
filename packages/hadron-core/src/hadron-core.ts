@@ -25,7 +25,17 @@ export default (server: any, packages: Array<Promise<any>>, config: any) => {
       ),
     ).then(() => {
       const eventsManager = container.take('events-manager');
-      eventsManager.emitEvent(eventsNames.HANDLE_INITIALIZE_APPLICATION_EVENT);
+      if (eventsManager) {
+        eventsManager.emitEvent(eventsNames.HANDLE_INITIALIZE_APPLICATION_EVENT)();
+        const terminateApplicationCallback = () => {
+          process.exit();
+        };
+        const newTerminateApplicationCallback = eventsManager.
+          emitEvent(eventsNames.HANDLE_TERMINATE_APPLICATION_EVENT, terminateApplicationCallback);
+
+        process.on('exit', newTerminateApplicationCallback);
+        process.on('SIGINT', newTerminateApplicationCallback);
+      }
       return container;
     });
 >>>>>>> emit event when packages are loaded
