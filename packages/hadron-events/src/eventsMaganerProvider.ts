@@ -20,6 +20,12 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
       throw new Error('eventName can not be empty');
     }
 
+    if (callback === undefined || callback === null) {
+      callback = () => {
+        return null;
+      }
+    }
+
     return emitter
       .listeners(eventName)
       .reduce((prevCallback, currentHandler) => {
