@@ -19,7 +19,6 @@ const connection: typeorm.ConnectionOptions = {
 };
 
 describe('TypeORM connection helper', () => {
-  // createConnection stub
   const createConnectionStub = sinon.stub(typeorm, 'createConnection');
   createConnectionStub.returns(
     new Promise((resolve) => {
@@ -27,14 +26,12 @@ describe('TypeORM connection helper', () => {
     }),
   );
 
-  // getRepository stub
   const getRepositoryStub = sinon.stub(
     typeorm.Connection.prototype,
     'getRepository',
   );
   getRepositoryStub.returns(true);
 
-  // container stub
   const containerStub = {
     register: sinon.stub(),
     take: () => null,
