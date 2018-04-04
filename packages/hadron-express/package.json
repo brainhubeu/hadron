@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-express",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Hadron module implementing express elements",
   "main": "dist/index.js",
   "files": [
@@ -21,9 +21,9 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-error-handler": "^0.0.1",
-    "@brainhubeu/hadron-events": "^0.0.4",
-    "@brainhubeu/hadron-utils": "^0.0.4",
+    "@brainhubeu/hadron-error-handler": "^0.0.2",
+    "@brainhubeu/hadron-events": "^0.0.5",
+    "@brainhubeu/hadron-utils": "^0.0.5",
     "express": "4.16.2"
   },
   "devDependencies": {

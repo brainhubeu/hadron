@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-logger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hadron logger",
   "target": "dist",
   "main": "index.js",
