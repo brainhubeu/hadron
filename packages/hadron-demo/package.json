@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-demo",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hadron demo example app",
   "main": "index.js",
   "scripts": {
@@ -13,15 +13,15 @@
     "hadron-demo"
   ],
   "dependencies": {
-    "@brainhubeu/hadron-core": "^0.0.5",
-    "@brainhubeu/hadron-events": "^0.0.5",
-    "@brainhubeu/hadron-express": "^0.0.5",
-    "@brainhubeu/hadron-json-provider": "^0.0.5",
-    "@brainhubeu/hadron-logger": "^0.0.2",
-    "@brainhubeu/hadron-serialization": "^0.0.5",
-    "@brainhubeu/hadron-typeorm": "^0.0.5",
-    "@brainhubeu/hadron-utils": "^0.0.5",
-    "@brainhubeu/hadron-validation": "^0.0.5",
+    "@brainhubeu/hadron-core": "^0.0.6",
+    "@brainhubeu/hadron-events": "^0.0.6",
+    "@brainhubeu/hadron-express": "^0.0.6",
+    "@brainhubeu/hadron-json-provider": "^0.0.6",
+    "@brainhubeu/hadron-logger": "^0.0.3",
+    "@brainhubeu/hadron-serialization": "^0.0.6",
+    "@brainhubeu/hadron-typeorm": "^0.0.6",
+    "@brainhubeu/hadron-utils": "^0.0.6",
+    "@brainhubeu/hadron-validation": "^0.0.6",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",

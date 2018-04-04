@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-typeorm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Hadron typeorm module",
   "main": "dist/index.js",
   "files": [
