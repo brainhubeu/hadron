@@ -1,11 +1,30 @@
 {
-  "name": "hadron-events",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "name": "@brainhubeu/hadron-events",
+  "version": "0.0.6",
+  "description": "Hadron event emitter module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-events"
+  ],
+  "devDependencies": {
+    "@types/events": "1.2.0"
+  },
+  "author": "Brainhub",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@brainhubeu/hadron-utils": "^0.0.6"
+  }
 }

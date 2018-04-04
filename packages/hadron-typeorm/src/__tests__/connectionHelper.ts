@@ -1,8 +1,8 @@
 import { expect, assert } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
-import { connect } from '../src/connectionHelper';
-import { CONNECTION } from '../src/constants';
+import { connect } from '../connectionHelper';
+import { CONNECTION } from '../constants';
 
 import { Team } from './mocks/entity/Team';
 import { User } from './mocks/entity/User';

@@ -7,3 +7,8 @@
 .env
 .vscode
 .nyc_output
+/**/package-lock.json
+/**/node_modules
+/**/dist
+package-lock.json
+lerna-debug.log

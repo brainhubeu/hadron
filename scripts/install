@@ -1,0 +1,4 @@
+for d in $PWD/packages/* ; do
+  echo "Installing $d";
+  cd $d && npm install
+done

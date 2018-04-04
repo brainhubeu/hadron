@@ -1,4 +1,4 @@
-import HadronErrorHandler from '../../../hadron-error-handler';
+import HadronErrorHandler from '@brainhubeu/hadron-error-handler';
 
 export default class LoadingPackageError extends HadronErrorHandler {
   public log: any;

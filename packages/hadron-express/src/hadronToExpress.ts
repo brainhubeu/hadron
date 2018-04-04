@@ -1,16 +1,8 @@
 import * as express from 'express';
-import { getArgs } from '../../hadron-utils';
-import {
-  Callback,
-  IContainer,
-  IRoute,
-  IRoutesConfig,
-  Middleware,
-} from './types';
+import { getArgs } from '@brainhubeu/hadron-utils';
+import { Callback, IContainer, IRoute, IRoutesConfig, Middleware } from './types';
 import { validateMethods } from './validators/routing';
-import constants, {
-  eventsNames,
-} from '../../hadron-events/src/constants/constants';
+import { EVENTS_MANAGER, EVENT_NAME } from '@brainhubeu/hadron-events';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
 
@@ -68,11 +60,8 @@ const createRoutes = (
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
             try {
-              const eventsManager = container.take(constants.EVENTS_MANAGER);
-              const newRouteCallback = eventsManager.emitEvent(
-                eventsNames.CREATE_ROUTES_EVENT,
-                route.callback,
-              );
+              const eventsManager = container.take(EVENTS_MANAGER);
+              const newRouteCallback = eventsManager.emitEvent(EVENT_NAME.CREATE_ROUTES_EVENT, route.callback);
               return newRouteCallback(...args);
             } catch (error) {
               return route.callback(...args);

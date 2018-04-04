@@ -1,16 +1,27 @@
 {
-  "name": "hadron-typeorm",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "name": "@brainhubeu/hadron-typeorm",
+  "version": "0.0.6",
+  "description": "Hadron typeorm module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
   "keywords": [
     "hadron",
     "typeorm",
     "hadron-typeorm"
   ],
-  "author": "brainhub",
-  "license": "MIT"
+  "author": "Brainhub",
+  "license": "MIT",
+  "dependencies": {
+    "typeorm": "0.1.16"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

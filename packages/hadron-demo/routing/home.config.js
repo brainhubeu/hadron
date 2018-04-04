@@ -1,5 +1,5 @@
 const helloWorldCallback = () => "Hello world";
-const versionCallback = () => `Version: ${process.env.VERSION || '0.0.1'}`;
+const versionCallback = () => `Version: ${process.env.VERSION || "0.0.1"}`;
 
 const homeConfig = () => {
     return {
