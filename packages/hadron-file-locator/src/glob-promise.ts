@@ -5,7 +5,7 @@ const promise = (pattern: string): Promise<any> =>
     (resolve, reject) =>
       new glob.Glob(
         pattern,
-        (err: Error, data: string) =>
+        (err: Error, data: string[]) =>
           err === null ? resolve(data) : reject(err),
       ),
   );

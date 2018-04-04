@@ -1,4 +1,4 @@
-import { createDatabaseConnection } from '@brainhubeu/hadron-typeorm';
+import { ConnectionOptions } from 'typeorm';
 import { User } from '../entity/User';
 import { Team } from '../entity/Team';
 

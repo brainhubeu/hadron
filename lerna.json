@@ -1,6 +1,7 @@
 {
   "lerna": "2.9.0",
   "packages": [
+    "packages/hadron-logger",
     "packages/hadron-utils",
     "packages/hadron-error-handler",
     "packages/hadron-core",

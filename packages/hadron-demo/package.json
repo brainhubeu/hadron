@@ -17,6 +17,7 @@
     "@brainhubeu/hadron-events": "^0.0.4",
     "@brainhubeu/hadron-express": "^0.0.4",
     "@brainhubeu/hadron-json-provider": "^0.0.4",
+    "@brainhubeu/hadron-logger": "^0.0.1",
     "@brainhubeu/hadron-serialization": "^0.0.4",
     "@brainhubeu/hadron-typeorm": "^0.0.4",
     "@brainhubeu/hadron-utils": "^0.0.4",

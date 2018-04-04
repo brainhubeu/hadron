@@ -10,13 +10,13 @@
     "baseUrl": ".",
     "allowJs": true,
     "paths": {
-      "*": ["packages/*"]
+      "*": ["./*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSources": true,
     "lib": ["es2017", "dom"]
   },
-  "include": ["packages/**/*"],
-  "exclude": ["node_modules", "packages/**/__tests__/*"]
+  "include": ["src/**/*.*", "index.ts", "LICENSE"],
+  "exclude": ["node_modules", "src/__tests__/**"]
 }

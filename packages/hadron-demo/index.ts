@@ -4,13 +4,13 @@ import hadron, { IContainer } from '@brainhubeu/hadron-core';
 import * as hadronEvents from '@brainhubeu/hadron-events';
 import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
+import * as hadronLogger from '@brainhubeu/hadron-logger';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo';
 import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
-import loggerConfig from './logger';
 import 'reflect-metadata';
 
 const port = process.env.PORT || 8080;
@@ -20,6 +20,7 @@ expressApp.use(bodyParser.json());
 jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
   const config = {
     ...typeormConfig,
+    ...hadronLogger,
     events: emitterConfig,
     routes: {
       ...serializationRoutes,

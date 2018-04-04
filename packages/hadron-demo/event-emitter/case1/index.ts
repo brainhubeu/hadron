@@ -1,5 +1,4 @@
-
-import eventsManagerProvider from '@hadron/events';
+import eventsManagerProvider from '@brainhubeu/hadron-events';
 import { EventEmitter } from 'events';
 
 const emitter = new EventEmitter();
