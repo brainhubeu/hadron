@@ -1,0 +1,11 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+  defaults:
+scenarios:
+  - flow:
+      - get:
+          url: '/user'
+          

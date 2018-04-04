@@ -1,0 +1,16 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+  defaults:
+scenarios:
+  - flow:
+    - loop:
+        - post:
+            url: '/updateUser'
+            json:
+              id: 2
+              userName: 'Test'
+              teamId: 1
+      count: 3
