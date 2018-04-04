@@ -19,6 +19,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@brainhubeu/hadron-core": "^0.0.6",
     "typeorm": "0.1.16"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
 import { createConnection, Connection } from 'typeorm';
 import { CONNECTION } from './constants';
-import { IContainer } from '../../hadron-core/src/container/types';
+import { IContainer } from '@brainhubeu/hadron-core';
 
 const repositoryName = (name: string) => `${name.toLowerCase()}Repositorys`;
 
