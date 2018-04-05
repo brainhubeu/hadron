@@ -29,6 +29,7 @@
     "body-parser": "1.18.2",
     "bunyan": "1.8.12",
     "dotenv": "4.0.0",
+    "mysql": "2.15.0",
     "pg": "7.4.1",
     "pm2": "github:Unitech/pm2#development"
   },
