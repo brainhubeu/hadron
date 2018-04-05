@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@brainhubeu/hadron-utils": "^0.0.6",
-    "@brainhubeu/hadron-core": ""
+    "@brainhubeu/hadron-core": "^0.0.6"
   }
 }
