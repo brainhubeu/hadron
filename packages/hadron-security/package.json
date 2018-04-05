@@ -1,0 +1,15 @@
+{
+  "name": "@brainhubeu/hadron-security",
+  "version": "0.0.1",
+  "description": "Security package for hadron",
+  "main": "dist",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "security",
+    "hadron"
+  ],
+  "author": "Brainhub",
+  "license": "MIT"
+}
