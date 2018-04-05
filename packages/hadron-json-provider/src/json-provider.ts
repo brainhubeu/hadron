@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
-import locate, { configLocate } from '../../hadron-file-locator';
+import locate, { configLocate } from '@brainhubeu/hadron-file-locator';
 
 const getExtension = (path: string): string => extname(path).substring(1);
 
@@ -71,16 +71,11 @@ export const configJsonProvider = (
   concatResults: boolean = false,
 ): Promise<object> =>
   configLocate(paths, configName, type, extensions)
-    .then((locatedPaths) => Promise.all(extensionMapper(locatedPaths)))
-    .then((data) => (concatResults ? [...data] : Object.assign({}, ...data)));
+    .then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
+    .then((data: any) => concatResults ? [...data] : Object.assign({}, ...data));
 
-export const jsonProvider = (
-  paths: string[],
-  extensions: string[],
-  concatResults: boolean = false,
-) =>
-  locate(paths, extensions)
-    .then((locatedPaths) => Promise.all(extensionMapper(locatedPaths)))
-    .then((data) => (concatResults ? [...data] : Object.assign({}, ...data)));
+export const jsonProvider = (paths: string[], extensions: string[], concatResults: boolean = false) =>
+   locate(paths, extensions).then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
+    .then((data: any) => concatResults ? [...data] : Object.assign({}, ...data));
 
 export default jsonProvider;

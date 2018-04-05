@@ -1,0 +1,24 @@
+{
+  "name": "@brainhubeu/hadron-utils",
+  "version": "0.0.6",
+  "description": "Set of utility functions for hadron",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
+  },
+  "keywords": [
+    "hadron",
+    "utils",
+    "brainhub"
+  ],
+  "author": "Brainhub",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

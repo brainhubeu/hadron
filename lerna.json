@@ -1,7 +1,18 @@
 {
   "lerna": "2.9.0",
   "packages": [
-    "packages/*"
+    "packages/hadron-logger",
+    "packages/hadron-utils",
+    "packages/hadron-error-handler",
+    "packages/hadron-core",
+    "packages/hadron-file-locator",
+    "packages/hadron-json-provider",
+    "packages/hadron-serialization",
+    "packages/hadron-validation",
+    "packages/hadron-typeorm",
+    "packages/hadron-events",
+    "packages/hadron-express",
+    "packages/hadron-demo"
   ],
-  "version": "0.0.0"
+  "version": "independent"
 }

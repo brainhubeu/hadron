@@ -1,11 +1,31 @@
 {
-  "name": "hadron-json-provider",
-  "version": "0.0.1",
+  "name": "@brainhubeu/hadron-json-provider",
+  "version": "0.0.6",
   "description": "Hadron json provider module",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-json-provider"
+  ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@brainhubeu/hadron-file-locator": "^0.0.6",
+    "xml2js": "0.4.19"
+  },
+  "devDependencies": {
+    "@types/xml2js": "0.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

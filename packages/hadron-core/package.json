@@ -1,0 +1,28 @@
+{
+  "name": "@brainhubeu/hadron-core",
+  "version": "0.0.6",
+  "description": "Hadron core module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
+  },
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-core"
+  ],
+  "author": "Brainhub",
+  "license": "MIT",
+  "dependencies": {
+    "@brainhubeu/hadron-error-handler": "^0.0.3",
+    "@brainhubeu/hadron-utils": "^0.0.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

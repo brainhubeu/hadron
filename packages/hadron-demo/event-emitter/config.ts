@@ -1,3 +1,5 @@
+import { ICallbackEvent } from '@brainhubeu/hadron-events';
+
 const emitterConfig: any = {};
 emitterConfig.listeners = [
   {

@@ -1,11 +1,12 @@
-import { expect, assert } from 'chai';
+import { assert } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
-import { connect } from '../src/connectionHelper';
-import { CONNECTION } from '../src/constants';
+import { connect } from '../connectionHelper';
+import { CONNECTION } from '../constants';
 
 import { Team } from './mocks/entity/Team';
 import { User } from './mocks/entity/User';
+import userSchema from './mocks/schema/User';
 
 const connection: typeorm.ConnectionOptions = {
   name: 'mysql-connection',
@@ -46,11 +47,10 @@ describe('TypeORM connection helper', () => {
     getRepositoryStub.restore();
   });
 
-  it('should return connection', () => {
-    connect(containerStub, { connection }).then((connection: any) => {
-      expect(connection instanceof typeorm.Connection).to.be.eq(true);
-    });
-  });
+  it('should return connection', () =>
+    connect(containerStub, { connection }).then((connection: any) =>
+      assert(connection instanceof typeorm.Connection),
+    ));
 
   it('should register connection to container', () => {
     connect(containerStub, { connection }).then((connection: any) => {
@@ -58,9 +58,19 @@ describe('TypeORM connection helper', () => {
     });
   });
 
-  it('should register Team repository to container as teamRepository', () => {
-    connect(containerStub, { connection }).then((connection: any) => {
-      assert(containerStub.register.calledWith('teamRepository'));
-    });
-  });
+  it('should register Team repository to container as teamRepository', () =>
+    connect(containerStub, { connection }).then((connection: any) =>
+      assert(containerStub.register.calledWith('teamRepository')),
+    ));
+
+  it('should register User repository from javascript schema to container as userRepository', () =>
+    connect(containerStub, {
+      connection: {
+        ...connection,
+        entities: [],
+        entitySchemas: [userSchema],
+      },
+    }).then((connection: any) =>
+      assert(containerStub.register.calledWith('userRepository')),
+    ));
 });
