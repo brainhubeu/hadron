@@ -2,8 +2,7 @@ import { createConnection, Connection } from 'typeorm';
 import { CONNECTION } from './constants';
 import { IContainer } from '../../hadron-core/src/container/types';
 
-const repositoryName = (name: string) =>
-  name.toLowerCase ? `${name.toLowerCase()}Repository` : name;
+const repositoryName = (name: string) => `${name.toLowerCase()}Repository`;
 
 const registerRepositories = (
   container: IContainer,
