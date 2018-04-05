@@ -45,7 +45,7 @@ scenarios:
     artillery quick --count 10 -n 20 http://localhost:8080/user
 ```
 
-Where: count - amount of virtual users, n - each virtual user will send 20 GET requests
+Where: count - amount of virtual users, n - each virtual user will send 20 GET requests.  
 Of course to make it work on localhost:8080/\* we need to run hadron-demo with sql
 
 * Artillery also provides test scripts as in example section. We can run test script with command:

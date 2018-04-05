@@ -7,10 +7,8 @@ config:
 scenarios:
   - flow:
     - loop:
-        - put:
-            url: '/updateUser'
+        - post:
+            url: '/insertTeam'
             json:
-              id: 2
-              userName: 'Test'
-              teamId: 1
+              teamName: 'Test Team'
       count: 3

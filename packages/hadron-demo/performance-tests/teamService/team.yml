@@ -1,0 +1,24 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+    - duration: 20
+      arrivalRate: 10
+      rampTo: 30
+    - duration: 30
+      arrivalRate: 5
+scenarios:
+  - name: 'Inserting, updating, deleting and searching teams'
+    flow:
+      - post:
+          url: '/insertTeam'
+          json:
+            teamName: 'Team Test'
+      - put:
+          url: '/updateTeam'
+          json:
+            id: 2
+            teamName: 'Team 2'
+      - get:
+          url: '/team'

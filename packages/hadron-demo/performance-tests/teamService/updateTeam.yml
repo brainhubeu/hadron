@@ -8,9 +8,8 @@ scenarios:
   - flow:
     - loop:
         - put:
-            url: '/updateUser'
+            url: '/updateTeam'
             json:
-              id: 2
-              userName: 'Test'
-              teamId: 1
+              id: 1
+              teamName: 'Updated team!'
       count: 3
