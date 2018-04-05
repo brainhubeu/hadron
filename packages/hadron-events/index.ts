@@ -1,6 +1,6 @@
-import eventsManagerProvider from './src/eventsMaganerProvider';
+import eventsManagerProvider from './src/eventsManagerProvider';
 import { EventEmitter } from 'events';
-import { Lifetime } from '../hadron-core';
+import { Lifetime } from '@brainhubeu/hadron-core';
 
 export * from './src/types';
 export default eventsManagerProvider;

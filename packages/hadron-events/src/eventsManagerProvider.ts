@@ -23,7 +23,7 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
     if (callback === undefined || callback === null) {
       callback = () => {
         return null;
-      }
+      };
     }
 
     return emitter

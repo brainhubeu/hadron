@@ -1,3 +1,5 @@
+import { ICallbackEvent } from '@brainhubeu/hadron-events';
+
 const emitterConfig: any = {};
 emitterConfig.listeners = [
   {
@@ -6,7 +8,7 @@ emitterConfig.listeners = [
     handler: (callback: any, ...args: any[]) => {
       const cb = () => {
         callback(...args);
-      }
+      };
       return cb();
     },
   },

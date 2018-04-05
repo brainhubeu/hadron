@@ -6,4 +6,12 @@
 .idea/
 .env
 .vscode
+node_modules
+dist
+package-lock.json
 .nyc_output
+/**/package-lock.json
+/**/node_modules
+/**/dist
+package-lock.json
+lerna-debug.log

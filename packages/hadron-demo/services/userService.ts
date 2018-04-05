@@ -14,31 +14,37 @@ class UserDto {
 const getAllUsers = async (userRepository: Repository<User>) =>
   await userRepository
     .find({ relations: ['team'] })
-    .then((users) =>
-      users.map((user) => new UserDto(user.id, user.name, user.team.name)),
+    .then((users: User[]) =>
+      users.map(
+        (user: User) => new UserDto(user.id, user.name, user.team.name),
+      ),
     );
 
 const getUserById = async (userRepository: Repository<User>, id: number) =>
   await userRepository.findOneById(id);
 
 const insertUser = async (
+  req: any,
+  res: any,
   userRepository: Repository<User>,
   teamRepository: Repository<Team>,
-  body: { userName: string; teamId: number },
 ) => {
   try {
-    await validate('insertUser', body);
+    await validate('insertUser', req.body);
     return await teamRepository
-      .findOneById(body.teamId)
-      .then((team) => userRepository.insert({ team, name: body.userName }))
+      .findOneById(req.body.teamId)
+      .then((team) => userRepository.insert({ team, name: req.body.userName }))
       .then(() => userRepository.count())
-      .then((amount) => `total amount of users: ${amount}`);
+      .then((amount) =>
+        res.status(201).json({ message: `Amount of users: ${amount}` }),
+      );
   } catch (error) {
-    throw error;
+    res.status(400).json({ error: error.message });
   }
 };
 
 const updateUser = async (
+  res: any,
   userRepository: Repository<User>,
   body: { id: number; userName: string; teamId: number },
 ) => {
@@ -46,18 +52,26 @@ const updateUser = async (
     await validate('updateUser', body);
     return await userRepository
       .findOneById(body.id)
-      .then((user) => {
+      .then((user: User) => {
         user.name = body.userName;
         return userRepository.save(user);
       })
-      .then(() => `user id: ${body.id} has new name ${body.userName}`);
+      .then(() =>
+        res
+          .status(201)
+          .json(`user id: ${body.id} has new name: ${body.userName}`),
+      );
   } catch (error) {
-    throw error;
+    res.status(400).json({ error: error.message });
   }
 };
 
-const deleteUser = async (userRepository: Repository<User>, id: number) => {
-  await userRepository.removeById(id);
+const deleteUser = async (
+  res: any,
+  userRepository: Repository<User>,
+  id: number,
+) => {
+  res.status(201).json(await userRepository.removeById(id));
 };
 
 export {

@@ -1,15 +1,15 @@
-import { Container } from '../../hadron-core';
+import { Container } from '@brainhubeu/hadron-core';
 import {
   schemaProvider,
   CONTAINER_NAME,
   ISerializer,
-} from '../../hadron-serialization';
+} from '@brainhubeu/hadron-serialization';
 import { resolve } from 'path';
 
 const paths = [resolve(__dirname, 'schemas/*')];
 
 export const setupSerializer = () =>
-  schemaProvider(paths).then((schemas) => {
+  schemaProvider(paths).then((schemas: any) => {
     const serializer: ISerializer = Container.take(CONTAINER_NAME);
     schemas.forEach(serializer.addSchema);
     serializer.addParser((value: any) => `${value}$`, 'currency');

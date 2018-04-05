@@ -1,11 +1,30 @@
 {
-  "name": "hadron-file-locator",
-  "version": "0.0.1",
+  "name": "@brainhubeu/hadron-file-locator",
+  "version": "0.0.6",
   "description": "Hadron module for searching file paths in directories",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "./LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "tsc"
   },
+  "keywords": [
+    "hadron",
+    "brainhub",
+    "hadron-file-locator"
+  ],
   "author": "Brainhub",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "glob": "7.1.2"
+  },
+  "devDependencies": {
+    "@types/glob": "5.0.35"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
 import { IEventListener } from '../types';
-import eventsManagerProvider from '../eventsMaganerProvider';
+import eventsManagerProvider from '../eventsManagerProvider';
 
 describe('events registration', () => {
   let emitter: EventEmitter = null;
