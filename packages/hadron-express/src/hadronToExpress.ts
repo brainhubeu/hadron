@@ -5,6 +5,7 @@ import { validateMethods } from './validators/routing';
 import { EVENTS_MANAGER, EVENT_NAME } from '@brainhubeu/hadron-events';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
+import { ServerResponse } from 'http';
 
 const generateMiddlewares = (route: IRoute) =>
   route.middleware &&
@@ -34,7 +35,10 @@ const mapRouteArgs = (
       return req.body;
     }
     if (name === 'req') {
-      return req.files || req.file;
+      return req;
+    }
+    if (name === 'res') {
+      return res;
     }
     return (
       req.params[name] ||
@@ -67,7 +71,11 @@ const createRoutes = (
               return route.callback(...args);
             }
           })
-          .then((result) => res.json(result))
+          .then((result) => {
+            if (!(result instanceof ServerResponse)) {
+              res.status(200).json(result);
+            }
+          })
           .catch((error) => {
             console.error(new CreateRouteError(routeName, error));
             res.sendStatus(500);
