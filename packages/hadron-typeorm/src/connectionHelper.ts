@@ -2,7 +2,8 @@ import { createConnection, Connection } from 'typeorm';
 import { CONNECTION } from './constants';
 import { IContainer } from '../../hadron-core/src/container/types';
 
-const repositoryName = (name: string) => `${name.toLowerCase()}Repositorys`;
+const repositoryName = (name: string) =>
+  name.toLowerCase ? `${name.toLowerCase()}Repository` : name;
 
 const registerRepositories = (
   container: IContainer,
@@ -10,10 +11,8 @@ const registerRepositories = (
   entities: any[],
 ) => {
   entities.forEach((entity: any) => {
-    container.register(
-      repositoryName(entity.name),
-      connection.getRepository(entity),
-    );
+    const name = (entity && entity.name) || entity;
+    container.register(repositoryName(name), connection.getRepository(name));
   });
 };
 
@@ -28,9 +27,12 @@ const connect = (container: IContainer, config: any): Promise<any> => {
   return createConnection(connection)
     .then((connection) => registerConnection(container, connection))
     .then((connection: Connection) => {
-      const entities =
-        config.connection.entities || config.connection.entitySchemas || [];
-      registerRepositories(container, connection, entities);
+      const entitiesToRegister = [
+        ...(config.connection.entities || []),
+        ...(config.connection.entitySchemas || []),
+      ];
+      registerRepositories(container, connection, entitiesToRegister);
+
       return connection;
     })
     .catch((err) => {
