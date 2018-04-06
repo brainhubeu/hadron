@@ -1,8 +1,14 @@
 import * as express from 'express';
 import { getArgs } from '@brainhubeu/hadron-utils';
-import { Callback, IContainer, IRoute, IRoutesConfig, Middleware } from './types';
+import {
+  Callback,
+  IContainer,
+  IRoute,
+  IRoutesConfig,
+  Middleware,
+} from './types';
 import { validateMethods } from './validators/routing';
-import { EVENTS_MANAGER, EVENT_NAME } from '@brainhubeu/hadron-events';
+import { eventNames } from './constants/eventNames';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
 import { ServerResponse } from 'http';
@@ -63,13 +69,15 @@ const createRoutes = (
         Promise.resolve()
           .then(() => {
             const args = mapRouteArgs(req, res, route.callback, container);
-            try {
-              const eventsManager = container.take(EVENTS_MANAGER);
-              const newRouteCallback = eventsManager.emitEvent(EVENT_NAME.CREATE_ROUTES_EVENT, route.callback);
-              return newRouteCallback(...args);
-            } catch (error) {
+            const eventManager = container.take('event-manager');
+            if (!eventManager) {
               return route.callback(...args);
             }
+            const newRouteCallback = eventManager.emitEvent(
+              eventNames.HANDLE_REQUEST_CALLBACK_EVENT,
+              route.callback,
+            );
+            return newRouteCallback(...args);
           })
           .then((result) => {
             if (!(result instanceof ServerResponse)) {

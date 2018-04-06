@@ -34,10 +34,13 @@ const createTestRoute = (
 });
 
 const containerMock = {
-  take: () => {
-    app = express();
-    app.use(bodyParser());
-    return app;
+  take: (name) => {
+    if (name === 'server') {
+      app = express();
+      app.use(bodyParser());
+      return app;
+    }
+    return null;
   },
 };
 
@@ -127,6 +130,31 @@ describe('router config', () => {
         .then(() => {
           // tslint:disable-next-line:no-unused-expression
           expect(errorSpy).to.have.been.calledWithNew;
+        });
+    });
+
+    it('calls emitEvent method', () => {
+      const emitEventSpy = sinon.spy();
+      const testRoute = createTestRoute('/index', ['GET'], () => null);
+
+      const containerMock = {
+        take: (name) => {
+          if (name === 'server') {
+            app = express();
+            app.use(bodyParser());
+            return app;
+          }
+          return {
+            emitEvent: emitEventSpy,
+          };
+        },
+      };
+
+      routesToExpress(testRoute, containerMock);
+      return request(app)
+        .get(`/index`)
+        .then(() => {
+          expect(emitEventSpy.calledOnce).to.equal(true);
         });
     });
   });
@@ -310,8 +338,7 @@ describe('router config', () => {
         .get(`/testRoute`)
         .expect(HTTPStatus[500])
         .then(() => {
-          // tslint:disable-next-line:no-unused-expression
-          expect(errorSpy).to.have.been.calledWithNew;
+          return expect(errorSpy).to.have.been.calledWithNew;
         });
     });
   });

@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@brainhubeu/hadron-utils": "^0.0.6"
+    "@brainhubeu/hadron-utils": "^0.0.6",
+    "@brainhubeu/hadron-core": "^0.0.6"
   }
 }
