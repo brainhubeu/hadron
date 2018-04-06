@@ -319,7 +319,7 @@ describe('router config', () => {
   describe('file handling', () => {
     const upload = multer({ dest: `${__dirname}/testUploads` });
 
-    const callback = (req: any) => req;
+    const callback = (req: any) => req.files || req.file;
 
     const uploadMiddleware = (req: any, res: any, next: any) =>
       upload.any()(req, res, next);
