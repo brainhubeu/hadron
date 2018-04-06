@@ -6,7 +6,7 @@ import { IEventEmitter, IEventListener } from './types';
  * @param emitter event emitter
  * @param config config parameters
  */
-const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
+const eventManagerProvider = (emitter: IEventEmitter, config: any) => ({
   registerEvents: (listeners: IEventListener[]) => {
     listeners.forEach((listener: any) => {
       if (listener.event === '' || listener.event === null) {
@@ -42,4 +42,4 @@ const eventsManagerProvider = (emitter: IEventEmitter, config: any) => ({
   },
 });
 
-export default eventsManagerProvider;
+export default eventManagerProvider;

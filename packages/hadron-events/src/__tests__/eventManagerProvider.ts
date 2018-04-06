@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
 import { IEventListener } from '../types';
-import eventsManagerProvider from '../eventsManagerProvider';
+import eventManagerProvider from '../eventManagerProvider';
 
 describe('events registration', () => {
   let emitter: EventEmitter = null;
@@ -41,8 +41,8 @@ describe('events registration', () => {
     ];
 
     const config = {};
-    const eventsManager = eventsManagerProvider(emitter, config);
-    expect(() => eventsManager.registerEvents(listeners)).to.throw();
+    const eventManager = eventManagerProvider(emitter, config);
+    expect(() => eventManager.registerEvents(listeners)).to.throw();
   });
   it('registers listeners', () => {
     const spy1 = () => sinon.spy();
@@ -61,8 +61,8 @@ describe('events registration', () => {
       },
     ];
 
-    const eventsManager = eventsManagerProvider(emitter, { listeners });
-    eventsManager.registerEvents(listeners);
+    const eventManager = eventManagerProvider(emitter, { listeners });
+    eventManager.registerEvents(listeners);
     expect(emitter.listeners('someEvent').length).to.equal(2);
     expect(emitter.listeners('someEvent')[0]).to.equal(spy1);
     expect(emitter.listeners('someEvent')[1]).to.equal(spy2);
@@ -73,7 +73,7 @@ describe('events registration', () => {
 
 describe('events emitting', () => {
   let emitter: EventEmitter = null;
-  let eventsManager = null;
+  let eventManager = null;
 
   beforeEach(() => {
     emitter = new EventEmitter();
@@ -81,7 +81,7 @@ describe('events emitting', () => {
 
   afterEach(() => {
     emitter = null;
-    eventsManager = null;
+    eventManager = null;
   });
   it('throws error when eventName argument is either null or empty string', () => {
     const listeners: IEventListener[] = [
@@ -112,25 +112,25 @@ describe('events emitting', () => {
     ];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config);
-    eventsManager.registerEvents(listeners);
+    eventManager = eventManagerProvider(emitter, config);
+    eventManager.registerEvents(listeners);
 
     const callback = () => 'test';
 
-    expect(() => eventsManager.emitEvent('', callback)).throw();
+    expect(() => eventManager.emitEvent('', callback)).throw();
   });
 
   it('calls emitter.listeners with eventName argument', () => {
     const listeners: IEventListener[] = [];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config);
-    eventsManager.registerEvents(listeners);
+    eventManager = eventManagerProvider(emitter, config);
+    eventManager.registerEvents(listeners);
 
     const eventName = 'someEvent';
     const listenersMethodSpy = sinon.spy(emitter, 'listeners');
     const callback = () => 'test';
-    eventsManager.emitEvent(eventName, callback);
+    eventManager.emitEvent(eventName, callback);
     expect(listenersMethodSpy.alwaysCalledWithExactly(eventName)).to.equal(
       true,
     );
@@ -151,11 +151,11 @@ describe('events emitting', () => {
     ];
 
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config);
-    eventsManager.registerEvents(listeners);
+    eventManager = eventManagerProvider(emitter, config);
+    eventManager.registerEvents(listeners);
 
     const callback = () => 'original function';
-    const cb = eventsManager.emitEvent('changeCallbackEvent', callback);
+    const cb = eventManager.emitEvent('changeCallbackEvent', callback);
     expect(cb()).to.equal('changed');
   });
 
@@ -176,12 +176,12 @@ describe('events emitting', () => {
         handler: () => spy2(),
       },
     ];
-    eventsManager = eventsManagerProvider(emitter, {
+    eventManager = eventManagerProvider(emitter, {
       listeners: listenersWithoutCallback,
     });
-    eventsManager.registerEvents(listenersWithoutCallback);
+    eventManager.registerEvents(listenersWithoutCallback);
     const callback = () => 'test';
-    eventsManager.emitEvent('someEvent', callback)();
+    eventManager.emitEvent('someEvent', callback)();
 
     return expect(spy1.calledOnce) && expect(spy2.calledOnce);
   });
@@ -199,9 +199,9 @@ describe('events emitting', () => {
       },
     ];
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config);
-    eventsManager.registerEvents(listeners);
-    const eventFunc = eventsManager.emitEvent('someEvent', callback);
+    eventManager = eventManagerProvider(emitter, config);
+    eventManager.registerEvents(listeners);
+    const eventFunc = eventManager.emitEvent('someEvent', callback);
 
     expect(eventFunc()).to.equal(callback());
   });
@@ -217,8 +217,8 @@ describe('events emitting', () => {
       },
     ];
     const config = {};
-    eventsManager = eventsManagerProvider(emitter, config);
-    eventsManager.registerEvents(listeners);
-    expect(eventsManager.emitEvent('someEvent')).to.not.throw();
+    eventManager = eventManagerProvider(emitter, config);
+    eventManager.registerEvents(listeners);
+    expect(eventManager.emitEvent('someEvent')).to.not.throw();
   });
 });

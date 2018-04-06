@@ -1,10 +1,10 @@
-import eventsManagerProvider from '@brainhubeu/hadron-events';
+import eventManagerProvider from '@brainhubeu/hadron-events';
 import { EventEmitter } from 'events';
 
 const emitter = new EventEmitter();
 const config = {};
 
-const eventsManager = eventsManagerProvider(emitter, config);
+const eventManager = eventManagerProvider(emitter, config);
 
 const listeners = [
   {
@@ -19,9 +19,9 @@ const listeners = [
   },
 ];
 
-eventsManager.registerEvents(listeners);
+eventManager.registerEvents(listeners);
 
 const callback = () => 'testcase';
 
-const newCallback = eventsManager.emitEvent('testEvent', callback);
+const newCallback = eventManager.emitEvent('testEvent', callback);
 newCallback();
