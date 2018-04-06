@@ -1,0 +1,28 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+    - duration: 20
+      arrivalRate: 10
+      rampTo: 30
+    - duration: 30
+      arrivalRate: 5
+scenarios:
+  - name: 'Inserting, updating, deleting and searching users'
+    flow:
+      - post:
+          url: '/insertUser'
+          json:
+            userName: 'Test'
+            teamId: 1
+      - put:
+          url: '/updateUser'
+          json:
+            id: 2
+            userName: 'BB'
+            teamId: 1
+      - delete:
+          url: '/deleteUser/3'
+      - get:
+          url: '/user'
