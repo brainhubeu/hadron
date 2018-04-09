@@ -1,5 +1,6 @@
 interface IUser {
+  id: number | string;
   username: string;
   password: string;
-  role: string;
+  roles: IRole[];
 }
