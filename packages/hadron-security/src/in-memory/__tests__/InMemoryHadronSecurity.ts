@@ -29,6 +29,7 @@ describe('In memory hadron security', () => {
   security.allow('/api', [roleProvider.getRole('Admin')]);
   security.allow('/api', [roleProvider.getRole('Guest')]);
   security.allow('/api', [roleProvider.getRole('Admin')]);
+  security.allow('/admin/*', [roleProvider.getRole('Admin')]);
 
   security.allow('/blog', [
     roleProvider.getRole('Admin'),
@@ -61,6 +62,15 @@ describe('In memory hadron security', () => {
     } catch (error) {
       expect(error).to.be.instanceof(Error);
     }
+  });
+
+  it('should return true if user is allowe to route', () => {
+    expect(
+      security.isAllowed(
+        '/admin/abc',
+        userProvider.loadUserByUsername('admin'),
+      ),
+    ).to.be.equal(true);
   });
 
   it('should return true if user is allowed to route', () => {
