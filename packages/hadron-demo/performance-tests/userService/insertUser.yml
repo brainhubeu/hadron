@@ -1,0 +1,15 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+  defaults:
+scenarios:
+  - flow:
+    - loop:
+        - post:
+            url: '/insertUser'
+            json:
+              userName: 'Test'
+              teamId: 1
+      count: 3

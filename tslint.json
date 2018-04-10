@@ -42,8 +42,6 @@
     "align": false
   },
   "linterOptions": {
-    "exclude": [
-        "**/*.js"
-    ]
+    "exclude": ["**/*.js"]
   }
 }

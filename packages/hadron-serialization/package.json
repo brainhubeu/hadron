@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-serialization",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hadron serialization module",
   "main": "dist/index.js",
   "files": [
@@ -19,7 +19,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-json-provider": "^0.0.6"
+    "@brainhubeu/hadron-json-provider": "^0.0.7"
   },
   "publishConfig": {
     "access": "public"

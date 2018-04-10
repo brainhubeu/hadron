@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-file-locator",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hadron module for searching file paths in directories",
   "main": "dist/index.js",
   "files": [

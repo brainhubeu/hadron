@@ -1,34 +1,22 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "noImplicitAny": true,
-        "noEmitOnError": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist",
-        "baseUrl": ".",
-        "allowJs": true,
-        "paths": {
-            "*": [
-                "./*"
-            ]
-        },
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "inlineSources": true,
-        "lib": [
-            "es2017",
-            "dom"
-        ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "allowJs": true,
+    "paths": {
+      "*": ["./*"]
     },
-    "include": [
-        "src/**/*.*",
-        "index.ts",
-        "LICENSE"
-    ],
-    "exclude": [
-        "node_modules",
-        "src/__tests__/**"
-    ]
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "inlineSources": true,
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["src/**/*.*", "index.ts", "LICENSE"],
+  "exclude": ["node_modules", "src/__tests__/**"]
 }

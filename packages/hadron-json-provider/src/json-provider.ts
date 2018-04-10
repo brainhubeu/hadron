@@ -72,10 +72,19 @@ export const configJsonProvider = (
 ): Promise<object> =>
   configLocate(paths, configName, type, extensions)
     .then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
-    .then((data: any) => concatResults ? [...data] : Object.assign({}, ...data));
+    .then(
+      (data: any) => (concatResults ? [...data] : Object.assign({}, ...data)),
+    );
 
-export const jsonProvider = (paths: string[], extensions: string[], concatResults: boolean = false) =>
-   locate(paths, extensions).then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
-    .then((data: any) => concatResults ? [...data] : Object.assign({}, ...data));
+export const jsonProvider = (
+  paths: string[],
+  extensions: string[],
+  concatResults: boolean = false,
+) =>
+  locate(paths, extensions)
+    .then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
+    .then(
+      (data: any) => (concatResults ? [...data] : Object.assign({}, ...data)),
+    );
 
 export default jsonProvider;

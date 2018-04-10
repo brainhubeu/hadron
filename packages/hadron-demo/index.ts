@@ -34,6 +34,9 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
     [hadronEvents, hadronSerialization, hadronExpress],
     config,
   ).then((container: IContainer) => {
+    expressApp.use((req, res, next) =>
+      res.status(404).json('Request not found.'),
+    );
     container.register('customValue', 'From Brainhub with ❤️');
     setupSerializer();
     expressApp.listen(port);
