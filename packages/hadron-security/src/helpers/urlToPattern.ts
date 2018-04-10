@@ -9,7 +9,6 @@ const replaceAll = (
 export const convertToPattern = (url: string): string => {
   let regexp = url[0] === '/' ? url.substring(1) : url;
   regexp = `^/?${regexp.replace(/\/\*/g, '($|/$|/[^/]*$)')}`;
-  console.log(regexp);
   return `${replaceAll(regexp, '/', '/')}$`;
 };
 
