@@ -9,8 +9,8 @@ export interface IRolesMap {
 
 /**
  * Function adds roles from dependency of other roles, to make sure that all roles are available
- * @param roles <IRolesMap>
- * @returns IRolesMap
+ * @param roles available roles with all "dependent" ones
+ * @returns {IRolesMap}
  */
 export function fillMissingRoles(roles: IRolesMap): IRolesMap {
   return Object.entries(roles).reduce(
@@ -31,7 +31,7 @@ export function fillMissingRoles(roles: IRolesMap): IRolesMap {
  * Get array of all roles below in hierarchy distinctly
  * @param userRoles
  * @param allRoles
- * @returns
+ * @returns {string[]}
  */
 export function getDeeperRoles(userRoles: string[], allRoles: IRolesMap) {
   return userRoles
@@ -51,6 +51,7 @@ export function getDeeperRoles(userRoles: string[], allRoles: IRolesMap) {
  * Returns array of all given roles, without ones given in first parameter
  * @param userRoles
  * @param allRoles
+ * @returns {string[]}
  */
 export function excludeRoles(userRoles: string[], allRoles: IRolesMap) {
   return Object.entries(allRoles)
@@ -69,7 +70,7 @@ export function excludeRoles(userRoles: string[], allRoles: IRolesMap) {
  * @param userRoles
  * @param requiredRole
  * @param allRoles
- * @returns <boolean>
+ * @returns {boolean}
  */
 export function checkRole(
   userRoles: string[],
@@ -98,8 +99,8 @@ export function checkRole(
  * @param userRoles
  * @param requiredRoles
  * @param allRoles
- * @param exact
- * @return <boolean>
+ * @param exact specifies if user needs all roles from requiredRoles (true), or only one of them (false)
+ * @return {boolean}
  */
 export function checkRoles(
   userRoles: string[],
@@ -125,8 +126,9 @@ export function checkRoles(
 }
 
 /**
- *  Returns function, that will match roles to users
- *  * @param rolesHierarchy hierarchy of roles
+ * Provider for hierarchy manager
+ * @param rolesHierarchy
+ * @returns {function<boolean>}
  */
 export default function hierarchyProvider(rolesHierarchy: IRolesMap) {
   const fullRoles: IRolesMap = fillMissingRoles(rolesHierarchy);
