@@ -1,15 +1,6 @@
-const replaceAll = (
-  target: string,
-  search: string,
-  replacement: string,
-): string => {
-  return target.replace(new RegExp(search, 'g'), replacement);
-};
-
 export const convertToPattern = (url: string): string => {
-  let regexp = url[0] === '/' ? url.substring(1) : url;
-  regexp = `^/?${regexp.replace(/\/\*/g, '($|/$|/[^/]*$)')}`;
-  return `${replaceAll(regexp, '/', '/')}$`;
+  const regexp = url[0] === '/' ? url.substring(1) : url;
+  return `^/?${regexp.replace(/\/\*/g, '($|/$|/[^/]*$)')}$`;
 };
 
 const urlGlob = (pattern: string, input: string): boolean => {

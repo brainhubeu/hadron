@@ -3,7 +3,7 @@ import HadronSecurity from '../../HadronSecurity';
 import InMemoryRoleProvider from '../../in-memory/InMemoryRoleProvider';
 import InMemoryUserProvider from '../../in-memory/InMemoryUserProvider';
 
-describe('In memory hadron security', () => {
+describe.only('In memory hadron security', () => {
   const userProvider = new InMemoryUserProvider();
   const roleProvider = new InMemoryRoleProvider();
 
@@ -71,6 +71,23 @@ describe('In memory hadron security', () => {
         userProvider.loadUserByUsername('admin'),
       ),
     ).to.be.equal(true);
+    expect(
+      security.isAllowed(
+        'admin/wqe-xc1',
+        userProvider.loadUserByUsername('admin'),
+      ),
+    ).to.be.equal(true);
+  });
+
+  it('should throw an error if non strict url does not exists.', () => {
+    try {
+      security.isAllowed(
+        'admin/qwe/1',
+        userProvider.loadUserByUsername('admin'),
+      );
+    } catch (error) {
+      expect(error).to.be.instanceof(Error);
+    }
   });
 
   it('should return true if user is allowed to route', () => {
