@@ -24,7 +24,7 @@ describe('In memory hadron security', () => {
     roles: [roleProvider.getRole('User')],
   });
 
-  const security = new HadronSecurity();
+  const security = new HadronSecurity(userProvider);
 
   security.allow('/api', [roleProvider.getRole('Admin')]);
   security.allow('/api', [roleProvider.getRole('Guest')]);
