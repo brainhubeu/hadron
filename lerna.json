@@ -14,7 +14,6 @@
     "packages/hadron-events",
     "packages/hadron-express",
     "packages/hadron-demo",
-    "packages/hadron-security"
   ],
   "version": "independent"
 }

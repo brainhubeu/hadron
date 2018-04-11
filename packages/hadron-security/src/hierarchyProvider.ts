@@ -1,10 +1,17 @@
-export interface IUser {
-  username: string;
-  roles: string[];
-}
-
 export interface IRolesMap {
   [s: string]: string[];
+}
+
+export interface IRole {
+  id: number | string;
+  name: string;
+}
+
+export interface IUser {
+  id: number | string;
+  username: string;
+  password: string;
+  roles: IRole[];
 }
 
 /**
@@ -39,16 +46,16 @@ export function fillMissingRoles(roles: IRolesMap | string[]): IRolesMap {
 /**
  * Get array of all roles below in hierarchy distinctly
  * @param userRoles
- * @param allRoles
+ * @param availableRoles
  * @returns {string[]}
  */
-export function getDeeperRoles(userRoles: string[], allRoles: IRolesMap) {
+export function getDeeperRoles(userRoles: string[], availableRoles: IRolesMap) {
   return userRoles
-    .filter((role: string) => !!allRoles[role])
+    .filter((role: string) => !!availableRoles[role])
     .reduce(
       (accumulator: string[], role: string) => [
         ...accumulator,
-        ...allRoles[role].filter(
+        ...availableRoles[role].filter(
           (roleToAdd) => !accumulator.includes(roleToAdd),
         ),
       ],
@@ -59,11 +66,11 @@ export function getDeeperRoles(userRoles: string[], allRoles: IRolesMap) {
 /**
  * Returns array of all given roles, without ones given in first parameter
  * @param userRoles
- * @param allRoles
+ * @param availableRoles
  * @returns {string[]}
  */
-export function excludeRoles(userRoles: string[], allRoles: IRolesMap) {
-  return Object.entries(allRoles)
+export function excludeRoles(userRoles: string[], availableRoles: IRolesMap) {
+  return Object.entries(availableRoles)
     .filter(([key, value]: [string, any]) => userRoles.indexOf(key) < 0)
     .reduce(
       (accumulator: object, [key, value]: [string, any]) => ({
@@ -78,13 +85,13 @@ export function excludeRoles(userRoles: string[], allRoles: IRolesMap) {
  * Checks if user role contains required role
  * @param userRoles
  * @param requiredRole
- * @param allRoles
+ * @param availableRoles
  * @returns {boolean}
  */
 export function checkRole(
   userRoles: string[],
   requiredRole: string,
-  allRoles: IRolesMap,
+  availableRoles: IRolesMap,
 ): boolean {
   if (userRoles.length <= 0) {
     return false;
@@ -95,10 +102,10 @@ export function checkRole(
   }
 
   return checkRole(
-    getDeeperRoles(userRoles, allRoles),
+    getDeeperRoles(userRoles, availableRoles),
     requiredRole,
     // excludes currently checked roles to avoid endless recurrency
-    excludeRoles(userRoles, allRoles),
+    excludeRoles(userRoles, availableRoles),
   );
 }
 
@@ -107,14 +114,14 @@ export function checkRole(
  *
  * @param userRoles
  * @param requiredRoles
- * @param allRoles
+ * @param availableRoles
  * @param exact specifies if user needs all roles from requiredRoles (true), or only one of them (false)
  * @return {boolean}
  */
 export function checkRoles(
   userRoles: string[],
   requiredRoles: string[],
-  allRoles: IRolesMap,
+  availableRoles: IRolesMap,
   exact = false,
 ): boolean {
   if (userRoles.length <= 0) {
@@ -125,13 +132,51 @@ export function checkRoles(
     .map(
       (role) =>
         typeof role === 'object'
-          ? checkRoles(userRoles, role, allRoles, true)
-          : checkRole(userRoles, role, allRoles),
+          ? checkRoles(userRoles, role, availableRoles, true)
+          : checkRole(userRoles, role, availableRoles),
     )
     .reduce(
       (accumulator, currentValue) =>
         exact ? accumulator && currentValue : accumulator || currentValue,
     );
+}
+
+/**
+ * Returns true if given roles are matching expected roles in hierarchy
+ * @param {IUser} user
+ * @param roles
+ * @param allRoles
+ * @returns {boolean}
+ */
+export function isGranted(
+  userRoles: string[],
+  roles: any,
+  allRoles: IRolesMap,
+): boolean {
+  if (typeof roles === 'string') {
+    return checkRole(userRoles, roles, allRoles);
+  }
+
+  if (typeof roles === 'object') {
+    return checkRoles(userRoles, roles, allRoles);
+  }
+
+  throw new Error('Unknown role type');
+}
+
+/**
+ * Returns true if user has matching role in hierarchy
+ * @param {IUser} user
+ * @param roles
+ * @param allRoles
+ * @returns {boolean}
+ */
+export function isUserGranted(
+  user: IUser,
+  roles: any,
+  allRoles: IRolesMap,
+): boolean {
+  return isGranted(user.roles.map((role) => role.name), roles, allRoles);
 }
 
 /**
@@ -143,15 +188,10 @@ export default function hierarchyProvider(
   rolesHierarchy: IRolesMap | string[],
 ) {
   const fullRoles: IRolesMap = fillMissingRoles(rolesHierarchy);
-  return function isGranted(user: IUser, roles: any): boolean {
-    if (typeof roles === 'string') {
-      return checkRole(user.roles, roles, fullRoles);
-    }
-
-    if (typeof roles === 'object') {
-      return checkRoles(user.roles, roles, fullRoles);
-    }
-
-    throw new Error('Unknown role type');
+  return {
+    isGranted: (userRoles: string[], roles: any) =>
+      isGranted(userRoles, roles, fullRoles),
+    isUserGranted: (user: IUser, roles: any) =>
+      isUserGranted(user, roles, fullRoles),
   };
 }
