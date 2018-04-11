@@ -1,4 +1,4 @@
-import isGrantedProvider, {
+import hierarchyProvider, {
   fillMissingRoles,
   checkRole,
   checkRoles,
@@ -160,57 +160,44 @@ describe('hierarchyProvider', () => {
   });
 
   describe('isGranted', () => {
-    const isGranted = isGrantedProvider(basicHierarchy);
+    const { isGranted } = hierarchyProvider(basicHierarchy);
 
-    it('should pass if single matching role has been provided', () => {
-      const user = { username: 'George', roles: ['ADMIN'] };
-      return expect(isGranted(user, 'ADMIN')).to.be.eql(true);
-    });
+    it('should pass if single matching role has been provided', () =>
+      expect(isGranted(['ADMIN'], 'ADMIN')).to.be.eql(true));
 
-    it('should fail if single not matching role has been provided', () => {
-      const user = { username: 'George', roles: ['ADMIN'] };
-      return expect(isGranted(user, 'GUEST')).to.be.eql(false);
-    });
+    it('should fail if single not matching role has been provided', () =>
+      expect(isGranted(['ADMIN'], 'GUEST')).to.be.eql(false));
 
-    it('should pass if array of roles has been provided, with single matching one', () => {
-      const user = { username: 'George', roles: ['ADMIN'] };
-      return expect(isGranted(user, ['ADMIN', 'GUEST'])).to.be.eql(true);
-    });
+    it('should pass if array of roles has been provided, with single matching one', () =>
+      expect(isGranted(['ADMIN'], ['ADMIN', 'GUEST'])).to.be.eql(true));
 
-    it('should fail if array of roles has been provided, with none that matches', () => {
-      const user = { username: 'George', roles: ['MANAGER'] };
-      return expect(isGranted(user, ['ADMIN', 'GUEST'])).to.be.eql(false);
-    });
+    it('should fail if array of roles has been provided, with none that matches', () =>
+      expect(isGranted(['MANAGER'], ['ADMIN', 'GUEST'])).to.be.eql(false));
 
-    it('should pass if array of arrays of roles has been provided and all of them are matching', () => {
-      const user = { username: 'George', roles: ['ADMIN', 'GUEST'] };
-      return expect(isGranted(user, [['ADMIN', 'GUEST']])).to.be.eql(true);
-    });
-
-    it('should fail if array of arrays of roles has been provided and one of them is not matching', () => {
-      const user = { username: 'George', roles: ['ADMIN'] };
-      return expect(isGranted(user, [['ADMIN', 'GUEST']])).to.be.eql(false);
-    });
-
-    it('should pass if array of arrays and single role has been provided and one of them are matching', () => {
-      const user = { username: 'George', roles: ['MANAGER'] };
-      return expect(isGranted(user, [['ADMIN', 'GUEST'], 'MANAGER'])).to.be.eql(
+    it('should pass if array of arrays of roles has been provided and all of them are matching', () =>
+      expect(isGranted(['ADMIN', 'GUEST'], [['ADMIN', 'GUEST']])).to.be.eql(
         true,
-      );
-    });
+      ));
 
-    it('should fail if array of arrays of roles has been provided and none of them are matching', () => {
-      const user = { username: 'George', roles: ['MANAGER'] };
-      return expect(
-        isGranted(user, [['ADMIN', 'GUEST'], ['MANAGER', 'GUEST']]),
-      ).to.be.eql(false);
-    });
+    it('should fail if array of arrays of roles has been provided and one of them is not matching', () =>
+      expect(isGranted(['ADMIN'], [['ADMIN', 'GUEST']])).to.be.eql(false));
 
-    it('should pass if array of arrays of roles has been provided and one of them are matching', () => {
-      const user = { username: 'George', roles: ['MANAGER', 'GUEST'] };
-      return expect(
-        isGranted(user, [['ADMIN', 'GUEST'], ['MANAGER', 'GUEST']]),
-      ).to.be.eql(true);
-    });
+    it('should pass if array of arrays and single role has been provided and one of them are matching', () =>
+      expect(isGranted(['MANAGER'], [['ADMIN', 'GUEST'], 'MANAGER'])).to.be.eql(
+        true,
+      ));
+
+    it('should fail if array of arrays of roles has been provided and none of them are matching', () =>
+      expect(
+        isGranted(['MANAGER'], [['ADMIN', 'GUEST'], ['MANAGER', 'GUEST']]),
+      ).to.be.eql(false));
+
+    it('should pass if array of arrays of roles has been provided and one of them are matching', () =>
+      expect(
+        isGranted(
+          ['MANAGER', 'GUEST'],
+          [['ADMIN', 'GUEST'], ['MANAGER', 'GUEST']],
+        ),
+      ).to.be.eql(true));
   });
 });
