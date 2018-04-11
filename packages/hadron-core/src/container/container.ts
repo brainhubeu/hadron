@@ -8,10 +8,10 @@ const takeContainerByKey = (key: string): IContainerItem[] =>
 
 /* method for registering items in container */
 /**
- * Method for registering items in container, optionaly setting a lifespan for items
+ * Method for registering items in container, optionally setting a lifespan for items
  * @param key for representing item in register, second use of the same key override previous item
- * @param item stored item, can be any tyle: value, type, function....
- * @param lifetime setting type of life-span [value, singletone, transient] - value is default
+ * @param item stored item, can be any type: value, type, function....
+ * @param lifetime setting type of life-span [value, singleton, transient] - value is default
  */
 const register = (key: string, item: any, lifetime?: string): void => {
   const containerItems = takeContainerByKey(key);
@@ -24,7 +24,7 @@ const register = (key: string, item: any, lifetime?: string): void => {
 };
 
 /** method for getting item from register
- * Method whitch returns item previously registered for passed key
+ * Method which returns item previously registered for passed key
  * @param key for representing item in register
  * @return { any } return stored item
  */
