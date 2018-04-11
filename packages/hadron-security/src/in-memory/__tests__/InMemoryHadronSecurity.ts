@@ -3,7 +3,7 @@ import HadronSecurity from '../../HadronSecurity';
 import InMemoryRoleProvider from '../../in-memory/InMemoryRoleProvider';
 import InMemoryUserProvider from '../../in-memory/InMemoryUserProvider';
 
-describe.only('In memory hadron security', () => {
+describe('In memory hadron security', () => {
   const userProvider = new InMemoryUserProvider();
   const roleProvider = new InMemoryRoleProvider();
 
