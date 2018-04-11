@@ -6,13 +6,13 @@ export * from './src/types';
 export default eventManagerProvider;
 
 export const register = (container: any, config: any) => {
-  if (container.take('event-emitter') === null) {
-    container.register('event-emitter', EventEmitter, Lifetime.Singletone);
+  if (container.take('eventEmitter') === null) {
+    container.register('eventEmitter', EventEmitter, Lifetime.Singletone);
   }
   const eventManager = eventManagerProvider(
-    container.take('event-emitter'),
+    container.take('eventEmitter'),
     config.events,
   );
   eventManager.registerEvents(config.events.listeners);
-  container.register('event-manager', eventManager);
+  container.register('eventManager', eventManager);
 };
