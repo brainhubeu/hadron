@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import urlGlob from '../helpers/urlToPattern';
+import urlGlob from '../helpers/urlGlob';
 
 describe('Glob URL pattern', () => {
   it('should return true if url is valid', () => {
