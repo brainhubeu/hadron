@@ -25,7 +25,6 @@ class HadronSecurity {
     }
   }
   public isAllowed(path: string, user: IUser): boolean {
-    // const route = this.routes.filter((r) => r.path === path);
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
       throw new Error(`Path: ${path} is not supported.`);
