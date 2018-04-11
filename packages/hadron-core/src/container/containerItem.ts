@@ -23,7 +23,7 @@ class ContainerItem implements IContainerItem {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class ContainerItemSingletone extends ContainerItem {
+class ContainerItemSingleton extends ContainerItem {
   // tslint:disable-next-line:variable-name
   private _itemInstanse: any;
 
@@ -97,8 +97,8 @@ const containerItemFactory = (
   lifetime?: string,
 ): ContainerItem => {
   switch (lifetime) {
-    case Lifetime.Singletone:
-      return new ContainerItemSingletone(key, item);
+    case Lifetime.Singleton:
+      return new ContainerItemSingleton(key, item);
     case Lifetime.Transient:
       return new ContainerItemTransient(key, item);
     default:

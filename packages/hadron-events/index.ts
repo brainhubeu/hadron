@@ -7,7 +7,7 @@ export default eventManagerProvider;
 
 export const register = (container: any, config: any) => {
   if (container.take('eventEmitter') === null) {
-    container.register('eventEmitter', EventEmitter, Lifetime.Singletone);
+    container.register('eventEmitter', EventEmitter, Lifetime.Singleton);
   }
   const eventManager = eventManagerProvider(
     container.take('eventEmitter'),
