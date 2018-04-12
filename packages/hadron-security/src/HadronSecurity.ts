@@ -1,10 +1,15 @@
 import urlGlob, { convertToPattern } from '../src/helpers/urlGlob';
 import * as express from 'express';
+import { isUserGranted } from '../src/hierarchyProvider';
+import { IRolesMap } from './hierarchyProvider';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
 
-  constructor(private userProvider: IUserProvider) {
+  constructor(
+    private userProvider: IUserProvider,
+    private roleHierarchy: IRolesMap,
+  ) {
     this.middleware = this.middleware.bind(this);
   }
 
@@ -41,10 +46,11 @@ class HadronSecurity {
 
   public isAllowed(path: string, user: IUser): boolean {
     const route = this.checkIfRouteExists(path);
-
-    return route.allowedRoles.some((v) => {
-      return user.roles.indexOf(v) >= 0;
-    });
+    return isUserGranted(
+      user,
+      route.allowedRoles.map((route) => route.name),
+      this.roleHierarchy,
+    );
   }
 
   public middleware(
