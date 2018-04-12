@@ -10,7 +10,7 @@ describe('container register', () => {
     container.register(itemName, 'given2');
     expect('given2').to.equal(container.take(itemName));
   });
-  it('should always return the same object - Singletone', () => {
+  it('should always return the same object - Singleton', () => {
     const itemName = 'test';
     class Foo {
       public value: string;
@@ -18,7 +18,7 @@ describe('container register', () => {
         this.value = new Date().getTime().toString();
       }
     }
-    container.register(itemName, Foo, Lifetime.Singletone);
+    container.register(itemName, Foo, Lifetime.Singleton);
     const item1 = container.take(itemName);
     const item2 = container.take(itemName);
     expect(item2).to.deep.equal(item1);
