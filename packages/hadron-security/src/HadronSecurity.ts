@@ -4,9 +4,11 @@ import * as express from 'express';
 class HadronSecurity {
   private routes: IRoute[] = [];
 
-  constructor(private userProvider: IUserProvider) {}
+  constructor(private userProvider: IUserProvider) {
+    this.middleware = this.middleware.bind(this);
+  }
 
-  public allow(path: string, roles: IRole[]): void {
+  public allow(path: string, roles: IRole[]): HadronSecurity {
     let existingRoute: IRoute;
     for (const route of this.routes) {
       if (route.path === path) {
@@ -26,12 +28,13 @@ class HadronSecurity {
 
       this.routes.push(route);
     }
+    return this;
   }
 
   public checkIfRouteExists(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
-      throw new Error(`Path: ${path} is not supported.`);
+      throw new Error(`Path: ${path} is not supported by security.`);
     }
     return route[0];
   }
@@ -48,26 +51,32 @@ class HadronSecurity {
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
-  ): any {
+  ): void {
     try {
       this.checkIfRouteExists(req.path);
+    } catch (error) {
+      console.log(error.message);
+      return next();
+    }
+
+    try {
       if (
         this.isAllowed(
           req.path,
           this.userProvider.loadUserByUsername(req.body.username),
         )
       ) {
-        console.log('Authenticated');
-        next();
-      } else {
-        console.log('Unauthenitacted');
-        res.status(401).json({
-          message: 'Unauthenticated',
-        });
+        return next();
       }
+
+      res.status(401).json({
+        message: 'Unauthenticated',
+      });
     } catch (error) {
-      console.log('Error');
-      next();
+      console.log(error.message);
+      res.status(401).json({
+        message: 'Unauthenticated',
+      });
     }
   }
 }
