@@ -1,6 +1,6 @@
 enum Lifetime {
   Transient = 'transient',
-  Singletone = 'singletone',
+  Singleton = 'singleton',
   Value = 'value',
 }
 

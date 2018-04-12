@@ -16,13 +16,13 @@ describe('containerItem set lifetime', () => {
     );
     expect(item.constructor.name).to.equal('ContainerItemTransient');
   });
-  it('should be singletone', () => {
+  it('should be singleton', () => {
     const item = containerItem.containerItemFactory(
       'object2',
       Object,
-      Lifetime.Singletone,
+      Lifetime.Singleton,
     );
-    expect(item.constructor.name).to.equal('ContainerItemSingletone');
+    expect(item.constructor.name).to.equal('ContainerItemSingleton');
   });
 });
 describe('containerItem set value', () => {
@@ -49,7 +49,7 @@ describe('containerItem set value', () => {
     const item = containerItem.containerItemFactory(
       'Fooooo',
       Foo,
-      Lifetime.Singletone,
+      Lifetime.Singleton,
     );
     const item1 = item.Item;
     const item2 = item.Item;
