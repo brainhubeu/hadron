@@ -10,12 +10,19 @@ const roleProvider = new InMemoryRoleProvider();
 roleProvider.addRole({ id: 1, name: 'Admin' });
 roleProvider.addRole({ id: 2, name: 'User' });
 
+const roleHierarchy = {
+  ADMIN: [roleProvider.getRole('Admin').name],
+  USER: [roleProvider.getRole('User').name],
+  ALL: [roleProvider.getRole('Admin').name, roleProvider.getRole('User').name],
+};
+
 userProvider.addUser({
   id: 1,
   username: 'admin',
   password: 'admin',
   roles: [roleProvider.getRole('Admin')],
 });
+
 userProvider.addUser({
   id: 2,
   username: 'user',
@@ -23,7 +30,7 @@ userProvider.addUser({
   roles: [roleProvider.getRole('User')],
 });
 
-const security = new HadronSecurity(userProvider);
+const security = new HadronSecurity(userProvider, roleHierarchy);
 
 security
   .allow('/user', [roleProvider.getRole('User')])
