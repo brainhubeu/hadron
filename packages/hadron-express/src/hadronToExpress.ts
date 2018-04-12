@@ -13,6 +13,13 @@ import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
 import { ServerResponse } from 'http';
 
+const isServerResponse = (
+  response: ServerResponse | any,
+): response is ServerResponse =>
+  response !== null &&
+  response !== undefined &&
+  (response as ServerResponse).statusCode !== undefined;
+
 const generateMiddlewares = (route: IRoute) =>
   route.middleware &&
   route.middleware.map(
@@ -80,7 +87,7 @@ const createRoutes = (
             return newRouteCallback(...args);
           })
           .then((result) => {
-            if (!(result instanceof ServerResponse)) {
+            if (!isServerResponse(result)) {
               res.status(200).json(result);
             }
           })
