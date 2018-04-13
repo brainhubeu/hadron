@@ -17,6 +17,7 @@ describe('In memory hadron security', () => {
     password: 'admin',
     roles: [roleProvider.getRole('Admin')],
   });
+
   userProvider.addUser({
     id: 2,
     username: 'user',
@@ -24,17 +25,40 @@ describe('In memory hadron security', () => {
     roles: [roleProvider.getRole('User')],
   });
 
-  const security = new HadronSecurity(userProvider);
+  userProvider.addUser({
+    id: 3,
+    username: 'uberAdmin',
+    password: 'qwe',
+    roles: [roleProvider.getRole('Admin'), roleProvider.getRole('User')],
+  });
 
-  security.allow('/api', [roleProvider.getRole('Admin')]);
-  security.allow('/api', [roleProvider.getRole('Guest')]);
-  security.allow('/api', [roleProvider.getRole('Admin')]);
-  security.allow('/admin/*', [roleProvider.getRole('Admin')]);
+  userProvider.addUser({
+    id: 4,
+    username: 'guest',
+    password: 'guest',
+    roles: [roleProvider.getRole('Guest')],
+  });
 
-  security.allow('/blog', [
-    roleProvider.getRole('Admin'),
-    roleProvider.getRole('User'),
-  ]);
+  const roleHierarchy = {
+    ADMIN: ['Admin'],
+    USER: ['User'],
+    GUEST: ['Guest'],
+    ALL: ['Admin', 'User', 'Guest'],
+  };
+
+  const security = new HadronSecurity(
+    userProvider,
+    roleProvider,
+    roleHierarchy,
+  );
+
+  security.allow('/api', 'Admin');
+  security.allow('/api', 'Guest');
+  security.allow('/api', 'Admin');
+  security.allow('/admin/*', 'Admin');
+  security.allow('/uber', [['Admin', 'User'], 'Guest']);
+
+  security.allow('/blog', ['Admin', 'User']);
 
   it('should return true if user is allowed to route', () => {
     expect(
@@ -93,6 +117,15 @@ describe('In memory hadron security', () => {
   it('should return true if user is allowed to route', () => {
     expect(
       security.isAllowed('/blog', userProvider.loadUserByUsername('user')),
+    ).to.be.equal(true);
+  });
+
+  it('should return true if user have Admin AND User role OR Guest role', () => {
+    expect(
+      security.isAllowed('/uber', userProvider.loadUserByUsername('uberAdmin')),
+    ).to.be.equal(true);
+    expect(
+      security.isAllowed('/uber', userProvider.loadUserByUsername('guest')),
     ).to.be.equal(true);
   });
 });
