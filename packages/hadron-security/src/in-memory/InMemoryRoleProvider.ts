@@ -1,3 +1,6 @@
+import IRoleProvider from '../IRoleProvider';
+import { IRole } from '../hierarchyProvider';
+
 class InMemoryRoleProvider implements IRoleProvider {
   private roles: IRole[] = [];
 

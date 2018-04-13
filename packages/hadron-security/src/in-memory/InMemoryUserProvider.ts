@@ -1,3 +1,6 @@
+import IUserProvider from '../IUserProvider';
+import { IUser } from '../hierarchyProvider';
+
 class InMemoryUserProvider implements IUserProvider {
   private users: IUser[] = [];
 
