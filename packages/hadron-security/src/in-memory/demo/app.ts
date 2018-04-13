@@ -11,9 +11,9 @@ roleProvider.addRole({ id: 1, name: 'Admin' });
 roleProvider.addRole({ id: 2, name: 'User' });
 
 const roleHierarchy = {
-  ADMIN: [roleProvider.getRole('Admin').name],
-  USER: [roleProvider.getRole('User').name],
-  ALL: [roleProvider.getRole('Admin').name, roleProvider.getRole('User').name],
+  ADMIN: ['Admin'],
+  USER: ['User'],
+  ALL: ['Admin', 'User'],
 };
 
 userProvider.addUser({
@@ -30,13 +30,14 @@ userProvider.addUser({
   roles: [roleProvider.getRole('User')],
 });
 
-const security = new HadronSecurity(userProvider, roleHierarchy);
+const security = new HadronSecurity(userProvider, roleProvider, roleHierarchy);
 
 security
-  .allow('/user', [roleProvider.getRole('User')])
-  .allow('/admin/*', [roleProvider.getRole('Admin')])
-  .allow('/adm', [roleProvider.getRole('User')])
-  .allow('/all', [roleProvider.getRole('Admin'), roleProvider.getRole('User')]);
+  .allow('/user', ['User'])
+  .allow('/admin/*', ['Admin'])
+  .allow('/adm', ['User'])
+  .allow('/all', ['Admin', 'User'])
+  .allow('/qwe', ['NotExists', 'Admin', 'Guest', 'Manager']);
 
 const app = express();
 app.use(bodyParser.json());
