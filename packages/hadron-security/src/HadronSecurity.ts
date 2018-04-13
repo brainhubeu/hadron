@@ -2,6 +2,7 @@ import urlGlob, { convertToPattern } from '../src/helpers/urlGlob';
 import * as express from 'express';
 import { isUserGranted } from '../src/hierarchyProvider';
 import { IRolesMap } from './hierarchyProvider';
+import flattenDeep from './helpers/flattenDeep';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
@@ -11,42 +12,57 @@ class HadronSecurity {
     private roleProvider: IRoleProvider,
     private roleHierarchy: IRolesMap,
   ) {
-    this.middleware = this.middleware.bind(this);
+    this.expressMiddleware = this.expressMiddleware.bind(this);
   }
 
-  public allow(path: string, roles: string[]): HadronSecurity {
+  public allow(
+    path: string,
+    roles: string | Array<string | string[]>,
+  ): HadronSecurity {
     const nonExistingRoles = this.checkIfRolesExists(roles);
     if (nonExistingRoles.length > 0) {
       console.warn(
+        '\x1b[33m\x1b[1m',
         `Roles: [${nonExistingRoles.join(
           ', ',
-        )}] does not exists. Your route is secure, but you need to provide new role or change it.`,
+        )}] does not exists. Your route: "${path}" is secure, but you need to provide new role or change it.`,
+        '\x1b[0m',
       );
     }
 
     let existingRoute: IRoute;
+
     for (const route of this.routes) {
-      if (route.path === path) {
+      if (route.path === convertToPattern(path)) {
         existingRoute = route;
         break;
       }
     }
 
     if (existingRoute) {
-      roles.forEach((role) => existingRoute.allowedRoles.push(role));
+      if (typeof roles === 'string') {
+        existingRoute.allowedRoles.push(roles);
+      } else {
+        roles.forEach((role) => existingRoute.allowedRoles.push(role));
+      }
       existingRoute.allowedRoles = [...new Set(existingRoute.allowedRoles)];
     } else {
       const route: IRoute = {
         path: convertToPattern(path),
-        allowedRoles: roles,
+        allowedRoles: typeof roles === 'string' ? [roles] : roles,
       };
-
       this.routes.push(route);
     }
     return this;
   }
 
-  public checkIfRolesExists(roles: string[]): string[] {
+  public checkIfRolesExists(roles: any): string[] {
+    if (typeof roles === 'string') {
+      roles = [roles];
+    }
+
+    roles = flattenDeep(roles);
+
     const nonExistingRoles: string[] = [];
     for (const role of roles) {
       const existingRole = this.roleProvider
@@ -63,7 +79,7 @@ class HadronSecurity {
   public checkIfRouteExists(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
-      throw new Error(`Path: ${path} is not supported by security.`);
+      throw new Error(`Path: "${path}" is not supported by security.`);
     }
     return route[0];
   }
@@ -73,7 +89,7 @@ class HadronSecurity {
     return isUserGranted(user, route.allowedRoles, this.roleHierarchy);
   }
 
-  public middleware(
+  public expressMiddleware(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
