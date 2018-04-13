@@ -1,8 +1,10 @@
 import urlGlob, { convertToPattern } from '../src/helpers/urlGlob';
 import * as express from 'express';
 import { isUserGranted } from '../src/hierarchyProvider';
-import { IRolesMap } from './hierarchyProvider';
+import { IRolesMap, IUser } from './hierarchyProvider';
 import flattenDeep from './helpers/flattenDeep';
+import IUserProvider from './IUserProvider';
+import IRoleProvider from './IRoleProvider';
 
 class HadronSecurity {
   private routes: IRoute[] = [];

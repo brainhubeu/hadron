@@ -1,3 +1,5 @@
+import { IUser } from './hierarchyProvider';
+
 interface IProvider {
   addRole(name: string): void;
   removeRole(name: string): void;
