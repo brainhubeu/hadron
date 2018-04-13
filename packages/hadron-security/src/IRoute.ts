@@ -1,4 +1,4 @@
 interface IRoute {
   path: string;
-  allowedRoles: IRole[];
+  allowedRoles: any;
 }

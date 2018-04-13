@@ -8,12 +8,22 @@ class HadronSecurity {
 
   constructor(
     private userProvider: IUserProvider,
+    private roleProvider: IRoleProvider,
     private roleHierarchy: IRolesMap,
   ) {
     this.middleware = this.middleware.bind(this);
   }
 
-  public allow(path: string, roles: IRole[]): HadronSecurity {
+  public allow(path: string, roles: string[]): HadronSecurity {
+    const nonExistingRoles = this.checkIfRolesExists(roles);
+    if (nonExistingRoles.length > 0) {
+      console.warn(
+        `Roles: [${nonExistingRoles.join(
+          ', ',
+        )}] does not exists. Your route is secure, but you need to provide new role or change it.`,
+      );
+    }
+
     let existingRoute: IRoute;
     for (const route of this.routes) {
       if (route.path === path) {
@@ -36,6 +46,20 @@ class HadronSecurity {
     return this;
   }
 
+  public checkIfRolesExists(roles: string[]): string[] {
+    const nonExistingRoles: string[] = [];
+    for (const role of roles) {
+      const existingRole = this.roleProvider
+        .getRoles()
+        .some((el) => el === role);
+      if (!existingRole) {
+        nonExistingRoles.push(role);
+      }
+    }
+
+    return nonExistingRoles;
+  }
+
   public checkIfRouteExists(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
@@ -46,11 +70,7 @@ class HadronSecurity {
 
   public isAllowed(path: string, user: IUser): boolean {
     const route = this.checkIfRouteExists(path);
-    return isUserGranted(
-      user,
-      route.allowedRoles.map((route) => route.name),
-      this.roleHierarchy,
-    );
+    return isUserGranted(user, route.allowedRoles, this.roleHierarchy);
   }
 
   public middleware(
