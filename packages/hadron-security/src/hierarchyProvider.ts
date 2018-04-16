@@ -19,8 +19,17 @@ export interface IUser {
  * @param roles available roles with all "dependent" ones
  * @returns {IRolesMap}
  */
-export function fillMissingRoles(availableRoles: IRolesMap): IRolesMap {
-  return Object.entries(availableRoles).reduce(
+export function fillMissingRoles(roles: IRolesMap | string[]): IRolesMap {
+  if (roles instanceof Array) {
+    return roles.reduce(
+      (accumulator: IRolesMap, role: string) => ({
+        ...accumulator,
+        [role]: [],
+      }),
+      {},
+    );
+  }
+  return Object.entries(roles).reduce(
     (accumulator: IRolesMap, [key, value]: [string, string[]]) => {
       accumulator[key] = value;
       value.forEach((role: string) => {
@@ -175,7 +184,9 @@ export function isUserGranted(
  * @param rolesHierarchy
  * @returns {function<boolean>}
  */
-export default function hierarchyProvider(rolesHierarchy: IRolesMap) {
+export default function hierarchyProvider(
+  rolesHierarchy: IRolesMap | string[],
+) {
   const fullRoles: IRolesMap = fillMissingRoles(rolesHierarchy);
   return {
     isGranted: (userRoles: string[], roles: any) =>

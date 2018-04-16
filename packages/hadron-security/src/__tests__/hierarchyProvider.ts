@@ -35,6 +35,11 @@ describe('hierarchyProvider', () => {
       };
       expect(fillMissingRoles(roles).ROLE2).to.eql(['ROLE4']);
     });
+
+    it('should handle array as roles', () => {
+      const roles = ['ROLE1', 'ROLE2'];
+      expect(fillMissingRoles(roles)).to.contain.keys(['ROLE1', 'ROLE2']);
+    });
   });
 
   describe('checkRole', () => {
