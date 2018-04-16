@@ -44,10 +44,14 @@ class HadronSecurity {
     }
 
     if (existingRoute) {
-      const existingMethods = arrayFilter(existingRoute.methods, methods, true);
+      const existingMethods = arrayFilter(
+        existingRoute.methods,
+        methods || [],
+        true,
+      );
       const nonExistingMethods = arrayFilter(
         existingRoute.methods,
-        methods,
+        methods || [],
         false,
       );
 

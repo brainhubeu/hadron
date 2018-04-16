@@ -62,19 +62,31 @@ describe('In memory hadron security', () => {
 
   it('should return true if user is allowed to route', () => {
     expect(
-      security.isAllowed('/api', userProvider.loadUserByUsername('admin')),
+      security.isAllowed(
+        '/api',
+        'get',
+        userProvider.loadUserByUsername('admin'),
+      ),
     ).to.be.equal(true);
   });
 
   it('should return false if user is not allowed to route', () => {
     expect(
-      security.isAllowed('/api', userProvider.loadUserByUsername('user')),
+      security.isAllowed(
+        '/api',
+        'get',
+        userProvider.loadUserByUsername('user'),
+      ),
     ).to.be.equal(false);
   });
 
   it('should throw an error if path is not supported in security', () => {
     try {
-      security.isAllowed('/qwe', userProvider.loadUserByUsername('user'));
+      security.isAllowed(
+        '/qwe',
+        'get',
+        userProvider.loadUserByUsername('user'),
+      );
     } catch (error) {
       expect(error).to.be.instanceof(Error);
     }
@@ -82,7 +94,11 @@ describe('In memory hadron security', () => {
 
   it('should throw an error if user does not exists.', () => {
     try {
-      security.isAllowed('/api', userProvider.loadUserByUsername('user2'));
+      security.isAllowed(
+        '/api',
+        'get',
+        userProvider.loadUserByUsername('user2'),
+      );
     } catch (error) {
       expect(error).to.be.instanceof(Error);
     }
@@ -92,12 +108,14 @@ describe('In memory hadron security', () => {
     expect(
       security.isAllowed(
         '/admin/abc',
+        'get',
         userProvider.loadUserByUsername('admin'),
       ),
     ).to.be.equal(true);
     expect(
       security.isAllowed(
         'admin/wqe-xc1',
+        'get',
         userProvider.loadUserByUsername('admin'),
       ),
     ).to.be.equal(true);
@@ -107,6 +125,7 @@ describe('In memory hadron security', () => {
     try {
       security.isAllowed(
         'admin/qwe/1',
+        'get',
         userProvider.loadUserByUsername('admin'),
       );
     } catch (error) {
@@ -116,16 +135,28 @@ describe('In memory hadron security', () => {
 
   it('should return true if user is allowed to route', () => {
     expect(
-      security.isAllowed('/blog', userProvider.loadUserByUsername('user')),
+      security.isAllowed(
+        '/blog',
+        'get',
+        userProvider.loadUserByUsername('user'),
+      ),
     ).to.be.equal(true);
   });
 
   it('should return true if user have Admin AND User role OR Guest role', () => {
     expect(
-      security.isAllowed('/uber', userProvider.loadUserByUsername('uberAdmin')),
+      security.isAllowed(
+        '/uber',
+        'get',
+        userProvider.loadUserByUsername('uberAdmin'),
+      ),
     ).to.be.equal(true);
     expect(
-      security.isAllowed('/uber', userProvider.loadUserByUsername('guest')),
+      security.isAllowed(
+        '/uber',
+        'get',
+        userProvider.loadUserByUsername('guest'),
+      ),
     ).to.be.equal(true);
   });
 });
