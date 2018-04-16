@@ -10,12 +10,10 @@
     "security",
     "hadron"
   ],
-  "dependencies": {
-    "bcrypt": "2.0.0"
-  },
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "bcrypt": "2.0.0"
   }
 }
