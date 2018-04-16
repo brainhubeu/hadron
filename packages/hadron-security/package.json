@@ -12,7 +12,8 @@
   ],
   "author": "Brainhub",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
+    "@types/express": "^4.11.1",
     "express": "^4.16.3"
   }
 }

@@ -48,10 +48,10 @@ userProvider.addUser({
 const security = new HadronSecurity(userProvider, roleProvider, roleHierarchy);
 
 security
-  .allow('/user', 'User')
-  .allow('/admin/*', ['Admin'])
-  .allow('/adm', [['User', 'Admin'], 'Manager'])
-  .allow('/all', ['Admin', 'User'])
+  .allow('/user', 'User', ['post'])
+  .allow('/admin/*', ['Admin'], ['post'])
+  .allow('/adm', [['User', 'Admin'], 'Manager'], ['post'])
+  .allow('/all', ['Admin', 'User'], ['post'])
   .allow('/qwe', ['NotExists', 'Admin', 'Guest', 'Manager'])
   .allow('/zxc', ['Guest', 'Owner', 'User']);
 

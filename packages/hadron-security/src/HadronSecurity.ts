@@ -5,6 +5,7 @@ import { IRolesMap, IUser } from './hierarchyProvider';
 import flattenDeep from './helpers/flattenDeep';
 import IUserProvider from './IUserProvider';
 import IRoleProvider from './IRoleProvider';
+import arrayFilter from './helpers/arrayFilter';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
@@ -20,8 +21,9 @@ class HadronSecurity {
   public allow(
     path: string,
     roles: string | Array<string | string[]>,
+    methods?: string[],
   ): HadronSecurity {
-    const nonExistingRoles = this.checkIfRolesExists(roles);
+    const nonExistingRoles = this.getNonExistingRoles(roles);
     if (nonExistingRoles.length > 0) {
       console.warn(
         '\x1b[33m\x1b[1m',
@@ -42,31 +44,58 @@ class HadronSecurity {
     }
 
     if (existingRoute) {
-      if (typeof roles === 'string') {
-        existingRoute.allowedRoles.push(roles);
-      } else {
-        roles.forEach((role) => existingRoute.allowedRoles.push(role));
-      }
-      existingRoute.allowedRoles = [...new Set(existingRoute.allowedRoles)];
+      const existingMethods = arrayFilter(existingRoute.methods, methods, true);
+      const nonExistingMethods = arrayFilter(
+        existingRoute.methods,
+        methods,
+        false,
+      );
+
+      existingMethods.forEach((method) => {
+        method.allowedRoles = [
+          ...new Set(method.allowedRoles.concat(this.getRoleArray(roles))),
+        ];
+      });
+
+      existingRoute.methods = [...existingMethods, ...nonExistingMethods];
     } else {
+      const methodsForRoute: IMethod[] = [];
+      if (methods) {
+        methods = [...new Set(methods)];
+        methods.forEach((methodName) => {
+          methodsForRoute.push({
+            name: methodName,
+            allowedRoles: this.getRoleArray(roles),
+          });
+        });
+      } else {
+        methodsForRoute.push({
+          name: '*',
+          allowedRoles: this.getRoleArray(roles),
+        });
+      }
+
       const route: IRoute = {
         path: convertToPattern(path),
-        allowedRoles: typeof roles === 'string' ? [roles] : roles,
+        methods: methodsForRoute,
       };
+
       this.routes.push(route);
     }
+
     return this;
   }
 
-  public checkIfRolesExists(roles: any): string[] {
-    if (typeof roles === 'string') {
-      roles = [roles];
+  public getNonExistingRoles(roles: any): string[] {
+    let newRoles = roles;
+    if (typeof newRoles === 'string') {
+      newRoles = [newRoles];
     }
 
-    roles = flattenDeep(roles);
+    newRoles = flattenDeep(newRoles);
 
     const nonExistingRoles: string[] = [];
-    for (const role of roles) {
+    for (const role of newRoles) {
       const existingRole = this.roleProvider
         .getRoles()
         .some((el) => el === role);
@@ -81,14 +110,28 @@ class HadronSecurity {
   public checkIfRouteExists(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
-      throw new Error(`Path: "${path}" is not supported by security.`);
+      return null;
     }
     return route[0];
   }
 
-  public isAllowed(path: string, user: IUser): boolean {
+  public isAllowed(path: string, allowedMethod: string, user: IUser): boolean {
     const route = this.checkIfRouteExists(path);
-    return isUserGranted(user, route.allowedRoles, this.roleHierarchy);
+    let isGranted = false;
+
+    route.methods.forEach((method) => {
+      if (
+        method.name === '*' ||
+        method.name.toLowerCase() === allowedMethod.toLowerCase()
+      ) {
+        isGranted = isUserGranted(
+          user,
+          method.allowedRoles,
+          this.roleHierarchy,
+        );
+      }
+    });
+    return isGranted;
   }
 
   public expressMiddleware(
@@ -96,10 +139,7 @@ class HadronSecurity {
     res: express.Response,
     next: express.NextFunction,
   ): void {
-    try {
-      this.checkIfRouteExists(req.path);
-    } catch (error) {
-      console.log(error.message);
+    if (this.checkIfRouteExists(req.path) === null) {
       return next();
     }
 
@@ -107,6 +147,7 @@ class HadronSecurity {
       if (
         this.isAllowed(
           req.path,
+          req.method,
           this.userProvider.loadUserByUsername(req.body.username),
         )
       ) {
@@ -117,11 +158,22 @@ class HadronSecurity {
         message: 'Unauthenticated',
       });
     } catch (error) {
-      console.log(error.message);
       res.status(401).json({
         message: 'Unauthenticated',
       });
     }
+  }
+
+  private getRoleArray(
+    roles: string | Array<string | string[]>,
+  ): Array<string | string[]> {
+    const arr: any[] = [];
+    if (typeof roles === 'string') {
+      arr.push(roles);
+    } else {
+      roles.forEach((role) => arr.push(role));
+    }
+    return [...new Set(arr)];
   }
 }
 

@@ -1,4 +1,9 @@
 interface IRoute {
   path: string;
-  allowedRoles: any;
+  methods: IMethod[];
+}
+
+interface IMethod {
+  name: string;
+  allowedRoles: Array<string | string[]>;
 }
