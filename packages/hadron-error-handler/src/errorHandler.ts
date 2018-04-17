@@ -1,4 +1,4 @@
-class HadronErrorHandler extends Error {
+class HadronError extends Error {
   public error?: Error;
   constructor(message: string = 'Hadron unhandled error') {
     super(message);
@@ -6,4 +6,4 @@ class HadronErrorHandler extends Error {
   }
 }
 
-export default HadronErrorHandler;
+export default HadronError;

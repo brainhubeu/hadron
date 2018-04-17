@@ -1,3 +1,3 @@
-import HadronErrorHandler from './src/errorHandler';
+import HadronError from './src/errorHandler';
 
-export { HadronErrorHandler as default };
+export { HadronError as default };
