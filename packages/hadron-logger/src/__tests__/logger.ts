@@ -1,28 +1,25 @@
 import { expect, assert } from 'chai';
-import * as sinon from 'sinon';
 import { register } from '../logger';
 import LoggerNameIsRequiredError from '../errors/LoggerNameIsRequiredError';
+import { Container } from '@brainhubeu/hadron-core';
 
 describe('logger', () => {
-  const containerMock = {
-    register: sinon.stub(),
-    take: () => null,
-  };
-
   beforeEach(() => {
-    containerMock.register.reset();
+    Container.register('first logger', '');
+    Container.register('firstLogger', '');
+    Container.register('secondLogger', '');
   });
 
   it('should register logger under "first logger"', () => {
-    register(containerMock, {
+    register(Container, {
       logger: {
         name: 'first logger',
       },
     });
-    assert(containerMock.register.calledWith('first logger'));
+    assert(Container.take('first logger'));
   });
   it('should register multiple loggers', () => {
-    register(containerMock, {
+    register(Container, {
       logger: [
         {
           name: 'firstLogger',
@@ -33,12 +30,12 @@ describe('logger', () => {
       ],
     });
 
-    assert(containerMock.register.calledWith('firstLogger'));
-    assert(containerMock.register.calledWith('secondLogger'));
+    assert(Container.take('firstLogger'));
+    assert(Container.take('secondLogger'));
   });
   it('should not register logger without name', () => {
     expect(() => {
-      register(containerMock, {
+      register(Container, {
         logger: {},
       });
     }).to.throw(LoggerNameIsRequiredError);

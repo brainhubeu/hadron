@@ -21,9 +21,11 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@brainhubeu/hadron-core": "^0.0.7",
     "@brainhubeu/hadron-error-handler": "^0.0.4",
     "@brainhubeu/hadron-events": "^0.0.7",
     "@brainhubeu/hadron-utils": "^0.0.7",
+    "@brainhubeu/hadron-logger": "^0.0.5",
     "express": "4.16.2"
   },
   "devDependencies": {
