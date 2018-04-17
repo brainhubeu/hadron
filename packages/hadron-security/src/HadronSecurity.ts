@@ -1,5 +1,4 @@
 import urlGlob, { convertToPattern } from '../src/helpers/urlGlob';
-import * as express from 'express';
 import { isUserGranted } from '../src/hierarchyProvider';
 import { IRolesMap, IUser } from './hierarchyProvider';
 import flattenDeep from './helpers/flattenDeep';
@@ -14,9 +13,7 @@ class HadronSecurity {
     private userProvider: IUserProvider,
     private roleProvider: IRoleProvider,
     private roleHierarchy: IRolesMap,
-  ) {
-    this.expressMiddleware = this.expressMiddleware.bind(this);
-  }
+  ) {}
 
   public allow(
     path: string,
@@ -111,7 +108,7 @@ class HadronSecurity {
     return nonExistingRoles;
   }
 
-  public checkIfRouteExists(path: string): IRoute {
+  public getRouteFromPath(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
       return null;
@@ -120,7 +117,7 @@ class HadronSecurity {
   }
 
   public isAllowed(path: string, allowedMethod: string, user: IUser): boolean {
-    const route = this.checkIfRouteExists(path);
+    const route = this.getRouteFromPath(path);
     let isGranted = false;
 
     route.methods.forEach((method) => {
@@ -138,34 +135,8 @@ class HadronSecurity {
     return isGranted;
   }
 
-  public expressMiddleware(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ): void {
-    if (this.checkIfRouteExists(req.path) === null) {
-      return next();
-    }
-
-    try {
-      if (
-        this.isAllowed(
-          req.path,
-          req.method,
-          this.userProvider.loadUserByUsername(req.body.username),
-        )
-      ) {
-        return next();
-      }
-
-      res.status(401).json({
-        message: 'Unauthenticated',
-      });
-    } catch (error) {
-      res.status(401).json({
-        message: 'Unauthenticated',
-      });
-    }
+  public getUserProvider(): IUserProvider {
+    return this.userProvider;
   }
 
   private getRoleArray(

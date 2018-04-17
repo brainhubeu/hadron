@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import InMemoryUserProvider from '../InMemoryUserProvider';
 import InMemoryRoleProvider from '../InMemoryRoleProvider';
 import HadronSecurity from '../../HadronSecurity';
+import expressMiddlewareProvider from '../../providers/expressProvider';
 
 const userProvider = new InMemoryUserProvider();
 const roleProvider = new InMemoryRoleProvider();
@@ -20,36 +21,36 @@ const roleHierarchy = {
 userProvider.addUser({
   id: 1,
   username: 'admin',
-  password: 'admin',
+  passwordHash: 'admin',
   roles: [roleProvider.getRole('Admin')],
 });
 
 userProvider.addUser({
   id: 2,
   username: 'user',
-  password: 'user',
+  passwordHash: 'user',
   roles: [roleProvider.getRole('User')],
 });
 
 userProvider.addUser({
   id: 3,
   username: 'uberAdmin',
-  password: 'qwe',
+  passwordHash: 'qwe',
   roles: [roleProvider.getRole('Admin'), roleProvider.getRole('User')],
 });
 
 userProvider.addUser({
   id: 4,
   username: 'manager',
-  password: 'manager',
+  passwordHash: 'manager',
   roles: [roleProvider.getRole('Manager')],
 });
 
 const security = new HadronSecurity(userProvider, roleProvider, roleHierarchy);
 
 security
-  .allow('/user', 'User', ['post'])
-  .allow('/admin/*', ['Admin'], ['post'])
+  .allow('/user', 'User', ['post', 'get', 'put'])
+  .allow('/admin/*', ['Admin'], ['post', 'get'])
   .allow('/adm', [['User', 'Admin'], 'Manager'], ['post'])
   .allow('/all', ['Admin', 'User'], ['post'])
   .allow('/qwe', ['NotExists', 'Admin', 'Guest', 'Manager'])
@@ -58,7 +59,9 @@ security
 const app = express();
 app.use(bodyParser.json());
 
-app.use(security.expressMiddleware);
+app.use((req, res, next) => {
+  expressMiddlewareProvider(security)(req, res, next);
+});
 
 app.use(bodyParser.json());
 

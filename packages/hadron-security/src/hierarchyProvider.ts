@@ -10,7 +10,7 @@ export interface IRole {
 export interface IUser {
   id: number | string;
   username: string;
-  password: string;
+  passwordHash: string;
   roles: IRole[];
 }
 
