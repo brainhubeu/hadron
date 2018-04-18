@@ -1,7 +1,3 @@
-// export interface ILoggerFactory {
-//   createLogger: (config: any) => ILogger,
-// }
-
 export interface ILoggerConfig {
   type: string;
   name: string;
