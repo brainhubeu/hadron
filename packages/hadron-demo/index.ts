@@ -4,7 +4,7 @@ import hadron, { IContainer } from '@brainhubeu/hadron-core';
 import * as hadronEvents from '@brainhubeu/hadron-events';
 import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
-import * as hadronLogger from '@brainhubeu/hadron-logger';
+// import * as hadronLogger from '@brainhubeu/hadron-logger';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo';
@@ -32,7 +32,7 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
 
   hadron(
     expressApp,
-    [hadronEvents, hadronSerialization, hadronExpress, hadronLogger],
+    [hadronEvents, hadronSerialization, hadronExpress],
     config,
   ).then((container: IContainer) => {
     expressApp.use((req, res, next) =>
