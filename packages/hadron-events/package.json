@@ -16,9 +16,6 @@
     "brainhub",
     "hadron-events"
   ],
-  "devDependencies": {
-    "@types/events": "1.2.0"
-  },
   "author": "Brainhub",
   "license": "MIT",
   "publishConfig": {
@@ -27,5 +24,8 @@
   "dependencies": {
     "@brainhubeu/hadron-core": "^0.0.7",
     "@brainhubeu/hadron-utils": "^0.0.7"
+  },
+  "devDependencies": {
+    "@types/events": "1.2.0"
   }
 }

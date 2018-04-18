@@ -8,14 +8,14 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "allowJs": true,
     "paths": {
       "*": ["./*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSources": true,
-    "lib": ["es2017", "dom"]
+    "lib": ["es2017", "dom"],
+    "declaration": true
   },
   "include": ["src/**/*.*", "index.ts", "LICENSE"],
   "exclude": ["node_modules", "**/__tests__/**"]

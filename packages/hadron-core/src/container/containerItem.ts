@@ -3,7 +3,7 @@ import { IContainerItem } from './types';
 import { Lifecycle } from './lifecycle';
 import { getArgs } from '@brainhubeu/hadron-utils';
 
-class ContainerItem implements IContainerItem {
+export class ContainerItem implements IContainerItem {
   // tslint:disable-next-line:variable-name
   constructor(protected key: string, protected item: any) {}
 

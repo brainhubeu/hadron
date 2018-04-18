@@ -33,9 +33,11 @@ const insertUser = async (
     await validate('insertUser', req.body);
     return await teamRepository
       .findOneById(req.body.teamId)
-      .then((team) => userRepository.insert({ team, name: req.body.userName }))
+      .then((team: Team) =>
+        userRepository.insert({ team, name: req.body.userName }),
+      )
       .then(() => userRepository.count())
-      .then((amount) =>
+      .then((amount: number) =>
         res.status(201).json({ message: `Amount of users: ${amount}` }),
       );
   } catch (error) {

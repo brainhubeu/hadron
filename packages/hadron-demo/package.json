@@ -2,8 +2,9 @@
   "name": "@brainhubeu/hadron-demo",
   "version": "0.0.12",
   "description": "Hadron demo example app",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "start": "node dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "tsc"
   },
