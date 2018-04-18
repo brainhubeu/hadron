@@ -1,10 +1,10 @@
 import { expect, assert } from 'chai';
+import { Container } from '@brainhubeu/hadron-core';
 import { register, registerAdapter } from '../logger';
 import LoggerNameIsRequiredError from '../errors/LoggerNameIsRequiredError';
 import LoggerAdapterNotDefinedError from '../errors/LoggerAdapterNotDefinedError';
 import CouldNotRegisterLoggerInContainerError from '../errors/CouldNotRegisterLoggerInContainerError';
 import ConfigNotDefinedError from '../errors/ConfigNotDefinedError';
-import { Container } from '@brainhubeu/hadron-core';
 import { ILogger } from '../types';
 
 describe('logger', () => {
