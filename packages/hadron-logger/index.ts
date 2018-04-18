@@ -1,5 +1,6 @@
-import logger, { register } from './src/logger';
+import logger, { register, registerAdapter } from './src/logger';
+import { ILogger, ILoggerConfig, ILoggerFactory } from './src/types';
 
 export default logger;
 
-export { register };
+export { register, ILogger, ILoggerConfig, ILoggerFactory, registerAdapter };
