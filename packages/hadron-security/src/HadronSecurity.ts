@@ -20,16 +20,7 @@ class HadronSecurity {
     roles: string | Array<string | string[]>,
     methods: string[] = [],
   ): HadronSecurity {
-    const nonExistingRoles = this.getNonExistingRoles(roles);
-    if (nonExistingRoles.length > 0) {
-      console.warn(
-        '\x1b[33m\x1b[1m',
-        `Roles: [${nonExistingRoles.join(
-          ', ',
-        )}] does not exists. Your route: "${path}" is secure, but you need to provide new role or change it.`,
-        '\x1b[0m',
-      );
-    }
+    this.nonExistingRoutesWarning(path, roles);
 
     let existingRoute: IRoute;
 
@@ -83,27 +74,6 @@ class HadronSecurity {
     return this;
   }
 
-  public getNonExistingRoles(roles: any): string[] {
-    let newRoles = roles;
-    if (typeof newRoles === 'string') {
-      newRoles = [newRoles];
-    }
-
-    newRoles = flattenDeep(newRoles);
-
-    const nonExistingRoles: string[] = [];
-    for (const role of newRoles) {
-      const existingRole = this.roleProvider
-        .getRoles()
-        .some((el) => el === role);
-      if (!existingRole) {
-        nonExistingRoles.push(role);
-      }
-    }
-
-    return nonExistingRoles;
-  }
-
   public getRouteFromPath(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
@@ -145,6 +115,45 @@ class HadronSecurity {
       roles.forEach((role) => arr.push(role));
     }
     return [...new Set(arr)];
+  }
+
+  private getNonExistingRoles(roles: any): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      let newRoles = roles;
+      if (typeof newRoles === 'string') {
+        newRoles = [newRoles];
+      }
+
+      newRoles = flattenDeep(newRoles);
+
+      const nonExistingRoles: string[] = [];
+      for (const role of newRoles) {
+        this.roleProvider.getRoles().then((roles) => {
+          if (!roles.some((el) => el === role)) {
+            nonExistingRoles.push(role);
+          }
+        });
+      }
+
+      resolve(nonExistingRoles);
+    });
+  }
+
+  private nonExistingRoutesWarning(
+    path: string,
+    roles: string | Array<string | string[]>,
+  ): void {
+    this.getNonExistingRoles(roles).then((nonExistingRoles) => {
+      if (nonExistingRoles.length > 0) {
+        console.warn(
+          '\x1b[33m\x1b[1m',
+          `Roles: [${nonExistingRoles.join(
+            ', ',
+          )}] does not exists. Your route: "${path}" is secure, but you need to provide new role or change it.`,
+          '\x1b[0m',
+        );
+      }
+    });
   }
 }
 

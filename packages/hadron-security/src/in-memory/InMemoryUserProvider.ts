@@ -14,14 +14,16 @@ class InMemoryUserProvider implements IUserProvider {
     this.users.push(user);
   }
 
-  public loadUserByUsername(username: string): IUser {
-    for (const user of this.users) {
-      if (user.username === username) {
-        return user;
+  public loadUserByUsername(username: string): Promise<IUser> {
+    return new Promise((resolve, reject) => {
+      for (const user of this.users) {
+        if (user.username === username) {
+          resolve(user);
+        }
       }
-    }
 
-    throw new Error(`User: ${username} does not exists.`);
+      reject(new Error(`User: ${username} does not exists.`));
+    });
   }
 
   public refreshUser(user: IUser): void {

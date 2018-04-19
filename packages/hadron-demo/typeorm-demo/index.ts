@@ -1,6 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
 import { User } from '../entity/User';
 import { Team } from '../entity/Team';
+import { Role } from '../entity/Role';
 
 const connection: ConnectionOptions = {
   name: 'mysql-connection',
@@ -10,10 +11,11 @@ const connection: ConnectionOptions = {
   username: 'root',
   password: 'my-secret-pw',
   database: 'test',
-  entities: [User, Team],
+  entities: [User, Team, Role],
+  synchronize: true,
 };
 
 export default {
   connection,
-  entities: [User, Team],
+  entities: [User, Team, Role],
 };

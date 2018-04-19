@@ -16,7 +16,7 @@ const getAllUsers = async (userRepository: Repository<User>) =>
     .find({ relations: ['team'] })
     .then((users: User[]) =>
       users.map(
-        (user: User) => new UserDto(user.id, user.name, user.team.name),
+        (user: User) => new UserDto(user.id, user.username, user.team.name),
       ),
     );
 
@@ -33,7 +33,9 @@ const insertUser = async (
     await validate('insertUser', req.body);
     return await teamRepository
       .findOneById(req.body.teamId)
-      .then((team) => userRepository.insert({ team, name: req.body.userName }))
+      .then((team) =>
+        userRepository.insert({ team, username: req.body.userName }),
+      )
       .then(() => userRepository.count())
       .then((amount) =>
         res.status(201).json({ message: `Amount of users: ${amount}` }),
@@ -53,7 +55,7 @@ const updateUser = async (
     return await userRepository
       .findOneById(body.id)
       .then((user: User) => {
-        user.name = body.userName;
+        user.username = body.userName;
         return userRepository.save(user);
       })
       .then(() =>

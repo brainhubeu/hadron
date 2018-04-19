@@ -2,7 +2,7 @@ import HadronSecurity from '../HadronSecurity';
 import * as express from 'express';
 
 const expressMiddlewareProvider = (security: HadronSecurity) => {
-  return (
+  return async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
@@ -16,14 +16,13 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
         security.isAllowed(
           req.path,
           req.method,
-          security
+          await security
             .getUserProvider()
             .loadUserByUsername(req.headers.authorization || req.body.username),
         )
       ) {
         return next();
       }
-
       res.status(401).json({
         message: 'Unauthorized',
       });

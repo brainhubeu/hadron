@@ -1,9 +1,9 @@
-interface IRoute {
+export interface IRoute {
   path: string;
   methods: IMethod[];
 }
 
-interface IMethod {
+export interface IMethod {
   name: string;
   allowedRoles: Array<string | string[]>;
 }

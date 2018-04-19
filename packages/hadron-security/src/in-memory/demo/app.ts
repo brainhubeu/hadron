@@ -4,66 +4,22 @@ import InMemoryUserProvider from '../InMemoryUserProvider';
 import InMemoryRoleProvider from '../InMemoryRoleProvider';
 import HadronSecurity from '../../HadronSecurity';
 import expressMiddlewareProvider from '../../providers/expressProvider';
-
-const userProvider = new InMemoryUserProvider();
-const roleProvider = new InMemoryRoleProvider();
-
-roleProvider.addRole({ id: 1, name: 'Admin' });
-roleProvider.addRole({ id: 2, name: 'User' });
-roleProvider.addRole({ id: 3, name: 'Manager' });
-
-const roleHierarchy = {
-  ADMIN: ['Admin'],
-  USER: ['User'],
-  ALL: ['Admin', 'User'],
-};
-
-userProvider.addUser({
-  id: 1,
-  username: 'admin',
-  passwordHash: 'admin',
-  roles: [roleProvider.getRole('Admin')],
-});
-
-userProvider.addUser({
-  id: 2,
-  username: 'user',
-  passwordHash: 'user',
-  roles: [roleProvider.getRole('User')],
-});
-
-userProvider.addUser({
-  id: 3,
-  username: 'uberAdmin',
-  passwordHash: 'qwe',
-  roles: [roleProvider.getRole('Admin'), roleProvider.getRole('User')],
-});
-
-userProvider.addUser({
-  id: 4,
-  username: 'manager',
-  passwordHash: 'manager',
-  roles: [roleProvider.getRole('Manager')],
-});
-
-const security = new HadronSecurity(userProvider, roleProvider, roleHierarchy);
-
-security
-  .allow('/user', 'User', ['post', 'get', 'put'])
-  .allow('/admin/*', ['Admin'], ['post', 'get'])
-  .allow('/adm', [['User', 'Admin'], 'Manager'], ['post'])
-  .allow('/all', ['Admin', 'User'], ['post'])
-  .allow('/qwe', ['NotExists', 'Admin', 'Guest', 'Manager'])
-  .allow('/zxc', ['Guest', 'Owner', 'User']);
+import securityConfig from './securityConfig';
 
 const app = express();
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  expressMiddlewareProvider(security)(req, res, next);
+let security: HadronSecurity;
+
+securityConfig().then((s) => {
+  security = s;
 });
 
-app.use(bodyParser.json());
+app.use((req, res, next) => {
+  if (security) {
+    expressMiddlewareProvider(security)(req, res, next);
+  }
+});
 
 app.post(
   '/user',

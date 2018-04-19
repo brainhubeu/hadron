@@ -14,18 +14,20 @@ class InMemoryRoleProvider implements IRoleProvider {
     this.roles.push(role);
   }
 
-  public getRole(name: string): IRole {
-    for (const role of this.roles) {
-      if (role.name === name) {
-        return role;
+  public getRole(name: string): Promise<IRole> {
+    return new Promise((resolve, reject) => {
+      for (const role of this.roles) {
+        if (role.name === name) {
+          resolve(role);
+        }
       }
-    }
 
-    throw new Error(`Role: ${name} does not exists.`);
+      reject(new Error(`Role: ${name} does not exists.`));
+    });
   }
 
-  public getRoles(): string[] {
-    return this.roles.map((role) => role.name);
+  public getRoles(): Promise<string[]> {
+    return Promise.resolve(this.roles.map((role) => role.name));
   }
 }
 
