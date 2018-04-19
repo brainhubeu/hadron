@@ -9,21 +9,17 @@ import generateMiddlewares from './generateMiddlewares';
 import handleResponseSpec from './handleResponseSpec';
 
 const createRoutes = (
-  app: any,
+  app: express.Application,
   route: IRoute,
   middleware: Middleware[],
   container: IContainer,
   routeName: string,
-) => {
-  const containerProxy = createContainerProxy(container);
-
-  return route.methods.map((method: string) => {
-    app[method.toLowerCase()](
+) =>
+  route.methods.map((method: string) => {
+    (app as any)[method.toLowerCase()](
       route.path,
       ...middleware,
       (req: express.Request, res: express.Response) => {
-        const request = prepareRequest(req);
-
         Promise.resolve()
           .then(() => {
             const eventManager = container.take('event-manager');
@@ -53,7 +49,7 @@ const createRoutes = (
   });
 };
 
-const convertToExpress = (routes: IRoutesConfig, container: any) => {
+const convertToExpress = (routes: IRoutesConfig, container: IContainer) => {
   const app = container.take('server');
   (Object as any).keys(routes).map((key: string) => {
     const route: IRoute = routes[key];
