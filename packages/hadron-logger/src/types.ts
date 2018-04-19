@@ -1,3 +1,7 @@
+export interface IHadronLoggerConfig {
+  logger: ILoggerConfig[] | ILoggerConfig;
+}
+
 export interface ILoggerConfig {
   type: string;
   name: string;

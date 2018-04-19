@@ -1,8 +1,8 @@
 import * as bunyan from 'bunyan';
-import { ILogger } from '../types';
+import { ILogger, ILoggerConfig } from '../types';
 
-export default (config: any): ILogger => {
-  const logger: any = bunyan.createLogger(config);
+export default (config: ILoggerConfig): ILogger => {
+  const logger: bunyan = bunyan.createLogger(config);
   return {
     log: (message: string) => {
       logger.info(message);

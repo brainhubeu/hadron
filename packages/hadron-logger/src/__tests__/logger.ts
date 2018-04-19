@@ -49,7 +49,7 @@ describe('logger', () => {
         logger: {
           type: 'bunyan',
         },
-      });
+      } as any);
     }).to.throw(LoggerNameIsRequiredError);
   });
 
@@ -58,7 +58,7 @@ describe('logger', () => {
       logger: {
         name: 'firstLogger',
       },
-    });
+    } as any);
     assert(Container.take('firstLogger'));
   });
 
@@ -100,7 +100,7 @@ describe('logger', () => {
 
   it('when did not provided logger info then should throw ConfigNotDefinedError', () => {
     expect(() => {
-      register(Container, {});
+      register(Container, {} as any);
     }).to.throw(ConfigNotDefinedError);
   });
 });
