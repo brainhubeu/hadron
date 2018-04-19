@@ -1,6 +1,6 @@
 import container from './container';
 import { IContainerItem } from './types';
-import { Lifetime } from './lifetime';
+import { Lifecycle } from './lifecycle';
 import { getArgs } from '@brainhubeu/hadron-utils';
 
 class ContainerItem implements IContainerItem {
@@ -97,9 +97,9 @@ const containerItemFactory = (
   lifetime?: string,
 ): ContainerItem => {
   switch (lifetime) {
-    case Lifetime.Singleton:
+    case Lifecycle.Singleton:
       return new ContainerItemSingleton(key, item);
-    case Lifetime.Transient:
+    case Lifecycle.Transient:
       return new ContainerItemTransient(key, item);
     default:
       return new ContainerItem(key, item);

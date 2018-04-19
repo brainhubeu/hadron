@@ -1,7 +1,7 @@
 /* tslint:disable:max-classes-per-file */
 import { expect } from 'chai';
 import container from '../container';
-import { Lifetime } from '../lifetime';
+import { Lifecycle } from '../lifecycle';
 
 describe('container register', () => {
   it('should overrive value for the the same key', () => {
@@ -18,7 +18,7 @@ describe('container register', () => {
         this.value = new Date().getTime().toString();
       }
     }
-    container.register(itemName, Foo, Lifetime.Singleton);
+    container.register(itemName, Foo, Lifecycle.Singleton);
     const item1 = container.take(itemName);
     const item2 = container.take(itemName);
     expect(item2).to.deep.equal(item1);
@@ -30,7 +30,7 @@ describe('container register', () => {
         this.value = 'xxxx';
       }
     }
-    container.register('test', Foo, Lifetime.Transient);
+    container.register('test', Foo, Lifecycle.Transient);
     const item1 = container.take('test');
     const item2 = container.take('test');
     expect(item1).to.deep.equal(item2);
@@ -50,8 +50,8 @@ describe('container items with parameters in constructor', () => {
         this.value = parameterName.value;
       }
     }
-    container.register('parameterName', Foo, Lifetime.Transient);
-    container.register('foo2', Foo2, Lifetime.Transient);
+    container.register('parameterName', Foo, Lifecycle.Transient);
+    container.register('foo2', Foo2, Lifecycle.Transient);
 
     const item = container.take('parameterName') as Foo;
 
