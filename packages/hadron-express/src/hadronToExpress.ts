@@ -37,15 +37,23 @@ const mapRouteArgs = (
   container: IContainer,
 ) =>
   getArgs(routeCallback).map((name: string) => {
+    console.dir(req.headers, { colors: true, depth: null });
+    if (name === 'headers') {
+      return req.headers;
+    }
+
     if (name === 'body') {
       return req.body;
     }
+
     if (name === 'req') {
       return req;
     }
+
     if (name === 'res') {
       return res;
     }
+
     return (
       req.params[name] ||
       req.query[name] ||
