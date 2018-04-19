@@ -127,15 +127,14 @@ class HadronSecurity {
       newRoles = flattenDeep(newRoles);
 
       const nonExistingRoles: string[] = [];
-      for (const role of newRoles) {
-        this.roleProvider.getRoles().then((roles) => {
+      this.roleProvider.getRoles().then((roles) => {
+        for (const role of newRoles) {
           if (!roles.some((el) => el === role)) {
             nonExistingRoles.push(role);
           }
-        });
-      }
-
-      resolve(nonExistingRoles);
+        }
+        resolve(nonExistingRoles);
+      });
     });
   }
 

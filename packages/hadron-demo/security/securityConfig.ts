@@ -11,7 +11,10 @@ const securityConfig = (
       const security = new HadronSecurity(userProvider, roleProvider, {
         ALL: roles,
       });
-      security.allow('/team/*', ['Admin', 'User']);
+      security
+        .allow('/team/*', ['Admin', 'User'])
+        .allow('/user/*', ['NotExists', 'ThisDoesNotExistToo', 'Admin', 'Sad']);
+
       resolve(security);
     });
   });
