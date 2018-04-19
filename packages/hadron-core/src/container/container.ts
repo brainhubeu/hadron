@@ -1,5 +1,7 @@
 import containerItem from './containerItem';
 import { IContainerItem, IContainer } from './types';
+import isVarName from '../helpers/isVarName';
+import IncorrectContainerKeyNameError from '../errors/IncorrectContainerKeyNameError';
 
 const containerRegister = new Array<IContainerItem>();
 
@@ -14,6 +16,12 @@ const takeContainerByKey = (key: string): IContainerItem[] =>
  * @param lifecycle setting type of life-span [value, singleton, transient] - value is default
  */
 const register = (key: string, item: any, lifecycle?: string): void => {
+  if (!isVarName(key)) {
+    const logger: any = takeContainerByKey('hadronLogger');
+    if (logger && logger.length >= 1) {
+      throw new IncorrectContainerKeyNameError(key);
+    }
+  }
   const containerItems = takeContainerByKey(key);
   if (containerItems.length === 0) {
     const ci = containerItem.containerItemFactory(key, item, lifecycle);
