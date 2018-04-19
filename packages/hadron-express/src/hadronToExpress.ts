@@ -1,5 +1,7 @@
 import * as express from 'express';
 import { getArgs } from '@brainhubeu/hadron-utils';
+import { Container } from '@brainhubeu/hadron-core';
+
 import {
   Callback,
   IContainer,
@@ -24,7 +26,11 @@ const generateMiddlewares = (route: IRoute) =>
       Promise.resolve()
         .then(() => middleware(req, res, next))
         .catch((error) => {
-          console.error(new GenerateMiddlewareError(error));
+          const logger = Container.take('hadronLogger');
+          if (logger) {
+            logger.warn(new GenerateMiddlewareError(error));
+          }
+
           res.sendStatus(500);
         });
     },
@@ -93,7 +99,11 @@ const createRoutes = (
             }
           })
           .catch((error) => {
-            console.error(new CreateRouteError(routeName, error));
+            const logger = container.take('hadronLogger');
+            if (logger) {
+              logger.warn(new CreateRouteError(routeName, error));
+            }
+
             res.sendStatus(500);
           });
       },

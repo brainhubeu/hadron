@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import * as typeorm from 'typeorm';
+import { Container } from '@brainhubeu/hadron-core';
+
 import { connect } from '../connectionHelper';
 import { CONNECTION } from '../constants';
 
@@ -33,13 +35,10 @@ describe('TypeORM connection helper', () => {
   );
   getRepositoryStub.returns(true);
 
-  const containerStub = {
-    register: sinon.stub(),
-    take: () => null,
-  };
-
   beforeEach(() => {
-    containerStub.register.reset();
+    Container.register('connection', null);
+    Container.register('teamRepository', null);
+    Container.register('userRepository', null);
   });
 
   after(() => {
@@ -48,29 +47,27 @@ describe('TypeORM connection helper', () => {
   });
 
   it('should return connection', () =>
-    connect(containerStub, { connection }).then((connection: any) =>
-      assert(connection instanceof typeorm.Connection),
-    ));
+    connect(Container, { connection }).then((connection: any) => {
+      return assert(connection instanceof typeorm.Connection);
+    }));
 
   it('should register connection to container', () => {
-    connect(containerStub, { connection }).then((connection: any) => {
-      assert(containerStub.register.calledWith(CONNECTION));
+    connect(Container, { connection }).then((connection: any) => {
+      assert(Container.take(CONNECTION) instanceof typeorm.Connection);
     });
   });
 
   it('should register Team repository to container as teamRepository', () =>
-    connect(containerStub, { connection }).then((connection: any) =>
-      assert(containerStub.register.calledWith('teamRepository')),
+    connect(Container, { connection }).then((connection: any) =>
+      assert(Container.take('teamRepository')),
     ));
 
   it('should register User repository from javascript schema to container as userRepository', () =>
-    connect(containerStub, {
+    connect(Container, {
       connection: {
         ...connection,
         entities: [],
         entitySchemas: [userSchema],
       },
-    }).then((connection: any) =>
-      assert(containerStub.register.calledWith('userRepository')),
-    ));
+    }).then((connection: any) => assert(Container.take('userRepository'))));
 });
