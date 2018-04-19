@@ -4,6 +4,7 @@ import { IRolesMap, IUser } from './hierarchyProvider';
 import flattenDeep from './helpers/flattenDeep';
 import IUserProvider from './IUserProvider';
 import IRoleProvider from './IRoleProvider';
+import { IRoute, IMethod } from './IRoute';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
@@ -56,7 +57,7 @@ class HadronSecurity {
       existingRoute.methods = [...existingMethods, ...nonExistingMethods];
     } else {
       const methodsForRoute: IMethod[] = [];
-      if (methods) {
+      if (methods.length > 0) {
         methods = [...new Set(methods)];
         methods.forEach((methodName) => {
           methodsForRoute.push({

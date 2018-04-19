@@ -14,28 +14,28 @@ describe('In memory hadron security', () => {
   userProvider.addUser({
     id: 1,
     username: 'admin',
-    password: 'admin',
+    passwordHash: 'admin',
     roles: [roleProvider.getRole('Admin')],
   });
 
   userProvider.addUser({
     id: 2,
     username: 'user',
-    password: 'user',
+    passwordHash: 'user',
     roles: [roleProvider.getRole('User')],
   });
 
   userProvider.addUser({
     id: 3,
     username: 'uberAdmin',
-    password: 'qwe',
+    passwordHash: 'qwe',
     roles: [roleProvider.getRole('Admin'), roleProvider.getRole('User')],
   });
 
   userProvider.addUser({
     id: 4,
     username: 'guest',
-    password: 'guest',
+    passwordHash: 'guest',
     roles: [roleProvider.getRole('Guest')],
   });
 
