@@ -94,9 +94,9 @@ class ContainerItemTransient extends ContainerItem {
 const containerItemFactory = (
   key: string,
   item: any,
-  lifetime?: string,
+  lifecycle?: string,
 ): ContainerItem => {
-  switch (lifetime) {
+  switch (lifecycle) {
     case Lifecycle.Singleton:
       return new ContainerItemSingleton(key, item);
     case Lifecycle.Transient:
