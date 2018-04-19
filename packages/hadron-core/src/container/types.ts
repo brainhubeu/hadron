@@ -7,7 +7,7 @@ interface IContainerItem {
 
 interface IContainer {
   take: (key: string) => any;
-  register: (key: string, value: any, lifetime?: string) => any;
+  register: (key: string, value: any, lifecycle?: string) => any;
 }
 
 export { IContainerItem, IContainer };
