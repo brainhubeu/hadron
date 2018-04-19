@@ -4,7 +4,6 @@ import { IRolesMap, IUser } from './hierarchyProvider';
 import flattenDeep from './helpers/flattenDeep';
 import IUserProvider from './IUserProvider';
 import IRoleProvider from './IRoleProvider';
-import arrayFilter from './helpers/arrayFilter';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
@@ -18,7 +17,7 @@ class HadronSecurity {
   public allow(
     path: string,
     roles: string | Array<string | string[]>,
-    methods?: string[],
+    methods: string[] = [],
   ): HadronSecurity {
     const nonExistingRoles = this.getNonExistingRoles(roles);
     if (nonExistingRoles.length > 0) {
@@ -41,15 +40,11 @@ class HadronSecurity {
     }
 
     if (existingRoute) {
-      const existingMethods = arrayFilter(
-        existingRoute.methods,
-        methods || [],
-        true,
+      const existingMethods = existingRoute.methods.filter(
+        (method) => methods.indexOf(method.name) >= 0,
       );
-      const nonExistingMethods = arrayFilter(
-        existingRoute.methods,
-        methods || [],
-        false,
+      const nonExistingMethods = existingRoute.methods.filter(
+        (method) => methods.indexOf(method.name) < 0,
       );
 
       existingMethods.forEach((method) => {
