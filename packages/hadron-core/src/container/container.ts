@@ -1,6 +1,7 @@
 import containerItem from './containerItem';
 import { IContainerItem, IContainer } from './types';
 import isVarName from '../helpers/isVarName';
+import IncorrectContainerKeyNameError from '../errors/IncorrectContainerKeyNameError';
 
 const containerRegister = new Array<IContainerItem>();
 
