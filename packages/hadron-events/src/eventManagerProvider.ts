@@ -1,5 +1,10 @@
 import { hasFunctionArgument } from './helpers/functionHelper';
-import { IEventEmitter, IEventListener } from './types';
+import {
+  IEventEmitter,
+  IEventListener,
+  ICallbackEvent,
+  CallbackEvent,
+} from './types';
 
 /**
  * Provider function to inject emitter and config into variable scope
@@ -8,22 +13,20 @@ import { IEventEmitter, IEventListener } from './types';
  */
 const eventManagerProvider = (emitter: IEventEmitter, config: any) => ({
   registerEvents: (listeners: IEventListener[]) => {
-    listeners.forEach((listener: any) => {
+    listeners.forEach((listener: IEventListener) => {
       if (listener.event === '' || listener.event === null) {
         throw new Error('eventName can not be empty');
       }
       emitter.on(listener.event, listener.handler);
     });
   },
-  emitEvent: (eventName: string, callback: () => any) => {
+  emitEvent: (eventName: string, callback: CallbackEvent) => {
     if (eventName === '' || eventName === null) {
       throw new Error('eventName can not be empty');
     }
 
     if (callback === undefined || callback === null) {
-      callback = () => {
-        return null;
-      };
+      callback = () => null;
     }
 
     return emitter

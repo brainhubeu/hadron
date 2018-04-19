@@ -1,6 +1,7 @@
 import { getArgs } from '@brainhubeu/hadron-utils';
 
-function hasFunctionArgument(func: any, argumentName: any) {
+// tslint:disable-next-line:ban-types
+function hasFunctionArgument(func: Function, argumentName: string) {
   return getArgs(func).indexOf(argumentName) >= 0;
 }
 
