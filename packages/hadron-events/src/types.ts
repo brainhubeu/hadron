@@ -1,9 +1,5 @@
 export type CallbackEvent = (...args: any[]) => any;
-export type EventHandler = (callback: ICallbackEvent, ...args: any[]) => any;
-
-export interface ICallbackEvent {
-  callback: CallbackEvent;
-}
+export type EventHandler = (callback: CallbackEvent, ...args: any[]) => any;
 
 export interface IEventEmitter {
   listeners: (event: string) => any[];
@@ -19,7 +15,9 @@ export interface IEventListener {
 
 // tslint:disable-next-line:no-empty-interface
 export interface IHadronEventsConfig {
-  events: {
-    listeners: IEventListener[];
-  };
+  events: IEventsConfig;
+}
+
+export interface IEventsConfig {
+  listeners: IEventListener[];
 }

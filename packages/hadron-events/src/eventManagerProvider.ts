@@ -2,8 +2,8 @@ import { hasFunctionArgument } from './helpers/functionHelper';
 import {
   IEventEmitter,
   IEventListener,
-  ICallbackEvent,
   CallbackEvent,
+  IEventsConfig,
 } from './types';
 
 /**
@@ -11,7 +11,10 @@ import {
  * @param emitter event emitter
  * @param config config parameters
  */
-const eventManagerProvider = (emitter: IEventEmitter, config: any) => ({
+const eventManagerProvider = (
+  emitter: IEventEmitter,
+  config: IEventsConfig,
+) => ({
   registerEvents: (listeners: IEventListener[]) => {
     listeners.forEach((listener: IEventListener) => {
       if (listener.event === '' || listener.event === null) {
