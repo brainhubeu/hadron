@@ -1,8 +1,4 @@
-import {
-  createConnection,
-  Connection,
-  EntityOptions,
-} from 'typeorm';
+import { createConnection, Connection, EntityOptions } from 'typeorm';
 import { CONNECTION } from './constants';
 import { IContainer } from '@brainhubeu/hadron-core';
 import { IHadronTypeormConfig } from './types';
@@ -15,13 +11,7 @@ const registerRepositories = (
   entities: Array<string | EntityOptions>,
 ) => {
   entities.forEach((entity: string | EntityOptions) => {
-    let name: string = '';
-
-    if (typeof entity === 'object') {
-      name = entity.name;
-    } else if (typeof entity === 'string') {
-      name = entity;
-    }
+    const name: string = typeof entity === 'string' ? entity : entity.name;
 
     container.register(repositoryName(name), connection.getRepository(name));
   });
