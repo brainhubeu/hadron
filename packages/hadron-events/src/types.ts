@@ -19,5 +19,7 @@ export interface IEventListener {
 
 // tslint:disable-next-line:no-empty-interface
 export interface IHadronEventsConfig {
-  name: string;
+  events: {
+    listeners: IEventListener[];
+  };
 }
