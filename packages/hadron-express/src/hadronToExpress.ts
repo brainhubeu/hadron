@@ -1,72 +1,12 @@
 import * as express from 'express';
-import { getArgs } from '@brainhubeu/hadron-utils';
-import { Container } from '@brainhubeu/hadron-core';
-
-import {
-  Callback,
-  IContainer,
-  IRoute,
-  IRoutesConfig,
-  Middleware,
-} from './types';
+import { IContainer, IRoute, IRoutesConfig, Middleware } from './types';
 import { validateMethods } from './validators/routing';
 import { eventNames } from './constants/eventNames';
-import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import CreateRouteError from './errors/CreateRouteError';
-import { ServerResponse } from 'http';
-
-const generateMiddlewares = (route: IRoute) =>
-  route.middleware &&
-  route.middleware.map(
-    (middleware: Middleware) => (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction,
-    ) => {
-      Promise.resolve()
-        .then(() => middleware(req, res, next))
-        .catch((error) => {
-          const logger = Container.take('hadronLogger');
-          if (logger) {
-            logger.warn(new GenerateMiddlewareError(error));
-          }
-
-          res.sendStatus(500);
-        });
-    },
-  );
-
-const mapRouteArgs = (
-  req: any,
-  res: any,
-  routeCallback: Callback,
-  container: IContainer,
-) =>
-  getArgs(routeCallback).map((name: string) => {
-    console.dir(req.headers, { colors: true, depth: null });
-    if (name === 'headers') {
-      return req.headers;
-    }
-
-    if (name === 'body') {
-      return req.body;
-    }
-
-    if (name === 'req') {
-      return req;
-    }
-
-    if (name === 'res') {
-      return res;
-    }
-
-    return (
-      req.params[name] ||
-      req.query[name] ||
-      res.locals[name] ||
-      container.take(name)
-    );
-  });
+import createContainerProxy from './createContainerProxy';
+import prepareRequest from './prepareRequest';
+import generateMiddlewares from './generateMiddlewares';
+import handleResponseSpec from './handleResponseSpec';
 
 const createRoutes = (
   app: any,
@@ -74,30 +14,32 @@ const createRoutes = (
   middleware: Middleware[],
   container: IContainer,
   routeName: string,
-) =>
-  route.methods.map((method: string) => {
+) => {
+  const containerProxy = createContainerProxy(container);
+
+  return route.methods.map((method: string) => {
     app[method.toLowerCase()](
       route.path,
       ...middleware,
-      (req: any, res: express.Response) => {
+      (req: express.Request, res: express.Response) => {
+        const request = prepareRequest(req);
+
         Promise.resolve()
           .then(() => {
-            const args = mapRouteArgs(req, res, route.callback, container);
             const eventManager = container.take('event-manager');
+
             if (!eventManager) {
-              return route.callback(...args);
+              return route.callback(request, containerProxy);
             }
+
             const newRouteCallback = eventManager.emitEvent(
               eventNames.HANDLE_REQUEST_CALLBACK_EVENT,
               route.callback,
             );
-            return newRouteCallback(...args);
+
+            return newRouteCallback(request, containerProxy);
           })
-          .then((result) => {
-            if (!(result instanceof ServerResponse)) {
-              res.status(200).json(result);
-            }
-          })
+          .then(handleResponseSpec(res))
           .catch((error) => {
             const logger = container.take('hadronLogger');
             if (logger) {
@@ -109,6 +51,7 @@ const createRoutes = (
       },
     );
   });
+};
 
 const convertToExpress = (routes: IRoutesConfig, container: any) => {
   const app = container.take('server');

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import containerItem from '../containerItem';
 import { Lifecycle } from '../lifecycle';
 
-describe('containerItem set lifetime', () => {
+describe('containerItem set lifecycle', () => {
   it('should be default(value)', () => {
     const item = containerItem.containerItemFactory('object', Object);
     expect(item.constructor.name).to.equal('ContainerItem');
