@@ -6,7 +6,6 @@ import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
 import * as hadronLogger from '@brainhubeu/hadron-logger';
 import * as hadronTypeOrm from '@brainhubeu/hadron-typeorm';
-import * as hadronSecurity from '../hadron-security';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo/index';
@@ -18,9 +17,9 @@ import HadronSecurity, {
   IRoleProvider,
   IRole,
   IUser,
+  expressMiddlewareProvider,
 } from '@brainhubeu/hadron-security';
 import securityConfig from './security/securityConfig';
-import expressMiddlewareProvider from '../hadron-security/src/providers/expressProvider';
 import TypeOrmUserProvider from './security/TypeOrmUserProvider';
 import TypeOrmRoleProvider from './security/TypeOrmRoleProvider';
 
@@ -42,7 +41,7 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
 
   hadron(
     expressApp,
-    [hadronEvents, hadronSerialization, hadronTypeOrm, hadronSecurity],
+    [hadronEvents, hadronSerialization, hadronTypeOrm],
     config,
   ).then((container: IContainer) => {
     const userProvider = new TypeOrmUserProvider(

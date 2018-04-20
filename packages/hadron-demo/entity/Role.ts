@@ -1,4 +1,4 @@
-import { IRole } from '../../hadron-security/src/hierarchyProvider';
+import { IRole } from '@brainhubeu/hadron-security';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
