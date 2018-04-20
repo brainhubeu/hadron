@@ -14,12 +14,16 @@ const createRoutes = (
   middleware: Middleware[],
   container: IContainer,
   routeName: string,
-) =>
-  route.methods.map((method: string) => {
+) => {
+  const containerProxy = createContainerProxy(container);
+
+  return route.methods.map((method: string) => {
     (app as any)[method.toLowerCase()](
       route.path,
       ...middleware,
       (req: express.Request, res: express.Response) => {
+        const request = prepareRequest(req);
+
         Promise.resolve()
           .then(() => {
             const eventManager = container.take('eventManager');
