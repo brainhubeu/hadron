@@ -32,43 +32,13 @@ class HadronSecurity {
     }
 
     if (existingRoute) {
-      const existingMethods = existingRoute.methods.filter(
-        (method) => methods.indexOf(method.name) >= 0,
+      existingRoute.methods = this.getMethodsForExistingRoute(
+        existingRoute,
+        methods,
+        roles,
       );
-      const nonExistingMethods = existingRoute.methods.filter(
-        (method) => methods.indexOf(method.name) < 0,
-      );
-
-      existingMethods.forEach((method) => {
-        method.allowedRoles = [
-          ...new Set(method.allowedRoles.concat(this.getRoleArray(roles))),
-        ];
-      });
-
-      existingRoute.methods = [...existingMethods, ...nonExistingMethods];
     } else {
-      const methodsForRoute: IMethod[] = [];
-      if (methods.length > 0) {
-        methods = [...new Set(methods)];
-        methods.forEach((methodName) => {
-          methodsForRoute.push({
-            name: methodName,
-            allowedRoles: this.getRoleArray(roles),
-          });
-        });
-      } else {
-        methodsForRoute.push({
-          name: '*',
-          allowedRoles: this.getRoleArray(roles),
-        });
-      }
-
-      const route: IRoute = {
-        path: convertToPattern(path),
-        methods: methodsForRoute,
-      };
-
-      this.routes.push(route);
+      this.routes.push(this.getNewRoute(path, methods, roles));
     }
 
     return this;
@@ -153,6 +123,70 @@ class HadronSecurity {
         );
       }
     });
+  }
+
+  private getMethodsForExistingRoute(
+    existingRoute: IRoute,
+    methods: string[],
+    roles: string | Array<string | string[]>,
+  ): IMethod[] {
+    const newMethods: IMethod[] = methods.map((method) => ({
+      allowedRoles: this.getRoleArray(roles),
+      name: method,
+    }));
+
+    const existingMethods = existingRoute.methods.filter(
+      (method) => newMethods.map((el) => el.name).indexOf(method.name) >= 0,
+    );
+
+    const nonExistingMethods = newMethods.filter((method) => {
+      return (
+        existingRoute.methods.map((el) => el.name).indexOf(method.name) === -1
+      );
+    });
+
+    existingMethods.forEach((method) => {
+      method.allowedRoles = [
+        ...new Set(method.allowedRoles.concat(this.getRoleArray(roles))),
+      ];
+    });
+
+    let methodsFromRoute = existingRoute.methods.filter((method) => {
+      return existingMethods.map((el) => el.name).indexOf(method.name) === -1;
+    });
+
+    methodsFromRoute = methodsFromRoute.concat(existingMethods);
+
+    return [...methodsFromRoute, ...nonExistingMethods];
+  }
+
+  private getNewRoute(
+    path: string,
+    methods: string[],
+    roles: string | Array<string | string[]>,
+  ) {
+    const methodsForRoute: IMethod[] = [];
+    if (methods.length > 0) {
+      methods = [...new Set(methods)];
+      methods.forEach((methodName) => {
+        methodsForRoute.push({
+          name: methodName,
+          allowedRoles: this.getRoleArray(roles),
+        });
+      });
+    } else {
+      methodsForRoute.push({
+        name: '*',
+        allowedRoles: this.getRoleArray(roles),
+      });
+    }
+
+    const route: IRoute = {
+      path: convertToPattern(path),
+      methods: methodsForRoute,
+    };
+
+    return route;
   }
 }
 

@@ -11,9 +11,16 @@ const securityConfig = (
       const security = new HadronSecurity(userProvider, roleProvider, {
         ALL: roles,
       });
+
       security
         .allow('/team/*', ['Admin', 'User'])
-        .allow('/user/*', ['NotExists', 'ThisDoesNotExistToo', 'Admin', 'Sad']);
+        .allow(
+          '/user/*',
+          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Sad'],
+          ['get', 'post', 'put'],
+        )
+        .allow('/user/*', 'Manager', ['delete', 'get'])
+        .allow('/qwe', ['DoesNotExists']);
 
       resolve(security);
     });
