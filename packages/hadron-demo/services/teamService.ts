@@ -2,7 +2,6 @@ import { Team } from '../entity/Team';
 import { User } from '../entity/User';
 import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
-import HTTPStatus from 'http-status';
 
 class TeamDto {
   constructor(public id: number, public name: string, public amount: number) {}
@@ -38,7 +37,7 @@ const updateTeam = async ({ body }, { teamRepository }) => {
     };
   } catch (error) {
     return {
-      status: HTTPStatus.BAD_REQUEST,
+      status: 400,
       body: { error: error.message },
     };
   }
@@ -52,12 +51,12 @@ const insertTeam = async ({ body }, { teamRepository }) => {
     const amount = await teamRepository.count();
 
     return {
-      status: HTTPStatus.CREATED,
+      status: 201,
       body: { message: `total amount of teams: ${amount}` },
     };
   } catch (error) {
     return {
-      status: HTTPStatus.BAD_REQUEST,
+      status: 400,
       body: { error: error.message },
     };
   }

@@ -1,6 +1,5 @@
 import { User } from '../entity/User';
 import validate from '../entity/validation/validate';
-import HTTPStatus from 'http-status';
 
 class UserDto {
   constructor(
@@ -36,12 +35,12 @@ const insertUser = async (req, { teamRepository, userRepository }) => {
     const amount = await userRepository.count();
 
     return {
-      status: HTTPStatus.CREATED,
+      status: 201,
       body: { message: `Amount of users: ${amount}` },
     };
   } catch (error) {
     return {
-      status: HTTPStatus.BAD_REQUEST,
+      status: 400,
       body: { error: error.message },
     };
   }
@@ -61,7 +60,7 @@ const updateUser = async ({ body }, { userRepository }) => {
     };
   } catch (error) {
     return {
-      status: HTTPStatus.BAD_REQUEST,
+      status: 400,
       body: { error: error.message },
     };
   }
