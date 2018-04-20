@@ -113,3 +113,6 @@ export interface IRequest {
   file?: any;
   files?: any;
 }
+export interface IHadronExpressConfig {
+  routes: IRoutesConfig;
+}

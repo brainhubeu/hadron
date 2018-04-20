@@ -1,12 +1,19 @@
+import { IContainer } from '@brainhubeu/hadron-core';
+
 import LoggerNameIsRequiredError from './errors/LoggerNameIsRequiredError';
 import LoggerAdapterNotDefinedError from './errors/LoggerAdapterNotDefinedError';
 import ConfigNotDefinedError from './errors/ConfigNotDefinedError';
 import CouldNotRegisterLoggerInContainerError from './errors/CouldNotRegisterLoggerInContainerError';
 
 import defaultAdapters from './adapters';
-import { ILogger, ILoggerConfig, ILoggerFactory } from './types';
+import {
+  ILogger,
+  ILoggerConfig,
+  ILoggerFactory,
+  IHadronLoggerConfig,
+} from './types';
 
-const adapters = { ...defaultAdapters };
+const adapters: { [key: string]: ILoggerFactory } = { ...defaultAdapters };
 
 export const registerAdapter = (
   name: string,
@@ -15,7 +22,7 @@ export const registerAdapter = (
   adapters[name] = adapter;
 };
 
-const register = (container: any, config: any) => {
+const register = (container: IContainer, config: IHadronLoggerConfig) => {
   let { logger: loggers } = config;
 
   if (!loggers) {

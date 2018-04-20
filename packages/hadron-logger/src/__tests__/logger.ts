@@ -9,20 +9,20 @@ import { ILogger } from '../types';
 
 describe('logger', () => {
   beforeEach(() => {
-    Container.register('first logger', '');
+    Container.register('firstlogger', '');
     Container.register('firstLogger', '');
     Container.register('secondLogger', '');
     Container.register('UnknownTypeLogger', '');
   });
 
-  it('should register logger under "first logger"', () => {
+  it('should register logger under "firstlogger"', () => {
     register(Container, {
       logger: {
-        name: 'first logger',
+        name: 'firstlogger',
         type: 'bunyan',
       },
     });
-    assert(Container.take('first logger'));
+    assert(Container.take('firstlogger'));
   });
 
   it('should register multiple loggers', () => {
@@ -49,7 +49,7 @@ describe('logger', () => {
         logger: {
           type: 'bunyan',
         },
-      });
+      } as any);
     }).to.throw(LoggerNameIsRequiredError);
   });
 
@@ -58,7 +58,7 @@ describe('logger', () => {
       logger: {
         name: 'firstLogger',
       },
-    });
+    } as any);
     assert(Container.take('firstLogger'));
   });
 
@@ -100,7 +100,7 @@ describe('logger', () => {
 
   it('when did not provided logger info then should throw ConfigNotDefinedError', () => {
     expect(() => {
-      register(Container, {});
+      register(Container, {} as any);
     }).to.throw(ConfigNotDefinedError);
   });
 });

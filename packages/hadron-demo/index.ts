@@ -4,6 +4,8 @@ import hadron, { IContainer } from '@brainhubeu/hadron-core';
 import * as hadronEvents from '@brainhubeu/hadron-events';
 import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
+import * as hadronLogger from '@brainhubeu/hadron-logger';
+import * as hadronTypeORM from '@brainhubeu/hadron-typeorm';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo';
@@ -17,21 +19,21 @@ const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
+jsonProvider(['./routing/*'], ['js']).then((routes: any) => {
   const config = {
     ...typeormConfig,
     ...loggerConfig,
     events: emitterConfig,
     routes: {
+      ...expressConfig.routes,
       ...serializationRoutes,
       ...routes,
-      ...expressConfig.routes,
     },
   };
 
   hadron(
     expressApp,
-    [hadronEvents, hadronSerialization, hadronExpress],
+    [hadronEvents, hadronSerialization, hadronExpress, hadronTypeORM],
     config,
   ).then((container: IContainer) => {
     expressApp.use((req, res, next) =>

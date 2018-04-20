@@ -1,5 +1,9 @@
+export interface IHadronLoggerConfig {
+  logger: ILoggerConfig[] | ILoggerConfig;
+}
+
 export interface ILoggerConfig {
-  type: string;
+  type?: string;
   name: string;
 }
 
@@ -10,4 +14,4 @@ export interface ILogger {
   error?: (message: string) => void;
 }
 
-export type ILoggerFactory = (config: any) => ILogger;
+export type ILoggerFactory = (config: ILoggerConfig) => ILogger;

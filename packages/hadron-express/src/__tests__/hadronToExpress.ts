@@ -43,7 +43,7 @@ describe('router config', () => {
     app = express();
     app.use(bodyParser());
     Container.register('server', app);
-    Container.register('event-manager', null);
+    Container.register('eventManager', null);
   });
 
   describe('generating routes', () => {
@@ -125,7 +125,7 @@ describe('router config', () => {
       const eventManager = {
         emitEvent: sinon.spy(),
       };
-      Container.register('event-manager', eventManager);
+      Container.register('eventManager', eventManager);
       const testRoute = createTestRoute('/index', ['GET'], () => null);
 
       routesToExpress(testRoute, Container);
@@ -246,7 +246,7 @@ describe('router config', () => {
   });
   describe('router middleware', () => {
     it('calls middleware passed in router config', () => {
-      const callback = () => null;
+      const callback = (): any => null;
 
       const spy = sinon.spy();
 
@@ -268,7 +268,7 @@ describe('router config', () => {
     });
 
     it('calls multiple middlewares passed in router config', () => {
-      const callback = () => null;
+      const callback = (): any => null;
 
       const firstSpy = sinon.spy();
       const secondSpy = sinon.spy();

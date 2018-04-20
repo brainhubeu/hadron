@@ -1,4 +1,4 @@
-const getArgs = (f: any): string[] => {
+const getArgs = (f: (args: any) => any): string[] => {
   const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
   const ARGUMENT_NAMES = /([^\s,]+)/g;
   const funcContent = f.toString().replace(STRIP_COMMENTS, '');
