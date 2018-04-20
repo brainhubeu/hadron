@@ -18,72 +18,74 @@ import HadronSecurity, {
   IRole,
   IUser,
   expressMiddlewareProvider,
+  generateTokenMiddleware,
 } from '@brainhubeu/hadron-security';
 import securityConfig from './security/securityConfig';
 import TypeOrmUserProvider from './security/TypeOrmUserProvider';
 import TypeOrmRoleProvider from './security/TypeOrmRoleProvider';
-import { generateTokenMiddleware } from '../hadron-security/src/providers/expressProvider';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
-  const config = {
-    ...typeormConfig,
-    ...hadronLogger,
-    events: emitterConfig,
-    routes: {
-      ...serializationRoutes,
-      ...routes,
-      ...expressConfig.routes,
-    },
-  };
+jsonProvider(['packages/hadron-demo/routing/*'], ['config.js']).then(
+  (routes: any) => {
+    const config = {
+      ...typeormConfig,
+      ...hadronLogger,
+      events: emitterConfig,
+      routes: {
+        ...serializationRoutes,
+        ...routes,
+        ...expressConfig.routes,
+      },
+    };
 
-  hadron(
-    expressApp,
-    [hadronEvents, hadronSerialization, hadronTypeOrm],
-    config,
-  ).then((container: IContainer) => {
-    const userProvider = new TypeOrmUserProvider(
-      container.take('userRepository'),
-    );
-    const roleProvider = new TypeOrmRoleProvider(
-      container.take('roleRepository'),
-    );
+    hadron(
+      expressApp,
+      [hadronEvents, hadronSerialization, hadronTypeOrm],
+      config,
+    ).then((container: IContainer) => {
+      const userProvider = new TypeOrmUserProvider(
+        container.take('userRepository'),
+      );
+      const roleProvider = new TypeOrmRoleProvider(
+        container.take('roleRepository'),
+      );
 
-    let security: HadronSecurity;
+      let security: HadronSecurity;
 
-    securityConfig(userProvider, roleProvider).then((configuredSecurity) => {
-      security = configuredSecurity;
+      securityConfig(userProvider, roleProvider).then((configuredSecurity) => {
+        security = configuredSecurity;
+      });
+
+      expressApp.post('/login', (req, res, next) => {
+        if (security) {
+          generateTokenMiddleware(security)(req, res, next);
+        } else {
+          return next();
+        }
+      });
+
+      expressApp.use((req, res, next) => {
+        if (security) {
+          expressMiddlewareProvider(security)(req, res, next);
+        } else {
+          return next();
+        }
+      });
+
+      hadronExpress.register(container, config);
+
+      expressApp.use((req, res, next) =>
+        res.status(404).json('Request not found.'),
+      );
+      container.register('customValue', 'From Brainhub with ❤️');
+
+      setupSerializer();
+      expressApp.listen(port);
     });
 
-    expressApp.post('/login', (req, res, next) => {
-      if (security) {
-        generateTokenMiddleware(security)(req, res, next);
-      } else {
-        return next();
-      }
-    });
-
-    expressApp.use((req, res, next) => {
-      if (security) {
-        expressMiddlewareProvider(security)(req, res, next);
-      } else {
-        return next();
-      }
-    });
-
-    hadronExpress.register(container, config);
-
-    expressApp.use((req, res, next) =>
-      res.status(404).json('Request not found.'),
-    );
-    container.register('customValue', 'From Brainhub with ❤️');
-
-    setupSerializer();
-    expressApp.listen(port);
-  });
-
-  return;
-});
+    return;
+  },
+);
