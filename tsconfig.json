@@ -9,13 +9,13 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["lib/*", "node_modules/*", "types/*", "packages/*"]
+      "*": ["./*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSources": true,
     "lib": ["es2017", "dom"]
   },
-  "include": ["lib/**/*", "packages/**/*", "features/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.*", "index.ts", "LICENSE"],
+  "exclude": ["node_modules", "**/__tests__/**", "**/*/*.d.ts"]
 }

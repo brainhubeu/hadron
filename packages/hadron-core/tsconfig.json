@@ -14,9 +14,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "inlineSources": true,
-    "lib": ["es2017", "dom"],
-    "declaration": true
+    "lib": ["es2017", "dom"]
   },
   "include": ["src/**/*.*", "index.ts", "LICENSE"],
-  "exclude": ["node_modules", "**/__tests__/**"]
+  "exclude": ["node_modules", "**/__tests__/**", "**/*/*.d.ts"]
 }
