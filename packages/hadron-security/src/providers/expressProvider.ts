@@ -48,20 +48,22 @@ export const generateTokenMiddleware = (security: HadronSecurity) => {
         .getUserProvider()
         .loadUserByUsername(req.body.username);
 
-      if (!bcrypt.compare(req.body.password, user.passwordHash)) {
-        return res.status(403).json({
-          message: 'Unauthenticated',
-        });
-      }
+      bcrypt.compare(req.body.password, user.passwordHash).then((result) => {
+        if (result === false) {
+          return res.status(403).json({
+            message: 'Unauthenticated',
+          });
+        }
 
-      return res.status(200).json({
-        token: jwt.sign(
-          {
-            username: user.username,
-          },
-          'VerySecretHadronPasswordWow',
-          { expiresIn: '1h' },
-        ),
+        return res.status(200).json({
+          token: jwt.sign(
+            {
+              username: user.username,
+            },
+            'VerySecretHadronPasswordWow',
+            { expiresIn: '1h' },
+          ),
+        });
       });
     } catch (error) {
       res.status(403).json({

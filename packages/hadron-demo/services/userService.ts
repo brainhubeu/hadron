@@ -1,5 +1,6 @@
 import { User } from '../entity/User';
 import validate from '../entity/validation/validate';
+import { Container } from '@brainhubeu/hadron-core';
 
 class UserDto {
   constructor(
@@ -9,7 +10,7 @@ class UserDto {
   ) {}
 }
 
-const getAllUsers = async ({ userRepository }) => {
+const getAllUsers = async (req, { userRepository }) => {
   const users = await userRepository.find({ relations: ['team'] });
 
   return {
