@@ -15,13 +15,14 @@ import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
 import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
 
 import routesToExpress from '../hadronToExpress';
+import { IRequest, IResponseSpec } from '../types';
 
 let app = express();
 
 const createTestRoute = (
   path: string,
   methods: string[],
-  callback: (req: any, res: any) => any,
+  callback: (req: IRequest, dependencies: any) => IResponseSpec,
   middleware?: Array<(req: any, res: any, next: any) => any>,
 ) => ({
   testRoute: {
@@ -137,8 +138,8 @@ describe('router config', () => {
   });
 
   describe('router params', () => {
-    it('should pass parameter to callback func', () => {
-      const callback = (valueA: any) => valueA;
+    it('should pass parameter to callback func - request param', () => {
+      const callback = ({ params }) => params.valueA;
 
       const testParam = 'This is a test';
 
@@ -154,8 +155,8 @@ describe('router config', () => {
         });
     });
 
-    it('should pass parameter to callback func v2', () => {
-      const callback = (valueA: any) => valueA;
+    it('should pass parameter to callback func - query', () => {
+      const callback = ({ query }) => query.valueA;
 
       const testParam = 'This is a test';
 
@@ -171,8 +172,8 @@ describe('router config', () => {
         });
     });
 
-    it('should pass multiple parameters to callback func', () => {
-      const callback = (valueA: string, valueB: string) => valueA + valueB;
+    it('should pass multiple parameters to callback func - params', () => {
+      const callback = ({ params }) => params.valueA + params.valueB;
 
       const testParam = 'This is a test';
       const secondParam = ' This is a second param';
@@ -191,8 +192,8 @@ describe('router config', () => {
         .then((res: any) => expect(res.body).to.equal(testParam + secondParam));
     });
 
-    it('should pass multiple parameters to callback func v2', () => {
-      const callback = (valueA: string, valueB: string) => valueA + valueB;
+    it('should pass multiple parameters to callback func - query', () => {
+      const callback = ({ query }) => query.valueA + query.valueB;
 
       const testParam = 'This is a test';
       const secondParam = ' This is a second param';
@@ -208,7 +209,7 @@ describe('router config', () => {
     });
 
     it('should pass query to callback func', () => {
-      const callback = (foo: any) => foo;
+      const callback = ({ query }) => query.foo;
 
       const testQuery = 'bar';
       const testRoute = createTestRoute('/index', ['GET'], callback);
@@ -224,7 +225,7 @@ describe('router config', () => {
     });
 
     it('should pass body to callback func', () => {
-      const callback = (body: any) => body.testData;
+      const callback = ({ body }) => body.testData;
 
       const postData = {
         testData: 'some value',
@@ -316,7 +317,7 @@ describe('router config', () => {
   describe('file handling', () => {
     const upload = multer({ dest: `${__dirname}/testUploads` });
 
-    const callback = (req: any) => req.files || req.file;
+    const callback = ({ file, files }) => ({ body: files || file });
 
     const uploadMiddleware = (req: any, res: any, next: any) =>
       upload.any()(req, res, next);

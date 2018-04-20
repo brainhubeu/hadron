@@ -1,12 +1,5 @@
 import * as express from 'express';
-
-interface IRequest {
-  locals: any;
-  headers: any;
-  body: any;
-  params: any[];
-  query: any[];
-}
+import { IRequest } from './types';
 
 const prepareRequest = (
   expressRequest: express.Request,
@@ -18,6 +11,8 @@ const prepareRequest = (
     body: expressRequest.body,
     params: expressRequest.params,
     query: expressRequest.query,
+    file: expressRequest.file,
+    files: expressRequest.files,
   };
 };
 
