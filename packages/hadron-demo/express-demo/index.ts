@@ -65,7 +65,7 @@ export default {
     containerKey: {
       path: '/getContainerValue',
       methods: ['get'],
-      callback: (customValue: any) => customValue,
+      callback: (req: any, { customValue }: any) => customValue,
     },
 
     //
@@ -74,7 +74,7 @@ export default {
     customContainerKey: {
       path: '/getContainerValue/:key',
       methods: ['get'],
-      callback: (key: string) => container.take(key),
+      callback: (req: any, { key }: { key: string }) => container.take(key),
     },
 
     //
@@ -83,7 +83,7 @@ export default {
     routeWithParam: {
       path: '/:param',
       methods: ['get'],
-      callback: (param: any) => `First route param: ${param}`,
+      callback: ({ params }: any) => `First route param: ${params.param}`,
     },
 
     //
@@ -92,8 +92,10 @@ export default {
     routeWithMultipleParams: {
       path: '/:param/:param2',
       methods: ['get'],
-      callback: (param: any, param2: any) =>
-        `First param value: ${param}; Second param value: ${param2}`,
+      callback: ({ params }: any) =>
+        `First param value: ${params.param}; Second param value: ${
+          params.param2
+        }`,
     },
 
     //
@@ -102,9 +104,9 @@ export default {
     registerCustomValue: {
       path: '/:key',
       methods: ['post'],
-      callback: (key: string, body: { value: any }) => {
-        container.register(key, body.value);
-        return `Value under key '${key}' is registered`;
+      callback: ({ params, body }: any) => {
+        container.register(params.key, body.value);
+        return `Value under key '${params.key}' is registered`;
       },
     },
 
@@ -114,9 +116,9 @@ export default {
     deleteCustomValue: {
       path: '/:key',
       methods: ['delete'],
-      callback: (key: string) => {
-        container.register(key, null);
-        return `Value under key '${key}' has been deleted`;
+      callback: ({ params }: any) => {
+        container.register(params.key, null);
+        return `Value under key '${params.key}' has been deleted`;
       },
     },
   },

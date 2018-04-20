@@ -7,27 +7,31 @@ Container.register('unicorns', unicorns);
 export default {
   getUnicorn: {
     path: '/unicorns/:name',
-    callback: (unicorns: any, name: string) => unicorns[name],
+    callback: ({ params }: any, { unicorns }: any) => {
+      return { body: unicorns[params.name] };
+    },
     methods: ['get'],
   },
   getUnicornWithRole: {
     path: '/unicorns/:role/:name',
-    callback: (
-      unicorns: any,
-      serializer: ISerializer,
-      role: string,
-      name: string,
-    ) => serializer.serialize(unicorns[name], [role], 'Unicorn'),
+    callback: ({ params }: any, { serializer, unicorns }: any) => {
+      return {
+        body: serializer.serialize(
+          unicorns[params.name],
+          [params.role],
+          'Unicorn',
+        ),
+      };
+    },
     methods: ['get'],
   },
   getUnicornWithRoleAndSerializer: {
     path: '/unicorns/:role/:name',
-    callback: (
-      unicorns: any,
-      unicornSerializer: any,
-      role: string,
-      name: string,
-    ) => unicornSerializer(unicorns[name], [role]),
+    callback: ({ params }: any, { unicorns, unicornSerializer }: any) => {
+      return {
+        body: unicornSerializer(unicorns[params.name], [params.role]),
+      };
+    },
     methods: ['get'],
   },
 };
