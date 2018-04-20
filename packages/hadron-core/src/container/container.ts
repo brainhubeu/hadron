@@ -17,10 +17,7 @@ const takeContainerByKey = (key: string): IContainerItem[] =>
  */
 const register = (key: string, item: any, lifecycle?: string): void => {
   if (!isVarName(key)) {
-    const logger: any = takeContainerByKey('hadronLogger');
-    if (logger && logger.length >= 1) {
-      throw new IncorrectContainerKeyNameError(key);
-    }
+    throw new IncorrectContainerKeyNameError(key);
   }
   const containerItems = takeContainerByKey(key);
   if (containerItems.length === 0) {

@@ -17,6 +17,10 @@ export interface ISerializerConfig {
   schemas?: ISerializationSchema[];
 }
 
+export interface IHadronSerializerConfig {
+  serializer: ISerializerConfig;
+}
+
 export interface ISerializer {
   addParser: (parser: (data: any) => any, key: string) => object;
   addSchema: (schema: ISerializationSchema) => ISerializationSchema[];

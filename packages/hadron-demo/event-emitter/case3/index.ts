@@ -1,8 +1,8 @@
-import eventManagerProvider from '@brainhubeu/hadron-events';
+import eventManagerProvider, { IEventsConfig } from '@brainhubeu/hadron-events';
 import { EventEmitter } from 'events';
 
 const emitter = new EventEmitter();
-const config = {};
+const config = {} as IEventsConfig;
 
 const eventManager = eventManagerProvider(emitter, config);
 
