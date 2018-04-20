@@ -14,9 +14,11 @@ import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';
-import HadronSecurity from '../hadron-security/src/HadronSecurity';
-import IRoleProvider from '../hadron-security/src/IRoleProvider';
-import { IRole, IUser } from '../hadron-security/src/hierarchyProvider';
+import HadronSecurity, {
+  IRoleProvider,
+  IRole,
+  IUser,
+} from '@brainhubeu/hadron-security';
 import securityConfig from './security/securityConfig';
 import expressMiddlewareProvider from '../hadron-security/src/providers/expressProvider';
 import TypeOrmUserProvider from './security/TypeOrmUserProvider';

@@ -1,6 +1,5 @@
 import { Repository } from 'typeorm';
-import IRoleProvider from '../../hadron-security/src/IRoleProvider';
-import { IRole } from '../../hadron-security/src/hierarchyProvider';
+import { IRole, IRoleProvider } from '@brainhubeu/hadron-security';
 
 class TypeOrmRoleProvider implements IRoleProvider {
   constructor(private roleRepository: Repository<IRole>) {}

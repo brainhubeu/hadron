@@ -1,6 +1,7 @@
-import IUserProvider from '../../hadron-security/src/IUserProvider';
-import IRoleProvider from '../../hadron-security/src/IRoleProvider';
-import HadronSecurity from '../../hadron-security/src/HadronSecurity';
+import HadronSecurity, {
+  IUserProvider,
+  IRoleProvider,
+} from '@brainhubeu/hadron-security';
 
 const securityConfig = (
   userProvider: IUserProvider,

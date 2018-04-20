@@ -1,6 +1,5 @@
 import { Repository } from 'typeorm';
-import { IUser } from '../../hadron-security/src/hierarchyProvider';
-import IUserProvider from '../../hadron-security/src/IUserProvider';
+import { IUser, IUserProvider } from '@brainhubeu/hadron-security';
 
 class TypeOrmUserProvider implements IUserProvider {
   constructor(private userRepository: Repository<IUser>) {}
