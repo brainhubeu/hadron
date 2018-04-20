@@ -10,8 +10,10 @@ class TeamDto {
 const getAllTeams = async (teamRepository: Repository<Team>) =>
   await teamRepository
     .find({ relations: ['users'] })
-    .then((teams) =>
-      teams.map((team) => new TeamDto(team.id, team.name, team.users.length)),
+    .then((teams: Team[]) =>
+      teams.map(
+        (team: Team) => new TeamDto(team.id, team.name, team.users.length),
+      ),
     );
 
 const getTeamById = async (teamRepository: Repository<Team>, id: number) =>
@@ -50,7 +52,7 @@ const insertTeam = async (
     return await teamRepository
       .insert({ name: body.teamName })
       .then(() => teamRepository.count())
-      .then((amount) =>
+      .then((amount: number) =>
         res.status(201).json(`total amount of teams: ${amount}`),
       );
   } catch (error) {
@@ -66,8 +68,8 @@ const deleteTeam = async (
 ) => {
   await teamRepository
     .findOneById(id, { relations: ['users'] })
-    .then((team) =>
-      userRepository.removeByIds(team.users.map((user) => user.id)),
+    .then((team: Team) =>
+      userRepository.removeByIds(team.users.map((user: User) => user.id)),
     )
     .then(() => res.status(201).json(teamRepository.removeById(id)));
 };

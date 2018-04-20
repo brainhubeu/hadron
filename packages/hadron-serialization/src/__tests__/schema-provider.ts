@@ -6,7 +6,7 @@ import schemaProvider from '../schema-provider';
 
 describe('schemaProvider', () => {
   it('should try to locate files in given location', () => {
-    const mockResponse = [
+    const mockResponse: any = [
       { name: 'Test', properties: [] },
       { name: 'Second', properties: [] },
     ];

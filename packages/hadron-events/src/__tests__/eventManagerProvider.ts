@@ -46,7 +46,7 @@ describe('events registration', () => {
   });
   it('registers listeners', () => {
     const spy1 = () => sinon.spy();
-    const spy2 = (callback, ...args) => sinon.spy();
+    const spy2 = (callback: any, ...args: any[]) => sinon.spy();
 
     const listeners = [
       {
@@ -73,7 +73,7 @@ describe('events registration', () => {
 
 describe('events emitting', () => {
   let emitter: EventEmitter = null;
-  let eventManager = null;
+  let eventManager: any = null;
 
   beforeEach(() => {
     emitter = new EventEmitter();
@@ -103,7 +103,7 @@ describe('events emitting', () => {
         name: 'my-listener-3',
         event: 'changeCallbackEvent', // event to listen to
         handler: (callback, ...args) => {
-          const newCallback = (...args) => {
+          const newCallback = (...args: any[]) => {
             return 'changed';
           };
           return newCallback(...args);
@@ -142,7 +142,7 @@ describe('events emitting', () => {
         name: 'my-listener-3',
         event: 'changeCallbackEvent', // event to listen to
         handler: (callback, ...args) => {
-          const newCallback = (...args) => {
+          const newCallback = (...args: any[]) => {
             return 'changed';
           };
           return newCallback(...args);

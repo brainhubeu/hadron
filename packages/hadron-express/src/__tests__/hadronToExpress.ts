@@ -246,7 +246,7 @@ describe('router config', () => {
   });
   describe('router middleware', () => {
     it('calls middleware passed in router config', () => {
-      const callback = () => null;
+      const callback = (): any => null;
 
       const spy = sinon.spy();
 
@@ -268,7 +268,7 @@ describe('router config', () => {
     });
 
     it('calls multiple middlewares passed in router config', () => {
-      const callback = () => null;
+      const callback = (): any => null;
 
       const firstSpy = sinon.spy();
       const secondSpy = sinon.spy();
