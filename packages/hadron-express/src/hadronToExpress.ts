@@ -22,7 +22,7 @@ const createRoutes = (
       (req: express.Request, res: express.Response) => {
         Promise.resolve()
           .then(() => {
-            const eventManager = container.take('event-manager');
+            const eventManager = container.take('eventManager');
 
             if (!eventManager) {
               return route.callback(request, containerProxy);

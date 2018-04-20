@@ -43,7 +43,7 @@ describe('router config', () => {
     app = express();
     app.use(bodyParser());
     Container.register('server', app);
-    Container.register('event-manager', null);
+    Container.register('eventManager', null);
   });
 
   describe('generating routes', () => {
@@ -125,7 +125,7 @@ describe('router config', () => {
       const eventManager = {
         emitEvent: sinon.spy(),
       };
-      Container.register('event-manager', eventManager);
+      Container.register('eventManager', eventManager);
       const testRoute = createTestRoute('/index', ['GET'], () => null);
 
       routesToExpress(testRoute, Container);
