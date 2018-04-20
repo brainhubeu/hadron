@@ -9,7 +9,7 @@ class UserDto {
   ) {}
 }
 
-const getAllUsers = async ({ userRepository }) => {
+const getAllUsers = async (req, { userRepository }) => {
   const users = await userRepository.find({ relations: ['team'] });
 
   return {
