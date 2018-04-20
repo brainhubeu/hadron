@@ -22,6 +22,7 @@ import HadronSecurity, {
 import securityConfig from './security/securityConfig';
 import TypeOrmUserProvider from './security/TypeOrmUserProvider';
 import TypeOrmRoleProvider from './security/TypeOrmRoleProvider';
+import { generateTokenMiddleware } from '../hadron-security/src/providers/expressProvider';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -55,6 +56,14 @@ jsonProvider(['./routing/**/*'], ['js']).then((routes: any) => {
 
     securityConfig(userProvider, roleProvider).then((configuredSecurity) => {
       security = configuredSecurity;
+    });
+
+    expressApp.post('/login', (req, res, next) => {
+      if (security) {
+        generateTokenMiddleware(security)(req, res, next);
+      } else {
+        return next();
+      }
     });
 
     expressApp.use((req, res, next) => {

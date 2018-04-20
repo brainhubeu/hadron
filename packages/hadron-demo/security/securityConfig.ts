@@ -14,7 +14,7 @@ const securityConfig = (
       });
 
       security
-        .allow('/team/*', ['Admin', 'User'])
+        .allow('/team/*', [['Admin', 'User'], 'Manager'])
         .allow(
           '/user/*',
           ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Sad'],
