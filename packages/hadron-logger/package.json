@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "Hadron logger",
   "target": "dist",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "tsc"
@@ -15,6 +15,11 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-error-handler": "^0.0.4"
+    "@brainhubeu/hadron-core": "^0.0.7",
+    "@brainhubeu/hadron-error-handler": "^0.0.4",
+    "bunyan": "^1.8.12"
+  },
+  "devDependencies": {
+    "@types/bunyan": "^1.8.4"
   }
 }

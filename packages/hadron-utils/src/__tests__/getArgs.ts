@@ -4,7 +4,7 @@ import getArgs from '../getArgs';
 
 describe('getArgs return list of arguments', () => {
   it("function declaration - should return ['bar', 'bar2']", () => {
-    function foo(bar: any, bar2: any) {
+    function foo(bar: any, bar2: any): any {
       return null;
     }
     const args = getArgs(foo);
@@ -39,7 +39,7 @@ describe('getArgs return list of arguments', () => {
   });
   it("object method is no constructable - should return ['bar', 'bar2']", () => {
     const foo = {
-      foo(bar: any, bar2: any) {
+      foo(bar: any, bar2: any): any {
         return null;
       },
     }.foo;
@@ -48,7 +48,7 @@ describe('getArgs return list of arguments', () => {
   });
   it("class method - should return ['bar', 'bar2']", () => {
     class Foo {
-      public bar(bar: any, bar2: any) {
+      public bar(bar: any, bar2: any): any {
         return null;
       }
     }
@@ -58,7 +58,7 @@ describe('getArgs return list of arguments', () => {
   });
   it("static class method - should return ['bar', 'bar2']", () => {
     class Foo {
-      public static bar(bar: any, bar2: any) {
+      public static bar(bar: any, bar2: any): any {
         return null;
       }
     }

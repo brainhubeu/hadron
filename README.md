@@ -87,7 +87,7 @@ declare module '<some-library>';
 
 ## Lerna
 
-1.  To run `npm i` on all packages, just run
+1.  To run `npm i` on all packages, and compile them, just run
 
 ```bash
   lerna bootstrap
@@ -104,6 +104,24 @@ declare module '<some-library>';
 
 ```bash
   lerna clean
+```
+
+4.  To clean all `node_modules` AND `dist` directories, run
+
+```bash
+  npm run clean
+```
+
+5.  To add dependency between packages, run
+
+```bash
+  lerna add <source-package-name> --scope=<target-package-name1>, <target-package-name2>
+```
+
+6.  To publish to npm, run
+
+```bash
+  lerna publish
 ```
 
 To get more command, please visit this [link](https://github.com/lerna/lerna).

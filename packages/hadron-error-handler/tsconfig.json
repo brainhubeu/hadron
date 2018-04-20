@@ -8,7 +8,6 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "allowJs": true,
     "paths": {
       "*": ["./*"]
     },
@@ -18,5 +17,5 @@
     "lib": ["es2017", "dom"]
   },
   "include": ["src/**/*.*", "index.ts", "LICENSE"],
-  "exclude": ["node_modules", "src/__tests__/**"]
+  "exclude": ["node_modules", "**/__tests__/**", "**/*/*.d.ts"]
 }

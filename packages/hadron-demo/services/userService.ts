@@ -1,79 +1,75 @@
-import { Team } from '../entity/Team';
 import { User } from '../entity/User';
-import { Repository } from 'typeorm';
 import validate from '../entity/validation/validate';
 
 class UserDto {
   constructor(
     public id: number,
-    public name: string,
+    public username: string,
     public teamName: string,
   ) {}
 }
 
-const getAllUsers = async (userRepository: Repository<User>) =>
-  await userRepository
-    .find({ relations: ['team'] })
-    .then((users: User[]) =>
-      users.map(
-        (user: User) => new UserDto(user.id, user.username, user.team.name),
-      ),
-    );
+const getAllUsers = async ({ userRepository }) => {
+  const users = await userRepository.find({ relations: ['team'] });
 
-const getUserById = async (userRepository: Repository<User>, id: number) =>
-  await userRepository.findOneById(id);
+  return {
+    body: users.map(
+      (user: User) => new UserDto(user.id, user.username, user.team.name),
+    ),
+  };
+};
 
-const insertUser = async (
-  req: any,
-  res: any,
-  userRepository: Repository<User>,
-  teamRepository: Repository<Team>,
-) => {
+const getUserById = async ({ params }, { userRepository }) => {
+  return {
+    body: await userRepository.findOneById(params.id),
+  };
+};
+
+const insertUser = async (req, { teamRepository, userRepository }) => {
   try {
     await validate('insertUser', req.body);
-    return await teamRepository
-      .findOneById(req.body.teamId)
-      .then((team) =>
-        userRepository.insert({ team, username: req.body.userName }),
-      )
-      .then(() => userRepository.count())
-      .then((amount) =>
-        res.status(201).json({ message: `Amount of users: ${amount}` }),
-      );
+    const team = await teamRepository.findOneById(req.body.teamId);
+
+    await userRepository.insert({ team, name: req.body.userName });
+
+    const amount = await userRepository.count();
+
+    return {
+      status: 201,
+      body: { message: `Amount of users: ${amount}` },
+    };
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    return {
+      status: 400,
+      body: { error: error.message },
+    };
   }
 };
 
-const updateUser = async (
-  res: any,
-  userRepository: Repository<User>,
-  body: { id: number; userName: string; teamId: number },
-) => {
+const updateUser = async ({ body }, { userRepository }) => {
   try {
     await validate('updateUser', body);
-    return await userRepository
-      .findOneById(body.id)
-      .then((user: User) => {
-        user.username = body.userName;
-        return userRepository.save(user);
-      })
-      .then(() =>
-        res
-          .status(201)
-          .json(`user id: ${body.id} has new name: ${body.userName}`),
-      );
+
+    const user = await userRepository.findOneById(body.id);
+    user.name = body.userName;
+
+    await userRepository.save(user);
+
+    return {
+      body: { message: `user id: ${body.id} has new name: ${body.userName}` },
+    };
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    return {
+      status: 400,
+      body: { error: error.message },
+    };
   }
 };
 
-const deleteUser = async (
-  res: any,
-  userRepository: Repository<User>,
-  id: number,
-) => {
-  res.status(201).json(await userRepository.removeById(id));
+const deleteUser = async ({ params }, { userRepository }) => {
+  return {
+    body: await userRepository.removeById(params.id),
+  };
 };
 
 export {

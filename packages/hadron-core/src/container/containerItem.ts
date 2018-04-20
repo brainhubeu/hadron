@@ -1,9 +1,9 @@
 import container from './container';
 import { IContainerItem } from './types';
-import { Lifetime } from './lifetime';
+import { Lifecycle } from './lifecycle';
 import { getArgs } from '@brainhubeu/hadron-utils';
 
-class ContainerItem implements IContainerItem {
+export class ContainerItem implements IContainerItem {
   // tslint:disable-next-line:variable-name
   constructor(protected key: string, protected item: any) {}
 
@@ -94,12 +94,12 @@ class ContainerItemTransient extends ContainerItem {
 const containerItemFactory = (
   key: string,
   item: any,
-  lifetime?: string,
+  lifecycle?: string,
 ): ContainerItem => {
-  switch (lifetime) {
-    case Lifetime.Singleton:
+  switch (lifecycle) {
+    case Lifecycle.Singleton:
       return new ContainerItemSingleton(key, item);
-    case Lifetime.Transient:
+    case Lifecycle.Transient:
       return new ContainerItemTransient(key, item);
     default:
       return new ContainerItem(key, item);

@@ -1,46 +1,106 @@
 import { expect, assert } from 'chai';
-import * as sinon from 'sinon';
-import { register } from '../logger';
+import { Container } from '@brainhubeu/hadron-core';
+import { register, registerAdapter } from '../logger';
 import LoggerNameIsRequiredError from '../errors/LoggerNameIsRequiredError';
+import LoggerAdapterNotDefinedError from '../errors/LoggerAdapterNotDefinedError';
+import CouldNotRegisterLoggerInContainerError from '../errors/CouldNotRegisterLoggerInContainerError';
+import ConfigNotDefinedError from '../errors/ConfigNotDefinedError';
+import { ILogger } from '../types';
 
 describe('logger', () => {
-  const containerMock = {
-    register: sinon.stub(),
-    take: () => null,
-  };
-
   beforeEach(() => {
-    containerMock.register.reset();
+    Container.register('firstlogger', '');
+    Container.register('firstLogger', '');
+    Container.register('secondLogger', '');
+    Container.register('UnknownTypeLogger', '');
   });
 
-  it('should register logger under "first logger"', () => {
-    register(containerMock, {
+  it('should register logger under "firstlogger"', () => {
+    register(Container, {
       logger: {
-        name: 'first logger',
+        name: 'firstlogger',
+        type: 'bunyan',
       },
     });
-    assert(containerMock.register.calledWith('first logger'));
+    assert(Container.take('firstlogger'));
   });
+
   it('should register multiple loggers', () => {
-    register(containerMock, {
+    register(Container, {
       logger: [
         {
           name: 'firstLogger',
+          type: 'bunyan',
         },
         {
           name: 'secondLogger',
+          type: 'bunyan',
         },
       ],
     });
 
-    assert(containerMock.register.calledWith('firstLogger'));
-    assert(containerMock.register.calledWith('secondLogger'));
+    assert(Container.take('firstLogger'));
+    assert(Container.take('secondLogger'));
   });
-  it('should not register logger without name', () => {
+
+  it('when there is no name provided in config then should throw LoggerNameIsRequiredError', () => {
     expect(() => {
-      register(containerMock, {
-        logger: {},
-      });
+      register(Container, {
+        logger: {
+          type: 'bunyan',
+        },
+      } as any);
     }).to.throw(LoggerNameIsRequiredError);
+  });
+
+  it('when there is no type of logger, should register it with default logger', () => {
+    register(Container, {
+      logger: {
+        name: 'firstLogger',
+      },
+    } as any);
+    assert(Container.take('firstLogger'));
+  });
+
+  it('when logger is defined with type that has not any adapter then should throw LoggerAdapterNotDefinedError', () => {
+    expect(() => {
+      register(Container, {
+        logger: {
+          type: 'unknown-type',
+          name: 'UnknownTypeLogger',
+        },
+      });
+    }).to.throw(LoggerAdapterNotDefinedError);
+  });
+
+  it('should register logger with custom adapter', () => {
+    registerAdapter('custom', (config: any) => ({}));
+
+    register(Container, {
+      logger: {
+        name: 'firstLogger',
+        type: 'custom',
+      },
+    });
+    assert(Container.take('firstLogger'));
+  });
+
+  it('when custom adapter is broken should throw CouldNotRegisterLoggerInContainerError', () => {
+    registerAdapter('custom', null);
+
+    expect(() => {
+      register(Container, {
+        logger: {
+          name: 'firstLogger',
+          type: 'custom',
+        },
+      });
+    }).to.throw(CouldNotRegisterLoggerInContainerError);
+  });
+
+  it('when did not provided logger info then should throw ConfigNotDefinedError', () => {
+    expect(() => {
+      register(Container, {} as any);
+    }).to.throw(ConfigNotDefinedError);
   });
 });

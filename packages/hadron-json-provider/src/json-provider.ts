@@ -54,7 +54,7 @@ export const xmlLoader = (path: string) => {
   });
 };
 
-const mapper: any = {
+const mapper: { [key: string]: (path: string) => Promise<any> } = {
   js: jsLoader,
   json: jsonLoader,
   xml: xmlLoader,
@@ -71,7 +71,9 @@ export const configJsonProvider = (
   concatResults: boolean = false,
 ): Promise<object> =>
   configLocate(paths, configName, type, extensions)
-    .then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
+    .then((locatedPaths: string[]) =>
+      Promise.all(extensionMapper(locatedPaths)),
+    )
     .then(
       (data: any) => (concatResults ? [...data] : Object.assign({}, ...data)),
     );
@@ -82,7 +84,9 @@ export const jsonProvider = (
   concatResults: boolean = false,
 ) =>
   locate(paths, extensions)
-    .then((locatedPaths: any) => Promise.all(extensionMapper(locatedPaths)))
+    .then((locatedPaths: string[]) =>
+      Promise.all(extensionMapper(locatedPaths)),
+    )
     .then(
       (data: any) => (concatResults ? [...data] : Object.assign({}, ...data)),
     );

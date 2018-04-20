@@ -7,27 +7,33 @@ Container.register('princesses', princesses);
 export default {
   getPrincess: {
     path: '/princesses/:name',
-    callback: (princesses: any, name: string) => princesses[name],
+    callback: ({ params }: any, { princesses }: any) => {
+      return {
+        body: princesses[params.name],
+      };
+    },
     methods: ['get'],
   },
   getPrincessWithRole: {
     path: '/princesses/:role/:name',
-    callback: (
-      princesses: any,
-      serializer: ISerializer,
-      role: string,
-      name: string,
-    ) => serializer.serialize(princesses[name], [role], 'Princess'),
+    callback: ({ params }: any, { princesses, serializer }: any) => {
+      return {
+        body: serializer.serialize(
+          princesses[params.name],
+          [params.role],
+          'Princess',
+        ),
+      };
+    },
     methods: ['get'],
   },
   getPrincessWithRoleAndSerializer: {
     path: '/princesses/:role/:name',
-    callback: (
-      princesses: any,
-      princessSerializer: any,
-      role: string,
-      name: string,
-    ) => princessSerializer(princesses[name], [role]),
+    callback: ({ params }: any, { princesses, princessSerializer }: any) => {
+      return {
+        body: princessSerializer(princesses[params.name], [params.role]),
+      };
+    },
     methods: ['get'],
   },
 };

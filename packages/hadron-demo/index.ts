@@ -10,6 +10,7 @@ import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo/index';
 import emitterConfig from './event-emitter/config';
+import loggerConfig from './logger';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';

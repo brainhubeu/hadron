@@ -1,9 +1,9 @@
 /* tslint:disable:max-classes-per-file */
 import { expect } from 'chai';
 import containerItem from '../containerItem';
-import { Lifetime } from '../lifetime';
+import { Lifecycle } from '../lifecycle';
 
-describe('containerItem set lifetime', () => {
+describe('containerItem set lifecycle', () => {
   it('should be default(value)', () => {
     const item = containerItem.containerItemFactory('object', Object);
     expect(item.constructor.name).to.equal('ContainerItem');
@@ -20,7 +20,7 @@ describe('containerItem set lifetime', () => {
     const item = containerItem.containerItemFactory(
       'object2',
       Object,
-      Lifetime.Singleton,
+      Lifecycle.Singleton,
     );
     expect(item.constructor.name).to.equal('ContainerItemSingleton');
   });
@@ -49,7 +49,7 @@ describe('containerItem set value', () => {
     const item = containerItem.containerItemFactory(
       'Fooooo',
       Foo,
-      Lifetime.Singleton,
+      Lifecycle.Singleton,
     );
     const item1 = item.Item;
     const item2 = item.Item;
@@ -65,7 +65,7 @@ describe('containerItem set value', () => {
     const item = containerItem.containerItemFactory(
       'Foo',
       Foo,
-      Lifetime.Transient,
+      Lifecycle.Transient,
     );
     const item1 = item.Item;
 
@@ -85,7 +85,7 @@ describe('containerItem set value', () => {
     const item = containerItem.containerItemFactory(
       'Foo',
       Foo,
-      Lifetime.Transient,
+      Lifecycle.Transient,
     );
     const item1 = item.Item;
     const item2 = item.Item;
