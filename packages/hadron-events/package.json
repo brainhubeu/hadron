@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-events",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hadron event emitter module",
   "main": "dist/index.js",
   "files": [
@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@brainhubeu/hadron-utils": "^0.0.6"
+    "@brainhubeu/hadron-core": "^0.0.7",
+    "@brainhubeu/hadron-utils": "^0.0.7"
   }
 }

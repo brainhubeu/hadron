@@ -18,6 +18,7 @@ const getTeamById = async (teamRepository: Repository<Team>, id: number) =>
   await teamRepository.findOneById(id);
 
 const updateTeam = async (
+  res: any,
   teamRepository: Repository<Team>,
   body: { id: number; teamName: string },
 ) => {
@@ -25,17 +26,22 @@ const updateTeam = async (
     await validate('updateTeam', body);
     return await teamRepository
       .findOneById(body.id)
-      .then((team) => {
+      .then((team: Team) => {
         team.name = body.teamName;
         return teamRepository.save(team);
       })
-      .then(() => `team id: ${body.id} has new name ${body.teamName}`);
+      .then(() =>
+        res
+          .status(201)
+          .json(`team id: ${body.id} has new name ${body.teamName}`),
+      );
   } catch (error) {
-    throw error;
+    res.status(400).json({ error: error.message });
   }
 };
 
 const insertTeam = async (
+  res: any,
   teamRepository: Repository<Team>,
   body: { teamName: string },
 ) => {
@@ -44,13 +50,16 @@ const insertTeam = async (
     return await teamRepository
       .insert({ name: body.teamName })
       .then(() => teamRepository.count())
-      .then((amount) => `total amount of teams: ${amount}`);
-  } catch (err) {
-    throw err;
+      .then((amount) =>
+        res.status(201).json(`total amount of teams: ${amount}`),
+      );
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
 const deleteTeam = async (
+  res: any,
   teamRepository: Repository<Team>,
   userRepository: Repository<User>,
   id: number,
@@ -60,7 +69,7 @@ const deleteTeam = async (
     .then((team) =>
       userRepository.removeByIds(team.users.map((user) => user.id)),
     )
-    .then(() => teamRepository.removeById(id));
+    .then(() => res.status(201).json(teamRepository.removeById(id)));
 };
 
 export { getAllTeams, getTeamById, updateTeam, insertTeam, deleteTeam };
