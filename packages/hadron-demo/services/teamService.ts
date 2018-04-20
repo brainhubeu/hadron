@@ -63,17 +63,17 @@ const insertTeam = async ({ body }, { teamRepository }) => {
 };
 
 const deleteTeam = async (
-  res: any,
-  teamRepository: Repository<Team>,
-  userRepository: Repository<User>,
-  id: number,
+  { params }: any,
+  { teamRepository, userRepository }: any,
 ) => {
-  const team = await teamRepository.findOneById(id, { relations: ['users'] });
+  const team = await teamRepository.findOneById(params.id, {
+    relations: ['users'],
+  });
 
   await userRepository.removeByIds(team.users.map((user) => user.id));
 
   return {
-    body: await teamRepository.removeById(id),
+    body: await teamRepository.removeById(params.id),
   };
 };
 
