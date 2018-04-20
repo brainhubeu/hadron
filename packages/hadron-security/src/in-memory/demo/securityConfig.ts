@@ -21,7 +21,8 @@ const securityConfig = (): Promise<HadronSecurity> => {
       userProvider.addUser({
         id: 1,
         username: 'admin',
-        passwordHash: 'admin',
+        passwordHash:
+          '$2b$10$sLo5GdVD5t1EcHK2mtIU7.UsVHb6GhXUEwoRrEeOZu7vgkhx5ogOW',
         roles: [role],
       });
     });

@@ -3,7 +3,9 @@ import * as bodyParser from 'body-parser';
 import InMemoryUserProvider from '../InMemoryUserProvider';
 import InMemoryRoleProvider from '../InMemoryRoleProvider';
 import HadronSecurity from '../../HadronSecurity';
-import expressMiddlewareProvider from '../../providers/expressProvider';
+import expressMiddlewareProvider, {
+  generateTokenMiddleware,
+} from '../../providers/expressProvider';
 import securityConfig from './securityConfig';
 
 const app = express();
@@ -15,9 +17,19 @@ securityConfig().then((s) => {
   security = s;
 });
 
+app.post('/login', (req, res, next) => {
+  if (security) {
+    generateTokenMiddleware(security)(req, res, next);
+  } else {
+    return next();
+  }
+});
+
 app.use((req, res, next) => {
   if (security) {
     expressMiddlewareProvider(security)(req, res, next);
+  } else {
+    return next();
   }
 });
 

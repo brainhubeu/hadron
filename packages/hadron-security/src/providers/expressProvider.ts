@@ -1,6 +1,6 @@
 import HadronSecurity from '../HadronSecurity';
 import * as express from 'express';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from '../password/bcrypt/bcrypt';
 import * as jwt from 'jsonwebtoken';
 
 const expressMiddlewareProvider = (security: HadronSecurity) => {
@@ -14,7 +14,7 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
     }
 
     try {
-      const token = req.headers.authorization;
+      const token: any = req.headers.authorization;
       const decodedToken: any = jwt.verify(
         token,
         'VerySecretHadronPasswordWow',
@@ -48,7 +48,7 @@ export const generateTokenMiddleware = (security: HadronSecurity) => {
         .getUserProvider()
         .loadUserByUsername(req.body.username);
 
-      if (!bcrypt.compareSync(req.body.password, user.passwordHash)) {
+      if (!bcrypt.compare(req.body.password, user.passwordHash)) {
         return res.status(403).json({
           message: 'Unauthenticated',
         });
