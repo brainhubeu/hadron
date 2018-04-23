@@ -7,6 +7,7 @@ import InMemoryUserProvider from './src/in-memory/InMemoryUserProvider';
 import expressMiddlewareProvider, {
   generateTokenMiddleware,
 } from './src/providers/expressProvider';
+import * as bcrypt from './src/password/bcrypt/bcrypt';
 
 export const register = (container: any, config: any) => {
   // console.log('Lorem Ipsum');
@@ -22,4 +23,5 @@ export {
   InMemoryUserProvider,
   expressMiddlewareProvider,
   generateTokenMiddleware,
+  bcrypt,
 };

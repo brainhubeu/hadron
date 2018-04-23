@@ -3,6 +3,8 @@ import * as express from 'express';
 import * as bcrypt from '../password/bcrypt/bcrypt';
 import * as jwt from 'jsonwebtoken';
 
+const secret = process.env.JWT_TOKEN_SECRET || 'H4DR0N_S3CUR17Y';
+
 const expressMiddlewareProvider = (security: HadronSecurity) => {
   return async (
     req: express.Request,
@@ -15,10 +17,7 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
 
     try {
       const token: any = req.headers.authorization;
-      const decodedToken: any = jwt.verify(
-        token,
-        'VerySecretHadronPasswordWow',
-      );
+      const decodedToken: any = jwt.verify(token, secret);
       const user = await security
         .getUserProvider()
         .loadUserByUsername(decodedToken.username);
@@ -49,7 +48,7 @@ export const generateTokenMiddleware = (security: HadronSecurity) => {
         .loadUserByUsername(req.body.username);
 
       bcrypt.compare(req.body.password, user.passwordHash).then((result) => {
-        if (result === false) {
+        if (!result) {
           return res.status(403).json({
             message: 'Unauthenticated',
           });
@@ -60,7 +59,7 @@ export const generateTokenMiddleware = (security: HadronSecurity) => {
             {
               username: user.username,
             },
-            'VerySecretHadronPasswordWow',
+            secret,
             { expiresIn: '1h' },
           ),
         });
