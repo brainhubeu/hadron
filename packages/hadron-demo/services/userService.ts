@@ -55,7 +55,7 @@ const insertUser = async (
     user.team = team;
     user.roles = [userRole];
 
-    await userRepository.save(user);
+    await userRepository.insert(user);
 
     const amount = await userRepository.count();
 

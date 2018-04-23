@@ -26,7 +26,6 @@ export class User implements IUser {
   @ManyToMany((type) => Role, {
     cascadeInsert: true,
     cascadeUpdate: true,
-    eager: true,
   })
   @JoinTable({ name: 'user_role' })
   public roles: IRole[];
