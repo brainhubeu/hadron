@@ -35,7 +35,7 @@ const securityConfig = (
 };
 ```
 
-To use security config you need to inject providers - User and Role provider. Here are the interfaces:
+To use security config you need to inject providers - User and Role provider. Here are the interfaces:  
 **_IRole_** and **_IUser_**
 
 ```typescript
@@ -71,6 +71,14 @@ interface IRoleProvider {
 ```
 
 After injection you can use **_allow_** method:
+```javascript
+  allow(route, roles, methods)
+```
+* `route` - string which containts URL which will be secured
+* `roles` - string or array of strings or array of array of strings which containts role names allowed by security
+* `methods` - optional array of strings, which contains HTTP methhods allowed by security
+
+### Example
 
 ```javascript
 security
