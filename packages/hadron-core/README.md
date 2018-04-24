@@ -1,15 +1,6 @@
 ## Installation
 
 * Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
-* Add private npm registry:
-
-```sh
-# Set registry:
-npm set registry http://npm.brainhub.pl
-
-# Add account (follow the steps required by command):
-npm adduser --registry  http://npm.brainhub.pl
-```
 
 * Install following modules from npm:
 
