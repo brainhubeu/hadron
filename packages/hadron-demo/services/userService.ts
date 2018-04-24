@@ -76,12 +76,12 @@ const updateUser = async ({ body }, { userRepository }) => {
     await validate('updateUser', body);
 
     const user = await userRepository.findOneById(body.id);
-    user.name = body.userName;
+    user.username = body.username;
 
     await userRepository.save(user);
 
     return {
-      body: { message: `user id: ${body.id} has new name: ${body.userName}` },
+      body: { message: `user id: ${body.id} has new name: ${body.username}` },
     };
   } catch (error) {
     return {

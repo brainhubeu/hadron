@@ -17,10 +17,10 @@ const securityConfig = (
         .allow('/team/*', [['Admin', 'User'], 'Manager'])
         .allow(
           '/user/*',
-          ['NotExists', 'ThisDoesNotExistsToo', 'User'],
-          ['get', 'post', 'put'],
+          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
+          ['get'],
         )
-        .allow('/user/*', 'Manager', ['delete', 'get'])
+        .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
         .allow('/qwe', ['DoesNotExists']);
 
       resolve(security);
