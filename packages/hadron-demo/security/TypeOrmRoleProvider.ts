@@ -4,10 +4,6 @@ import { IRole, IRoleProvider } from '@brainhubeu/hadron-security';
 class TypeOrmRoleProvider implements IRoleProvider {
   constructor(private roleRepository: Repository<IRole>) {}
 
-  public addRole(role: IRole): void {
-    throw new Error('Method not implemented.');
-  }
-
   public async getRole(name: string): Promise<IRole> {
     return await this.roleRepository.findOne({ name });
   }

@@ -8,12 +8,18 @@ import { IRoute, IMethod } from './IRoute';
 
 class HadronSecurity {
   private routes: IRoute[] = [];
+  private roleHierarchy: IRolesMap;
 
   constructor(
     private userProvider: IUserProvider,
     private roleProvider: IRoleProvider,
-    private roleHierarchy: IRolesMap,
-  ) {}
+  ) {
+    this.roleProvider.getRoles().then((roles) => {
+      this.roleHierarchy = {
+        ALL: roles,
+      };
+    });
+  }
 
   public allow(
     path: string,

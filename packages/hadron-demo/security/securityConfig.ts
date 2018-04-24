@@ -9,9 +9,7 @@ const securityConfig = (
 ): Promise<HadronSecurity> => {
   return new Promise((resolve, reject) => {
     roleProvider.getRoles().then((roles) => {
-      const security = new HadronSecurity(userProvider, roleProvider, {
-        ALL: roles,
-      });
+      const security = new HadronSecurity(userProvider, roleProvider);
 
       security
         .allow('/team/*', [['Admin', 'User'], 'Manager'])
