@@ -45,7 +45,7 @@ jsonProvider(['packages/hadron-demo/routing/*'], ['config.js']).then(
       expressApp,
       [hadronEvents, hadronSerialization, hadronTypeOrm],
       config,
-    ).then((container: IContainer) => {
+    ).then(async (container: IContainer) => {
       const userProvider = new TypeOrmUserProvider(
         container.take('userRepository'),
       );
@@ -53,27 +53,14 @@ jsonProvider(['packages/hadron-demo/routing/*'], ['config.js']).then(
         container.take('roleRepository'),
       );
 
-      let security: HadronSecurity;
+      const security: HadronSecurity = await securityConfig(
+        userProvider,
+        roleProvider,
+      );
 
-      securityConfig(userProvider, roleProvider).then((configuredSecurity) => {
-        security = configuredSecurity;
-      });
+      expressApp.post('/login', generateTokenMiddleware(security));
 
-      expressApp.post('/login', (req, res, next) => {
-        if (security) {
-          generateTokenMiddleware(security)(req, res, next);
-        } else {
-          return next();
-        }
-      });
-
-      expressApp.use((req, res, next) => {
-        if (security) {
-          expressMiddlewareProvider(security)(req, res, next);
-        } else {
-          return next();
-        }
-      });
+      expressApp.use(expressMiddlewareProvider(security));
 
       hadronExpress.register(container, config);
 
