@@ -55,9 +55,9 @@ When your security is ready you can use ***allow*** method:
 ```javascript
 allow(route, roles, methods)
 ```
-* `route` - string which contains URL which will be secured.
-* `roles` - string or array of strings or array of array of strings which containts role names allowed by security.
-* `methods` - optional array of strings, which contains HTTP methods allowed by security, default all methods are allowed.
+* `route` - a string which contains URL which will be secured.
+* `roles` - string or array of strings or array of array of strings which contains role names allowed by security.
+* `methods` - an optional array of strings, which contains HTTP methods allowed by security, default all methods are allowed.
 
 ***allow*** method, supports role hierarchy, for example you can use: 
 ```javascript
@@ -74,11 +74,11 @@ security
   .allow('/route3/*', [['Role1', 'Role2'], 'Role3'], 'delete');
 ```
 
-Next you can use security instance returned from promise to check if user is allowed to route by:
+Next, you can use security instance returned from promise to check if the user is allowed to route by:
 ```javascript
 isAllowed(path, allowedMethod, user);
 ```
-* `path` - string which contains URL.
+* `path` - a string which contains URL.
 * `allowedMethod` - string which contains HTTP method.
 * `user` - IUser implementation.
 
@@ -115,11 +115,11 @@ If you are using ***express***, you can use middleware provider from hadron-secu
 expressApp.use(expressMiddlewareProvider(security));
 ```
 
-Where expressApp is instance of express() and security is instance of HadronSecurity class.
+Where expressApp is an instance of express() and security is an instance of HadronSecurity class.
 
 ---
 ### Warning
-***expressMiddlewareProvider*** should be first route in your express app.
+***expressMiddlewareProvider*** should be the first route in your express app.
 
 ---
 
