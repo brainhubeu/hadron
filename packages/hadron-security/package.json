@@ -17,6 +17,7 @@
     "express": "^4.16.3"
   },
   "dependencies": {
-    "bcrypt": "2.0.0"
+    "bcrypt": "2.0.0",
+    "glob-to-regexp": "^0.4.0"
   }
 }

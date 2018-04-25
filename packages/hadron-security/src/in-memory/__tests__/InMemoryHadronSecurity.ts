@@ -60,11 +60,7 @@ const securityConfig = (
       ALL: ['Admin', 'User', 'Guest'],
     };
 
-    const security = new HadronSecurity(
-      userProvider,
-      roleProvider,
-      roleHierarchy,
-    );
+    const security = new HadronSecurity(userProvider, roleProvider);
 
     security.allow('/api', 'Admin');
     security.allow('/api', 'Guest');
@@ -73,6 +69,7 @@ const securityConfig = (
     security.allow('/uber', [['Admin', 'User'], 'Guest']);
 
     security.allow('/blog', ['Admin', 'User']);
+    security.allow('/admi', 'Admin').allow('/adm', 'User');
 
     resolve(security);
   });

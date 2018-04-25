@@ -188,7 +188,7 @@ class HadronSecurity {
     }
 
     const route: IRoute = {
-      path: convertToPattern(path),
+      path,
       methods: methodsForRoute,
     };
 

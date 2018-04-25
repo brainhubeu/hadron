@@ -14,9 +14,6 @@ import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';
 import HadronSecurity, {
-  IRoleProvider,
-  IRole,
-  IUser,
   expressMiddlewareProvider,
   generateTokenMiddleware,
 } from '@brainhubeu/hadron-security';

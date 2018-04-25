@@ -10,32 +10,7 @@ npm install @brainhubeu/hadron-security --save
 
 ### Configuration
 
-```javascript
-const securityConfig = (
-  userProvider: IUserProvider,
-  roleProvider: IRoleProvider,
-): Promise<HadronSecurity> => {
-  return new Promise((resolve, reject) => {
-    roleProvider.getRoles().then((roles) => {
-      const security = new HadronSecurity(userProvider, roleProvider);
-
-      security
-        .allow('/team/*', [['Admin', 'User'], 'Manager'])
-        .allow(
-          '/user/*',
-          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
-          ['get'],
-        )
-        .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
-        .allow('/qwe', ['DoesNotExists']);
-
-      resolve(security);
-    });
-  });
-};
-```
-
-To use security config you need to inject providers - User and Role provider. Here are the interfaces:
+To use security config you need to build User and Role provider. Here are the interfaces:  
 **_IRole_** and **_IUser_**
 
 ```typescript
@@ -70,7 +45,31 @@ interface IRoleProvider {
 }
 ```
 
-After injection you can use **_allow_** method:
+After that you can inject providers to HadronSecurity instance:
+
+```javascript
+const security = new HadronSecurity(userProvider, roleProvider);
+```
+
+When your security is ready you can use **_allow_** method:
+
+```javascript
+allow(route, roles, methods);
+```
+
+* `route` - a string which contains URL which will be secured.
+* `roles` - string or array of strings or array of array of strings which contains role names allowed by security.
+* `methods` - an optional array of strings, which contains HTTP methods allowed by security, default all methods are allowed.
+
+**_allow_** method, supports role hierarchy, for example you can use:
+
+```javascript
+allow('/route', [['Admin', 'User'], 'Manager']);
+```
+
+Where user which wants access to `/route` must have Admin **AND** User **OR** Manager role.
+
+#### Example
 
 ```javascript
 security
@@ -78,3 +77,56 @@ security
   .allow('/route2', 'Role3')
   .allow('/route3/*', [['Role1', 'Role2'], 'Role3'], 'delete');
 ```
+
+Next, you can use security instance returned from promise to check if the user is allowed to route by:
+
+```javascript
+isAllowed(path, allowedMethod, user);
+```
+
+* `path` - a string which contains URL.
+* `allowedMethod` - string which contains HTTP method.
+* `user` - IUser implementation.
+
+## Configuration example
+
+```javascript
+const securityConfig = (
+  userProvider: IUserProvider,
+  roleProvider: IRoleProvider,
+): Promise<HadronSecurity> => {
+  return new Promise((resolve, reject) => {
+    roleProvider.getRoles().then((roles) => {
+      const security = new HadronSecurity(userProvider, roleProvider);
+
+      security
+        .allow('/team/*', [['Admin', 'User'], 'Manager'])
+        .allow(
+          '/user/*',
+          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
+          ['get'],
+        )
+        .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
+        .allow('/qwe', ['DoesNotExists']);
+
+      resolve(security);
+    });
+  });
+};
+```
+
+If you are using **_express_**, you can use middleware provider from hadron-security:
+
+```javascript
+expressApp.use(expressMiddlewareProvider(security));
+```
+
+Where expressApp is an instance of express() and security is an instance of HadronSecurity class.
+
+---
+
+### Warning
+
+**_expressMiddlewareProvider_** should be the first route in your express app.
+
+---
