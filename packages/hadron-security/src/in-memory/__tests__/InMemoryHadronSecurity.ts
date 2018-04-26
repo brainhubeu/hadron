@@ -2,12 +2,10 @@ import { expect } from 'chai';
 import HadronSecurity from '../../HadronSecurity';
 import InMemoryRoleProvider from '../../in-memory/InMemoryRoleProvider';
 import InMemoryUserProvider from '../../in-memory/InMemoryUserProvider';
-import IUserProvider from '../../IUserProvider';
-import IRoleProvider from '../../IRoleProvider';
 
 const securityConfig = (
-  userProvider: IUserProvider,
-  roleProvider: IRoleProvider,
+  userProvider: InMemoryUserProvider,
+  roleProvider: InMemoryRoleProvider,
 ): Promise<HadronSecurity> => {
   return new Promise((resolve, reject) => {
     roleProvider.addRole({ id: 1, name: 'Admin' });
@@ -52,13 +50,6 @@ const securityConfig = (
         roles: [role],
       });
     });
-
-    const roleHierarchy = {
-      ADMIN: ['Admin'],
-      USER: ['User'],
-      GUEST: ['Guest'],
-      ALL: ['Admin', 'User', 'Guest'],
-    };
 
     const security = new HadronSecurity(userProvider, roleProvider);
 
