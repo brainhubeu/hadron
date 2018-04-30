@@ -130,3 +130,32 @@ Where expressApp is an instance of express() and security is an instance of Hadr
 **_expressMiddlewareProvider_** should be the first route in your express app.
 
 ---
+
+**hadron-security** also provides token generator middleware, you just need to provide HadronSecurity instance:
+
+```javascript
+expressApp.post('/login', generateTokenMiddleware(security));
+```
+
+By default **_expressMiddlewareProvider_** authenticate a user by **JWT** token, but if you want to authorize the user by username and password you can set this by the end of your security config:
+
+```javascript
+security
+  .allow('/route/*', 'Admin')
+  .allow('/route2/', 'User', ['get'])
+  .authenticateByUsernameAndPassword();
+```
+
+You can provide credentials by request headers:
+
+* `Authorization` - username
+* `Password` - password
+
+Or by request body:
+
+```json
+{
+  "username": "user",
+  "password": "user"
+}
+```
