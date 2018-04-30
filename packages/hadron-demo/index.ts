@@ -25,51 +25,49 @@ const port = process.env.PORT || 8080;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-jsonProvider(['packages/hadron-demo/routing/*'], ['config.js']).then(
-  (routes: any) => {
-    const config = {
-      ...typeormConfig,
-      ...hadronLogger,
-      events: emitterConfig,
-      routes: {
-        ...serializationRoutes,
-        ...routes,
-        ...expressConfig.routes,
-      },
-    };
+jsonProvider([`${__dirname}/routing/*`], ['config.js']).then((routes: any) => {
+  const config = {
+    ...typeormConfig,
+    ...hadronLogger,
+    events: emitterConfig,
+    routes: {
+      ...serializationRoutes,
+      ...routes,
+      ...expressConfig.routes,
+    },
+  };
 
-    hadron(
-      expressApp,
-      [hadronEvents, hadronSerialization, hadronTypeOrm],
-      config,
-    ).then(async (container: IContainer) => {
-      const userProvider = new TypeOrmUserProvider(
-        container.take('userRepository'),
-      );
-      const roleProvider = new TypeOrmRoleProvider(
-        container.take('roleRepository'),
-      );
+  hadron(
+    expressApp,
+    [hadronEvents, hadronSerialization, hadronTypeOrm],
+    config,
+  ).then(async (container: IContainer) => {
+    const userProvider = new TypeOrmUserProvider(
+      container.take('userRepository'),
+    );
+    const roleProvider = new TypeOrmRoleProvider(
+      container.take('roleRepository'),
+    );
 
-      const security: HadronSecurity = await securityConfig(
-        userProvider,
-        roleProvider,
-      );
+    const security: HadronSecurity = await securityConfig(
+      userProvider,
+      roleProvider,
+    );
 
-      expressApp.post('/login', generateTokenMiddleware(security));
+    expressApp.post('/login', generateTokenMiddleware(security));
 
-      expressApp.use(expressMiddlewareProvider(security));
+    expressApp.use(expressMiddlewareProvider(security));
 
-      hadronExpress.register(container, config);
+    hadronExpress.register(container, config);
 
-      expressApp.use((req, res, next) =>
-        res.status(404).json('Request not found.'),
-      );
-      container.register('customValue', 'From Brainhub with ❤️');
+    expressApp.use((req, res, next) =>
+      res.status(404).json('Request not found.'),
+    );
+    container.register('customValue', 'From Brainhub with ❤️');
 
-      setupSerializer();
-      expressApp.listen(port);
-    });
+    setupSerializer();
+    expressApp.listen(port);
+  });
 
-    return;
-  },
-);
+  return;
+});

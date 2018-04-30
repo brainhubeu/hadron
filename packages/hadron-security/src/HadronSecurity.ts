@@ -9,6 +9,8 @@ import { IRoute, IMethod } from './IRoute';
 class HadronSecurity {
   private routes: IRoute[] = [];
   private roleHierarchy: IRolesMap;
+  private authByJWT = true;
+  private authByUsernameAndPassword = false;
 
   constructor(
     private userProvider: IUserProvider,
@@ -77,8 +79,26 @@ class HadronSecurity {
     return isGranted;
   }
 
+  public authenticateByUsernameAndPassword(): void {
+    this.authByUsernameAndPassword = true;
+    this.authByJWT = false;
+  }
+
+  public authenticateByJwtToken(): void {
+    this.authByUsernameAndPassword = false;
+    this.authByJWT = true;
+  }
+
   public getUserProvider(): IUserProvider {
     return this.userProvider;
+  }
+
+  public isAuthByJWT(): boolean {
+    return this.authByJWT;
+  }
+
+  public isAuthByUsernameAndPassword(): boolean {
+    return this.authByUsernameAndPassword;
   }
 
   private getRoleArray(

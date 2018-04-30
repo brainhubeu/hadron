@@ -19,7 +19,8 @@ const securityConfig = (
           ['get'],
         )
         .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
-        .allow('/qwe', ['DoesNotExists']);
+        .allow('/qwe', ['DoesNotExists'])
+        .authenticateByJwtToken();
 
       resolve(security);
     });

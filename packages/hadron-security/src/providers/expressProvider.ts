@@ -16,18 +16,43 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
     }
 
     try {
-      const token: any = req.headers.authorization;
-      const decodedToken: any = jwt.verify(token, secret);
+      if (security.isAuthByJWT()) {
+        const token: any = req.headers.authorization;
+        const decodedToken: any = jwt.verify(token, secret);
+        const user = await security
+          .getUserProvider()
+          .loadUserByUsername(decodedToken.username);
+
+        if (security.isAllowed(req.path, req.method, user)) {
+          return next();
+        }
+
+        res.status(403).json({
+          message: 'Unauthenticated',
+        });
+      }
+      const username = req.body.username || req.headers.authorization;
+      const password = req.body.password || req.headers.password;
       const user = await security
         .getUserProvider()
-        .loadUserByUsername(decodedToken.username);
+        .loadUserByUsername(req.headers.authorization);
 
-      if (security.isAllowed(req.path, req.method, user)) {
-        return next();
-      }
-      res.status(403).json({
-        message: 'Unauthenticated',
-      });
+      bcrypt
+        .compare(password, user.passwordHash)
+        .then((isAuthenticated) => {
+          if (isAuthenticated) {
+            return next();
+          }
+
+          res.status(403).json({
+            message: 'Unauthenticated',
+          });
+        })
+        .catch((error) => {
+          res.status(403).json({
+            message: 'Unauthenticated',
+          });
+        });
     } catch (error) {
       res.status(403).json({
         message: 'Unauthenticated',
