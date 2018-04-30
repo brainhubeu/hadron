@@ -31,11 +31,12 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
           message: 'Unauthenticated',
         });
       }
+
       const username = req.body.username || req.headers.authorization;
       const password = req.body.password || req.headers.password;
       const user = await security
         .getUserProvider()
-        .loadUserByUsername(req.headers.authorization);
+        .loadUserByUsername(username);
 
       bcrypt
         .compare(password, user.passwordHash)
