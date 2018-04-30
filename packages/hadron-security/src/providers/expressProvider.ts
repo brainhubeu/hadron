@@ -27,7 +27,7 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
           return next();
         }
 
-        res.status(403).json({
+        return res.status(403).json({
           message: 'Unauthenticated',
         });
       }
@@ -41,7 +41,10 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
       bcrypt
         .compare(password, user.passwordHash)
         .then((isAuthenticated) => {
-          if (isAuthenticated) {
+          if (
+            isAuthenticated &&
+            security.isAllowed(req.path, req.method, user)
+          ) {
             return next();
           }
 
