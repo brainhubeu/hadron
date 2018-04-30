@@ -11,6 +11,7 @@ class HadronSecurity {
   private roleHierarchy: IRolesMap;
   private authByJWT = true;
   private authByUsernameAndPassword = false;
+  private secureAll = false;
 
   constructor(
     private userProvider: IUserProvider,
@@ -52,6 +53,15 @@ class HadronSecurity {
     return this;
   }
 
+  public secureAllRoutes(): HadronSecurity {
+    this.secureAll = true;
+    return this;
+  }
+
+  public isSecuredAll(): boolean {
+    return this.secureAll;
+  }
+
   public getRouteFromPath(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
@@ -61,22 +71,26 @@ class HadronSecurity {
   }
 
   public isAllowed(path: string, allowedMethod: string, user: IUser): boolean {
-    const route = this.getRouteFromPath(path);
-    let isGranted = false;
+    try {
+      const route = this.getRouteFromPath(path);
+      let isGranted = false;
 
-    route.methods.forEach((method) => {
-      if (
-        method.name === '*' ||
-        method.name.toLowerCase() === allowedMethod.toLowerCase()
-      ) {
-        isGranted = isUserGranted(
-          user,
-          method.allowedRoles,
-          this.roleHierarchy,
-        );
-      }
-    });
-    return isGranted;
+      route.methods.forEach((method) => {
+        if (
+          method.name === '*' ||
+          method.name.toLowerCase() === allowedMethod.toLowerCase()
+        ) {
+          isGranted = isUserGranted(
+            user,
+            method.allowedRoles,
+            this.roleHierarchy,
+          );
+        }
+      });
+      return isGranted;
+    } catch (error) {
+      throw new Error('Unauthorized');
+    }
   }
 
   public authenticateByUsernameAndPassword(): void {

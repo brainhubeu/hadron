@@ -115,6 +115,14 @@ const securityConfig = (
 };
 ```
 
+By default all routes are unsecured, you can change by calling a method: **_secureAllRoutes_** from **HadronSecurity**:
+
+```javascript
+security.secureAllRoutes().allow('/team/*', [['Admin', 'User'], 'Manager']);
+```
+
+## Express support
+
 If you are using **_express_**, you can use middleware provider from hadron-security:
 
 ```javascript
@@ -131,7 +139,7 @@ Where expressApp is an instance of express() and security is an instance of Hadr
 
 ---
 
-**hadron-security** also provides token generator middleware, you just need to provide HadronSecurity instance:
+**hadron-security** also provides **JWT** token generator middleware, you just need to provide HadronSecurity instance:
 
 ```javascript
 expressApp.post('/login', generateTokenMiddleware(security));

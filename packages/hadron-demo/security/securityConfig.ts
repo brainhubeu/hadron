@@ -8,22 +8,21 @@ const securityConfig = (
   roleProvider: IRoleProvider,
 ): Promise<HadronSecurity> => {
   return new Promise((resolve, reject) => {
-    roleProvider.getRoles().then((roles) => {
-      const security = new HadronSecurity(userProvider, roleProvider);
+    const security = new HadronSecurity(userProvider, roleProvider);
 
-      security
-        .allow('/team/*', [['Admin', 'User'], 'Manager'])
-        .allow(
-          '/user/*',
-          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
-          ['get'],
-        )
-        .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
-        .allow('/qwe', ['DoesNotExists'])
-        .authenticateByJwtToken();
+    security
+      .secureAllRoutes()
+      .allow('/team/*', [['Admin', 'User'], 'Manager'])
+      .allow(
+        '/user/*',
+        ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
+        ['get'],
+      )
+      .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
+      .allow('/qwe', ['DoesNotExists'])
+      .authenticateByUsernameAndPassword();
 
-      resolve(security);
-    });
+    resolve(security);
   });
 };
 
