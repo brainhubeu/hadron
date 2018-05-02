@@ -20,6 +20,7 @@ const securityConfig = (
       )
       .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
       .allow('/qwe', ['DoesNotExists'])
+      .allow('/zxc')
       .authenticateByUsernameAndPassword();
 
     resolve(security);

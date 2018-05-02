@@ -26,10 +26,10 @@ class HadronSecurity {
 
   public allow(
     path: string,
-    roles: string | Array<string | string[]>,
+    roles: string | Array<string | string[]> = '*',
     methods: string[] = [],
   ): HadronSecurity {
-    this.nonExistingRoutesWarning(path, roles);
+    this.nonExistingRolesWarning(path, roles);
 
     let existingRoute: IRoute;
 
@@ -80,11 +80,15 @@ class HadronSecurity {
           method.name === '*' ||
           method.name.toLowerCase() === allowedMethod.toLowerCase()
         ) {
-          isGranted = isUserGranted(
-            user,
-            method.allowedRoles,
-            this.roleHierarchy,
-          );
+          if (method.allowedRoles.includes('*') && user.roles.length > 0) {
+            isGranted = true;
+          } else {
+            isGranted = isUserGranted(
+              user,
+              method.allowedRoles,
+              this.roleHierarchy,
+            );
+          }
         }
       });
       return isGranted;
@@ -139,7 +143,7 @@ class HadronSecurity {
       const nonExistingRoles: string[] = [];
       this.roleProvider.getRoles().then((roles) => {
         for (const role of newRoles) {
-          if (!roles.some((el) => el === role)) {
+          if (role !== '*' && !roles.some((el) => el === role)) {
             nonExistingRoles.push(role);
           }
         }
@@ -148,7 +152,7 @@ class HadronSecurity {
     });
   }
 
-  private nonExistingRoutesWarning(
+  private nonExistingRolesWarning(
     path: string,
     roles: string | Array<string | string[]>,
   ): void {
