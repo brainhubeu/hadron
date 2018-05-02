@@ -11,10 +11,7 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
     res: express.Response,
     next: express.NextFunction,
   ) => {
-    if (
-      security.getRouteFromPath(req.path) === null &&
-      !security.isSecuredAll()
-    ) {
+    if (security.isRouteNotSecure(req.path)) {
       return next();
     }
 

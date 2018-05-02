@@ -58,16 +58,16 @@ class HadronSecurity {
     return this;
   }
 
-  public isSecuredAll(): boolean {
-    return this.secureAll;
-  }
-
   public getRouteFromPath(path: string): IRoute {
     const route = this.routes.filter((r) => urlGlob(r.path, path));
     if (route.length === 0) {
       return null;
     }
     return route[0];
+  }
+
+  public isRouteNotSecure(path: string) {
+    return this.getRouteFromPath(path) === null && !this.secureAll;
   }
 
   public isAllowed(path: string, allowedMethod: string, user: IUser): boolean {
