@@ -35,8 +35,8 @@ const expressMiddlewareProvider = (security: HadronSecurity) => {
         });
       }
 
-      const username = req.body.username || req.headers.authorization;
-      const password = req.body.password || req.headers.password;
+      const username = req.headers.authorization || req.body.username;
+      const password = req.headers.password || req.body.password;
       const user = await security
         .getUserProvider()
         .loadUserByUsername(username);
