@@ -58,8 +58,10 @@ allow(route, roles, methods);
 ```
 
 * `route` - a string which contains URL which will be secured.
-* `roles` - string or array of strings or array of array of strings which contains role names allowed by security.
+* `roles` - an optional string or array of strings or array of array of strings which contains role names allowed by security.
 * `methods` - an optional array of strings, which contains HTTP methods allowed by security, default all methods are allowed.
+
+If you will not provide any roles or set string `'*'`, then a user with **any** role can access this route, user with 0 roles still not have access to this route.
 
 **_allow_** method, supports role hierarchy, for example you can use:
 
