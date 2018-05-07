@@ -69,7 +69,7 @@ If you will not provide any roles or set string `'*'`, then a user with **any** 
 allow('/route', [['Admin', 'User'], 'Manager']);
 ```
 
-Where user which wants access to `/route` must have Admin **AND** User **OR** Manager role.
+Where user which wants access to `/route` must have Admin **AND** User roles **OR** Manager role.
 
 #### Example
 
