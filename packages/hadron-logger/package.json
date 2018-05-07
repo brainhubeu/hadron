@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-logger",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Hadron logger",
   "target": "dist",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-core": "^0.0.1",
+    "@brainhubeu/hadron-core": "^0.0.2",
     "@brainhubeu/hadron-error-handler": "^0.0.1",
     "bunyan": "^1.8.12"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-typeorm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hadron typeorm module",
   "main": "dist/index.js",
   "files": [
@@ -19,7 +19,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-core": "^0.0.1",
+    "@brainhubeu/hadron-core": "^0.0.2",
     "typeorm": "0.1.16"
   },
   "publishConfig": {
