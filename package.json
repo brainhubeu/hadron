@@ -25,17 +25,15 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@types/bcrypt": "1.0.0",
-    "@types/bunyan": "1.8.4",
-    "bcrypt": "2.0.0",
     "body-parser": "1.18.2",
     "dotenv": "4.0.0",
-    "jsonwebtoken": "8.2.1",
     "mysql": "2.15.0",
     "pg": "7.4.1",
     "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
+    "@types/bcrypt": "1.0.0",
+    "@types/bunyan": "1.8.4",
     "@types/chai": "4.1.2",
     "@types/chai-as-promised": "7.1.0",
     "@types/cucumber": "4.0.1",

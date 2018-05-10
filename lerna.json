@@ -8,7 +8,6 @@
     "packages/hadron-file-locator",
     "packages/hadron-json-provider",
     "packages/hadron-serialization",
-    "packages/hadron-security",
     "packages/hadron-validation",
     "packages/hadron-typeorm",
     "packages/hadron-events",
