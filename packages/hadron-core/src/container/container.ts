@@ -38,9 +38,12 @@ const take = (key: string): any => {
   return containerItems.length === 0 ? null : containerItems[0].Item;
 };
 
+const keys = (): string[] => containerRegister.map((x) => x.getKey());
+
 const container = {
   register,
   take,
+  keys,
 };
 
 export default container as IContainer;
