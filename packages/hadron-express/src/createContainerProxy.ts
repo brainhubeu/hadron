@@ -1,5 +1,4 @@
 import { IContainer } from './types';
-
 const createContainerProxy = (container: IContainer) => {
   return new Proxy(
     {
@@ -8,7 +7,10 @@ const createContainerProxy = (container: IContainer) => {
       },
     },
     {
-      get(target, name) {
+      get(target: any, name) {
+        if (typeof target[name] === 'function') {
+          return target[name];
+        }
         return container.take(name as string);
       },
     },
