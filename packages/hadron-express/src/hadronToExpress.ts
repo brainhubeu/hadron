@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IContainer, IRoute, IRoutesConfig, Middleware } from './types';
+import { IContainer, IRoute, Middleware, IHadronExpressConfig } from './types';
 import { validateMethods } from './validators/routing';
 import { eventNames } from './constants/eventNames';
 import CreateRouteError from './errors/CreateRouteError';
@@ -7,6 +7,7 @@ import createContainerProxy from './createContainerProxy';
 import prepareRequest from './prepareRequest';
 import generateMiddlewares from './generateMiddlewares';
 import handleResponseSpec from './handleResponseSpec';
+import jsonProvider from '@brainhubeu/hadron-json-provider';
 
 const createRoutes = (
   app: express.Application,
@@ -53,13 +54,34 @@ const createRoutes = (
   });
 };
 
-const convertToExpress = (routes: IRoutesConfig, container: IContainer) => {
+const convertToExpress = (
+  config: IHadronExpressConfig,
+  container: IContainer,
+) => {
   const app = container.take('server');
-  (Object as any).keys(routes).map((key: string) => {
-    const route: IRoute = routes[key];
-    validateMethods(key, route.methods);
-    const middlewares: Middleware[] = generateMiddlewares(route) || [];
-    createRoutes(app, route, middlewares, container, key);
+  config.routes &&
+    (Object as any).keys(config.routes).map((key: string) => {
+      const route: IRoute = config.routes[key];
+      validateMethods(key, route.methods);
+      const middlewares: Middleware[] = generateMiddlewares(route) || [];
+      createRoutes(app, route, middlewares, container, key);
+    });
+
+  const paths: string[] = [];
+  const extensions: string[] = [];
+  config.routePaths &&
+    (config.routePaths as any).forEach((path: string[]) => {
+      paths.push(path[0]);
+      path.length > 1 && extensions.push(path[1]);
+    });
+
+  jsonProvider(paths, extensions).then((routes: any) => {
+    (Object as any).keys(routes).map((key: string) => {
+      const route: IRoute = routes[key];
+      validateMethods(key, route.methods);
+      const middlewares: Middleware[] = generateMiddlewares(route) || [];
+      createRoutes(app, route, middlewares, container, key);
+    });
   });
 };
 
