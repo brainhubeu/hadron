@@ -131,8 +131,8 @@ export interface IPartialRequest {
   };
 }
 export interface IHadronExpressConfig {
-  routes: IRoutesConfig;
-  routePaths: RoutePathsConfig;
+  routes?: IRoutesConfig;
+  routePaths?: RoutePathsConfig;
 }
 
 export type MiddlewareResult =
