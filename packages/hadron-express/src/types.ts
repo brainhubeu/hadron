@@ -117,6 +117,6 @@ export interface IRequest {
   files?: any;
 }
 export interface IHadronExpressConfig {
-  routes: IRoutesConfig;
-  routePaths: RoutePathsConfig;
+  routes?: IRoutesConfig;
+  routePaths?: RoutePathsConfig;
 }
