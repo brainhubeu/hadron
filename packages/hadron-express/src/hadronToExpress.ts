@@ -57,30 +57,39 @@ const convertToExpress = (
   container: IContainer,
 ) => {
   const app = container.take('server');
-  config.routes &&
-    (Object as any).keys(config.routes).map((key: string) => {
-      const route: IRoute = config.routes[key];
-      validateMethods(key, route.methods);
-      const middlewares: Middleware[] = generateMiddlewares(route) || [];
-      createRoutes(app, route, middlewares, container, key);
-    });
+  const promises: Array<Promise<object>> = [];
+  if (config.routes) {
+    promises.push(Promise.resolve(config.routes));
+  }
 
-  const paths: string[] = [];
-  const extensions: string[] = [];
-  config.routePaths &&
+  if (config.routePaths) {
+    const paths: string[] = [];
+    const extensions: string[] = [];
     (config.routePaths as any).forEach((path: string[]) => {
       paths.push(path[0]);
-      path.length > 1 && extensions.push(path[1]);
+      if (path.length > 1) {
+        extensions.push(path[1]);
+      }
     });
 
-  jsonProvider(paths, extensions).then((routes: any) => {
-    (Object as any).keys(routes).map((key: string) => {
-      const route: IRoute = routes[key];
-      validateMethods(key, route.methods);
-      const middlewares: Middleware[] = generateMiddlewares(route) || [];
-      createRoutes(app, route, middlewares, container, key);
+    promises.push(jsonProvider(paths, extensions));
+  }
+
+  return Promise.all(promises)
+    .then((results) =>
+      results.reduce(
+        (aggregation, current) => ({ ...aggregation, ...current }),
+        {},
+      ),
+    )
+    .then((routes: any) => {
+      (Object as any).keys(routes).map((key: string) => {
+        const route: IRoute = routes[key];
+        validateMethods(key, route.methods);
+        const middlewares: Middleware[] = generateMiddlewares(route) || [];
+        createRoutes(app, route, middlewares, container, key);
+      });
     });
-  });
 };
 
 export default convertToExpress;
