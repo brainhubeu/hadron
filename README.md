@@ -1,4 +1,6 @@
-# Brainhub framework app
+# Hadron
+
+[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
 
 ## Getting Started
 
