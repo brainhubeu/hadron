@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as HTTPStatus from 'http-status';
-import { IResponseSpec } from './types';
+import { IResponseSpec, IPartialResponseSpec, IResponseOptions } from './types';
 
 const getClass = (val: any) => Object.prototype.toString.call(val).slice(8, -1);
 
@@ -8,9 +8,10 @@ const isPrimitive = (val: any) => {
   return ['String', 'Number', 'Null', 'Undefined'].includes(getClass(val));
 };
 
-const handleResponseSpec = (res: express.Response) => (
-  responseSpec: IResponseSpec,
-) => {
+const handleResponseSpec = (
+  res: express.Response,
+  options: IResponseOptions = { partial: false },
+) => (responseSpec: IResponseSpec) => {
   if (isPrimitive(responseSpec)) {
     return res.json(responseSpec);
   }
@@ -25,6 +26,12 @@ const handleResponseSpec = (res: express.Response) => (
     res.set(headerName, headers[headerName]);
   });
 
+  res.status(status);
+
+  if (options.partial) {
+    return;
+  }
+
   if (responseSpec.redirect) {
     return res.redirect(responseSpec.redirect);
   }
@@ -34,7 +41,7 @@ const handleResponseSpec = (res: express.Response) => (
     return res.render(name, bindings);
   }
 
-  res.status(status).json(body);
+  res.json(body);
 };
 
 export default handleResponseSpec;

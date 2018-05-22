@@ -104,6 +104,15 @@ export interface IResponseSpec {
   view?: IView;
 }
 
+export interface IPartialResponseSpec {
+  status?: StatusCode;
+  headers?: IHeaders;
+}
+
+export interface IResponseOptions {
+  partial: boolean;
+}
+
 export interface IRequest {
   locals?: any;
   headers?: any;
@@ -116,3 +125,21 @@ export interface IRequest {
 export interface IHadronExpressConfig {
   routes: IRoutesConfig;
 }
+
+export interface IPartialResponse {
+  partialRes: IPartialResponseSpec;
+}
+
+export interface IPartialRequest {
+  partialReq: IRequest;
+}
+
+export type MiddlewareResult =
+  | IPartialResponse
+  | IPartialRequest
+  | IResponseSpec;
+
+export type HadronMiddleware = (
+  request: IRequest,
+  dependencies: IContainer,
+) => MiddlewareResult;
