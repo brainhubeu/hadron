@@ -21,6 +21,7 @@ export interface IRoutesConfig {
 
 export interface IContainer {
   take: (key: string) => any;
+  keys: () => string[];
 }
 
 export interface IHeaders {

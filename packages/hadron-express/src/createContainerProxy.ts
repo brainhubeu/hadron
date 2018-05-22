@@ -2,9 +2,16 @@ import { IContainer } from './types';
 
 const createContainerProxy = (container: IContainer): any => {
   return new Proxy(
-    {},
     {
-      get(target, name) {
+      keys() {
+        return container.keys();
+      },
+    },
+    {
+      get(target: any, name) {
+        if (typeof target[name] === 'function') {
+          return target[name];
+        }
         return container.take(name as string);
       },
     },
