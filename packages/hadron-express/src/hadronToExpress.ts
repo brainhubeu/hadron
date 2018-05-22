@@ -12,11 +12,9 @@ const createRoutes = (
   app: express.Application,
   route: IRoute,
   middleware: Middleware[],
-  container: IContainer,
+  containerProxy: any,
   routeName: string,
 ) => {
-  const containerProxy = createContainerProxy(container);
-
   return route.methods.map((method: string) => {
     (app as any)[method.toLowerCase()](
       route.path,
@@ -26,7 +24,7 @@ const createRoutes = (
 
         Promise.resolve()
           .then(() => {
-            const eventManager = container.take('eventManager');
+            const eventManager = containerProxy.eventManager;
 
             if (!eventManager) {
               return route.callback(request, containerProxy);
@@ -41,7 +39,7 @@ const createRoutes = (
           })
           .then(handleResponseSpec(res))
           .catch((error) => {
-            const logger = container.take('hadronLogger');
+            const logger = containerProxy.hadronLogger;
             if (logger) {
               logger.warn(new CreateRouteError(routeName, error));
             }
@@ -56,12 +54,13 @@ const createRoutes = (
 const convertToExpress = (routes: IRoutesConfig, container: IContainer) => {
   const containerProxy = createContainerProxy(container);
   const app = container.take('server');
+
   (Object as any).keys(routes).map((key: string) => {
     const route: IRoute = routes[key];
     validateMethods(key, route.methods);
     const middlewares: Middleware[] =
       generateMiddlewares(route, containerProxy) || [];
-    createRoutes(app, route, middlewares, container, key);
+    createRoutes(app, route, middlewares, containerProxy, key);
   });
 };
 
