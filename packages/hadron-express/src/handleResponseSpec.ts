@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as HTTPStatus from 'http-status';
-import { IResponseSpec, IPartialResponseSpec, IResponseOptions } from './types';
+import { IResponseSpec, IPartialResponseSpec } from './types';
 
 const getClass = (val: any) => Object.prototype.toString.call(val).slice(8, -1);
 
@@ -8,19 +8,19 @@ const isPrimitive = (val: any) => {
   return ['String', 'Number', 'Null', 'Undefined'].includes(getClass(val));
 };
 
-const handleResponseSpec = (
-  res: express.Response,
-  options: IResponseOptions = { partial: false },
-) => (responseSpec: IResponseSpec) => {
+const handleResponseSpec = (res: express.Response) => (
+  responseSpec: IResponseSpec | IPartialResponseSpec,
+) => {
   if (isPrimitive(responseSpec)) {
     return res.json(responseSpec);
   }
 
   const status = responseSpec.status
     ? responseSpec.status
-    : responseSpec.redirect ? HTTPStatus.FOUND : HTTPStatus.OK;
+    : responseSpec.type === 'RESPONSE_SPEC' && responseSpec.redirect
+      ? HTTPStatus.FOUND
+      : HTTPStatus.OK;
   const headers = responseSpec.headers || {};
-  const body = responseSpec.body || {};
 
   Object.keys(headers).forEach((headerName) => {
     res.set(headerName, headers[headerName]);
@@ -28,9 +28,11 @@ const handleResponseSpec = (
 
   res.status(status);
 
-  if (options.partial) {
+  if (responseSpec.type === 'PARTIAL_RESPONSE') {
     return;
   }
+
+  const body = responseSpec.body || {};
 
   if (responseSpec.redirect) {
     return res.redirect(responseSpec.redirect);

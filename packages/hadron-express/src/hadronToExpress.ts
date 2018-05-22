@@ -54,11 +54,13 @@ const createRoutes = (
 };
 
 const convertToExpress = (routes: IRoutesConfig, container: IContainer) => {
+  const containerProxy = createContainerProxy(container);
   const app = container.take('server');
   (Object as any).keys(routes).map((key: string) => {
     const route: IRoute = routes[key];
     validateMethods(key, route.methods);
-    const middlewares: Middleware[] = generateMiddlewares(route) || [];
+    const middlewares: Middleware[] =
+      generateMiddlewares(route, containerProxy) || [];
     createRoutes(app, route, middlewares, container, key);
   });
 };

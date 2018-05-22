@@ -97,6 +97,7 @@ export type StatusCode =
   | 511;
 
 export interface IResponseSpec {
+  type: 'RESPONSE_SPEC';
   status?: StatusCode;
   redirect?: string;
   headers?: IHeaders;
@@ -105,12 +106,9 @@ export interface IResponseSpec {
 }
 
 export interface IPartialResponseSpec {
+  type: 'PARTIAL_RESPONSE';
   status?: StatusCode;
   headers?: IHeaders;
-}
-
-export interface IResponseOptions {
-  partial: boolean;
 }
 
 export interface IRequest {
@@ -122,24 +120,23 @@ export interface IRequest {
   file?: any;
   files?: any;
 }
+
+export interface IPartialRequest {
+  type: 'PARTIAL_REQUEST';
+  values: {
+    [key: string]: any;
+  };
+}
 export interface IHadronExpressConfig {
   routes: IRoutesConfig;
 }
 
-export interface IPartialResponse {
-  partialRes: IPartialResponseSpec;
-}
-
-export interface IPartialRequest {
-  partialReq: IRequest;
-}
-
 export type MiddlewareResult =
-  | IPartialResponse
+  | IPartialResponseSpec
   | IPartialRequest
   | IResponseSpec;
 
 export type HadronMiddleware = (
   request: IRequest,
-  dependencies: IContainer,
+  dependencies: any,
 ) => MiddlewareResult;

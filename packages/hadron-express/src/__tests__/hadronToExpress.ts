@@ -298,20 +298,6 @@ describe('router config', () => {
           expect(secondSpy.called).to.be.eq(true);
         });
     });
-
-    it('should return HTTP Status 500 if one of middlewares is null', () => {
-      const callback = () => null;
-
-      const testRoute = createTestRoute('/testRoute', ['GET'], callback, [
-        null,
-      ]);
-
-      routesToExpress(testRoute, Container);
-
-      return request(app)
-        .get(`/testRoute`)
-        .expect(HTTPStatus[500]);
-    });
   });
 
   describe('file handling', () => {

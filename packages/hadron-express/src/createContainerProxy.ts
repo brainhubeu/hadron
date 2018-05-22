@@ -1,6 +1,6 @@
 import { IContainer } from './types';
 
-const createContainerProxy = (container: IContainer) => {
+const createContainerProxy = (container: IContainer): any => {
   return new Proxy(
     {},
     {

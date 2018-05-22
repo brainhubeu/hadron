@@ -4,26 +4,15 @@ import {
   IRoute,
   Middleware,
   HadronMiddleware,
-  IContainer,
   MiddlewareResult,
-  IPartialRequest,
-  IPartialResponse,
 } from './types';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import prepareRequest from './prepareRequest';
 import handleResponseSpec from './handleResponseSpec';
 import { getArgs } from '@brainhubeu/hadron-utils';
 
-const test: MiddlewareResult = {
-  partialRes: {
-    status: 200,
-    headers: {},
-  },
-};
-
-const isRawMiddleware = (middleware: any) => {
+export const isRawMiddleware = (middleware: any) => {
   const [firstArg, secondArg, thirdArg] = getArgs(middleware);
-  console.dir({ firstArg, secondArg, thirdArg }, { colors: true, depth: null });
 
   return (
     (firstArg === 'req' || firstArg === 'request') &&
@@ -32,21 +21,9 @@ const isRawMiddleware = (middleware: any) => {
   );
 };
 
-const getResultType = (result: MiddlewareResult) => {
-  if (result && result.hasOwnProperty('partialReq')) {
-    return 'PARTIAL_REQUEST';
-  }
-
-  if (result && result.hasOwnProperty('partialRes')) {
-    return 'PARTIAL_RESPONSE_SPEC';
-  }
-
-  return 'RESPONSE_SPEC';
-};
-
-const createRawMiddleware = (
+export const createRawMiddleware = (
   hadronMiddleware: HadronMiddleware,
-  containerProxy: IContainer,
+  containerProxy: any,
 ) => {
   return async (
     req: express.Request,
@@ -56,17 +33,15 @@ const createRawMiddleware = (
     const hadronReq = prepareRequest(req);
     const result = await hadronMiddleware(hadronReq, containerProxy);
 
-    const resultType = getResultType(result);
-
-    switch (resultType) {
+    switch (result.type) {
       case 'PARTIAL_REQUEST': {
-        Object.assign(req, result.partialReq);
+        Object.assign(req, result.values);
         next();
         break;
       }
 
-      case 'PARTIAL_RESPONSE_SPEC': {
-        handleResponseSpec(res, { partial: true })(result.partialRes);
+      case 'PARTIAL_RESPONSE': {
+        handleResponseSpec(res)(result);
         next();
         break;
       }
@@ -78,17 +53,21 @@ const createRawMiddleware = (
   };
 };
 
-const generateMiddlewares = (route: IRoute) => {
+const generateMiddlewares = (route: IRoute, containerProxy: any) => {
   return (
     route.middleware &&
-    route.middleware.map(
-      (middleware: Middleware) => (
+    route.middleware.map((middleware: any) => {
+      const rawMiddleware: Middleware = isRawMiddleware(middleware)
+        ? middleware
+        : createRawMiddleware(middleware as HadronMiddleware, containerProxy);
+
+      return (
         req: express.Request,
         res: express.Response,
         next: express.NextFunction,
       ) => {
         Promise.resolve()
-          .then(() => middleware(req, res, next))
+          .then(() => rawMiddleware(req, res, next))
           .catch((error) => {
             const logger = Container.take('hadronLogger');
             if (logger) {
@@ -97,23 +76,9 @@ const generateMiddlewares = (route: IRoute) => {
 
             res.sendStatus(500);
           });
-      },
-    )
+      };
+    })
   );
 };
 
 export default generateMiddlewares;
-
-// const rawMid = (expressMiddleware: express.Handler) => {
-//   return {
-//     type: 'raw',
-//     code: expressMiddleware,
-//   };
-// };
-
-// const middlewares = [
-//   { type: 'raw', thirdPartyMiddleware1,
-//   rawMid(thirdPartyMiddleware2),
-//   hadronMiddleware1,
-//   hadronMiddleware2,
-// ]
