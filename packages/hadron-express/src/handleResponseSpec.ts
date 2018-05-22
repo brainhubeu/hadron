@@ -17,7 +17,7 @@ const handleResponseSpec = (res: express.Response) => (
 
   const status = responseSpec.status
     ? responseSpec.status
-    : responseSpec.type === 'RESPONSE_SPEC' && responseSpec.redirect
+    : responseSpec.type === 'RESPONSE' && responseSpec.redirect
       ? HTTPStatus.FOUND
       : HTTPStatus.OK;
   const headers = responseSpec.headers || {};

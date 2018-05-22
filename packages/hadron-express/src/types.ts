@@ -98,7 +98,7 @@ export type StatusCode =
   | 511;
 
 export interface IResponseSpec {
-  type: 'RESPONSE_SPEC';
+  type: 'RESPONSE';
   status?: StatusCode;
   redirect?: string;
   headers?: IHeaders;
