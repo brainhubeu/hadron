@@ -3,6 +3,13 @@ import { IContainer } from './container/types';
 import { createLogger } from 'bunyan';
 const hadronDefaultConfig = {};
 
+const prepareConfig = (config: object | Promise<object>) => {
+  return Promise.resolve(config).then((resolvedConfig) => ({
+    ...hadronDefaultConfig,
+    ...resolvedConfig,
+  }));
+};
+
 export default (
   server: any,
   packages: any[] = [],
@@ -12,11 +19,11 @@ export default (
 
   container.register('hadronLogger', createLogger({ name: 'hadron-logger' }));
 
-  const hadronConfig = { ...hadronDefaultConfig, ...config };
-
-  return Promise.all(
-    packages
-      .filter(({ register }) => !!register)
-      .map(({ register }) => register(container, hadronConfig)),
-  ).then(() => container);
+  return prepareConfig(config).then((hadronConfig) => {
+    return Promise.all(
+      packages
+        .filter(({ register }) => !!register)
+        .map(({ register }) => register(container, hadronConfig)),
+    ).then(() => container);
+  });
 };
