@@ -2,7 +2,43 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import container from '../container/container';
 
-import hadronCore from '../hadronCore';
+import hadronCore, { prepareConfig } from '../hadronCore';
+
+describe('prepareConfig()', () => {
+  const logger = { error: sinon.spy() };
+  const defaultConfig = { prop1: 1, prop2: 2 };
+
+  it('should accept object', () => {
+    const config = { prop2: 4, prop3: 5 };
+    const expectedResult = { prop1: 1, prop2: 4, prop3: 5 };
+    return prepareConfig(defaultConfig, config, logger).then((resolvedConfig) =>
+      expect(resolvedConfig).to.deep.equal(expectedResult),
+    );
+  });
+
+  it('should accept promise, which returns object', () => {
+    const config = new Promise((res, rej) => res({ prop2: 4, prop3: 5 }));
+    const expectedResult = { prop1: 1, prop2: 4, prop3: 5 };
+    return prepareConfig(defaultConfig, config, logger).then((resolvedConfig) =>
+      expect(resolvedConfig).to.deep.equal(expectedResult),
+    );
+  });
+
+  it('should log error when config promise is rejected', () => {
+    const config = new Promise((res, rej) => rej());
+    const loggerMock = { error: sinon.spy() };
+    return prepareConfig(defaultConfig, config, loggerMock).catch((error) =>
+      expect(loggerMock.error.called).to.be.eql(true),
+    );
+  });
+
+  it('should return default config when config promise is rejected', () => {
+    const config = new Promise((res, rej) => rej());
+    return prepareConfig(defaultConfig, config, logger).then((resolvedConfig) =>
+      expect(resolvedConfig).to.deep.equal(defaultConfig),
+    );
+  });
+});
 
 describe('hadronCore()', () => {
   const mockRegister = sinon.stub(container, 'register');
