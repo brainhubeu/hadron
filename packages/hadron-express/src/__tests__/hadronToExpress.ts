@@ -25,11 +25,13 @@ const createTestRoute = (
   callback: (req: IRequest, dependencies: any) => IResponseSpec,
   middleware?: Array<(req: any, res: any, next: any) => any>,
 ) => ({
-  testRoute: {
-    callback,
-    methods,
-    middleware,
-    path,
+  routes: {
+    testRoute: {
+      callback,
+      methods,
+      middleware,
+      path,
+    },
   },
 });
 
@@ -133,6 +135,26 @@ describe('router config', () => {
         .get(`/index`)
         .then(() => {
           expect(eventManager.emitEvent.calledOnce).to.equal(true);
+        });
+    });
+
+    it('should load routes using json-provider and load them', () => {
+      routesToExpress(
+        {
+          routePaths: [
+            [
+              './packages/hadron-express/src/__tests__/__mocks__/routes/*',
+              'js',
+            ],
+          ],
+        },
+        Container,
+      );
+
+      return request(app)
+        .get(`/`)
+        .then(() => {
+          expect(getRouteProp(app, 'path')[0]).to.equal('/');
         });
     });
   });
