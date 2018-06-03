@@ -58,6 +58,7 @@ const convertToExpress = (
 ) => {
   const app = container.take('server');
   const promises: Array<Promise<object>> = [];
+  const containerProxy = createContainerProxy(container);
   if (config.routes) {
     promises.push(Promise.resolve(config.routes));
   }
@@ -86,7 +87,8 @@ const convertToExpress = (
       (Object as any).keys(routes).map((key: string) => {
         const route: IRoute = routes[key];
         validateMethods(key, route.methods);
-        const middlewares: Middleware[] = generateMiddlewares(route) || [];
+        const middlewares: Middleware[] =
+          generateMiddlewares(route, containerProxy) || [];
         createRoutes(app, route, middlewares, container, key);
       });
     });
