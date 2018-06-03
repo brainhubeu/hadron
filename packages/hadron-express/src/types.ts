@@ -19,6 +19,8 @@ export interface IRoutesConfig {
   [key: string]: IRoute;
 }
 
+export type RoutePathsConfig = string[][];
+
 export interface IContainer {
   take: (key: string) => any;
   keys: () => string[];
@@ -129,7 +131,8 @@ export interface IPartialRequest {
   };
 }
 export interface IHadronExpressConfig {
-  routes: IRoutesConfig;
+  routes?: IRoutesConfig;
+  routePaths?: RoutePathsConfig;
 }
 
 export type MiddlewareResult =

@@ -25,11 +25,13 @@ const createTestRoute = (
   callback: (req: IRequest, dependencies: any) => IResponseSpec,
   middleware?: Array<(req: any, res: any, next: any) => any>,
 ) => ({
-  testRoute: {
-    callback,
-    methods,
-    middleware,
-    path,
+  routes: {
+    testRoute: {
+      callback,
+      methods,
+      middleware,
+      path,
+    },
   },
 });
 
@@ -50,17 +52,17 @@ describe('router config', () => {
     it('should generate express route based on config file', () => {
       const testRoute = createTestRoute('/index', ['GET'], () => null);
 
-      routesToExpress(testRoute, Container);
-
-      expect(getRouteProp(app, 'path')[0]).to.equal('/index');
+      return routesToExpress(testRoute, Container).then(() =>
+        expect(getRouteProp(app, 'path')[0]).to.equal('/index'),
+      );
     });
 
     it('should generate correct router method based on config file', () => {
       const testRoute = createTestRoute('/index', ['POST'], () => null);
 
-      routesToExpress(testRoute, Container);
-
-      expect(getRouteProp(app, 'methods')[0].post).to.equal(true);
+      return routesToExpress(testRoute, Container).then(() =>
+        expect(getRouteProp(app, 'methods')[0].post).to.equal(true),
+      );
     });
 
     it('returns status OK for request from generated route', () => {
@@ -76,21 +78,17 @@ describe('router config', () => {
     it('throws a NoRouterMethodSpecifiedError if no methods were specified', () => {
       const testRoute = createTestRoute('/index', [], () => null);
 
-      try {
-        routesToExpress(testRoute, Container);
-      } catch (error) {
-        expect(error).to.be.instanceOf(NoRouterMethodSpecifiedError);
-      }
+      return routesToExpress(testRoute, Container).catch((error) =>
+        expect(error).to.be.instanceOf(NoRouterMethodSpecifiedError),
+      );
     });
 
     it("throws a InvalidRouteMethodError if method specified in config doesn't exist", () => {
       const testRoute = createTestRoute('/index', ['REPAIR'], () => null);
 
-      try {
-        routesToExpress(testRoute, Container);
-      } catch (error) {
-        expect(error).to.be.instanceOf(InvalidRouteMethodError);
-      }
+      return routesToExpress(testRoute, Container).catch((error) =>
+        expect(error).to.be.instanceOf(InvalidRouteMethodError),
+      );
     });
 
     it('generate multiple methods based on config', () => {
@@ -105,10 +103,11 @@ describe('router config', () => {
         [middle],
       );
 
-      routesToExpress(testRoute, Container);
-
-      expect(getRouteProp(app, 'methods')[0].put).to.equal(true);
-      expect(getRouteProp(app, 'methods')[1].delete).to.equal(true);
+      routesToExpress(testRoute, Container).then(
+        () =>
+          expect(getRouteProp(app, 'methods')[0].put).to.equal(true) &&
+          expect(getRouteProp(app, 'methods')[1].delete).to.equal(true),
+      );
     });
 
     it('should return HTTP Status 500 if callback is not defined', () => {
@@ -128,11 +127,32 @@ describe('router config', () => {
       Container.register('eventManager', eventManager);
       const testRoute = createTestRoute('/index', ['GET'], () => null);
 
-      routesToExpress(testRoute, Container);
+      return routesToExpress(testRoute, Container).then(() =>
+        request(app)
+          .get(`/index`)
+          .then(() => {
+            expect(eventManager.emitEvent.calledOnce).to.equal(true);
+          }),
+      );
+    });
+
+    it('should load routes using json-provider and load them', () => {
+      routesToExpress(
+        {
+          routePaths: [
+            [
+              './packages/hadron-express/src/__tests__/__mocks__/routes/*',
+              'js',
+            ],
+          ],
+        },
+        Container,
+      );
+
       return request(app)
-        .get(`/index`)
+        .get(`/`)
         .then(() => {
-          expect(eventManager.emitEvent.calledOnce).to.equal(true);
+          expect(getRouteProp(app, 'path')[0]).to.equal('/');
         });
     });
   });
