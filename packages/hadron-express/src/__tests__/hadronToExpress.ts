@@ -127,12 +127,13 @@ describe('router config', () => {
       Container.register('eventManager', eventManager);
       const testRoute = createTestRoute('/index', ['GET'], () => null);
 
-      routesToExpress(testRoute, Container);
-      return request(app)
-        .get(`/index`)
-        .then(() => {
-          expect(eventManager.emitEvent.calledOnce).to.equal(true);
-        });
+      return routesToExpress(testRoute, Container).then(() =>
+        request(app)
+          .get(`/index`)
+          .then(() => {
+            expect(eventManager.emitEvent.calledOnce).to.equal(true);
+          }),
+      );
     });
 
     it('should load routes using json-provider and load them', () => {

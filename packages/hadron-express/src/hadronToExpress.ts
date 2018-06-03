@@ -89,7 +89,7 @@ const convertToExpress = (
         validateMethods(key, route.methods);
         const middlewares: Middleware[] =
           generateMiddlewares(route, containerProxy) || [];
-        createRoutes(app, route, middlewares, container, key);
+        createRoutes(app, route, middlewares, containerProxy, key);
       });
     });
 };
