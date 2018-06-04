@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-core",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Hadron core module",
   "main": "dist/index.js",
   "files": [
@@ -19,8 +19,8 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
-    "@brainhubeu/hadron-error-handler": "^0.0.1",
-    "@brainhubeu/hadron-utils": "^0.0.1",
+    "@brainhubeu/hadron-error-handler": "^1.0.0",
+    "@brainhubeu/hadron-utils": "^1.0.0",
     "bunyan": "^1.8.12"
   },
   "publishConfig": {
