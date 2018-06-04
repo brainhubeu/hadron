@@ -32,7 +32,6 @@
     "pm2": "github:Unitech/pm2#development"
   },
   "devDependencies": {
-    "@types/bcrypt": "1.0.0",
     "@types/bunyan": "1.8.4",
     "@types/chai": "4.1.2",
     "@types/chai-as-promised": "7.1.0",
