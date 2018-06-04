@@ -15,17 +15,17 @@ const teamRoutsConfig = () => {
     insertTeam: {
       callback: teamService.insertTeam,
       methods: ['POST'],
-      path: '/insertTeam',
+      path: '/team',
     },
     updateTeam: {
       callback: teamService.updateTeam,
       methods: ['PUT'],
-      path: '/updateTeam',
+      path: '/team',
     },
     deleteTeam: {
       callback: teamService.deleteTeam,
       methods: ['DELETE'],
-      path: '/deleteTeam/:id',
+      path: '/team/:id',
     },
   };
 };

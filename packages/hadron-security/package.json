@@ -1,0 +1,26 @@
+{
+  "name": "@brainhubeu/hadron-security",
+  "version": "0.0.1",
+  "description": "Security package for hadron",
+  "main": "dist",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "security",
+    "hadron"
+  ],
+  "author": "Brainhub",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bcrypt": "^2.0.0",
+    "@types/express": "^4.11.1",
+    "@types/jsonwebtoken": "^7.2.7",
+    "express": "^4.16.3"
+  },
+  "dependencies": {
+    "bcrypt": "2.0.0",
+    "jsonwebtoken": "8.2.1",
+    "glob-to-regexp": "^0.4.0"
+  }
+}

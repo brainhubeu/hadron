@@ -19,6 +19,7 @@
     "@brainhubeu/hadron-express": "^0.0.1",
     "@brainhubeu/hadron-json-provider": "^0.0.1",
     "@brainhubeu/hadron-logger": "^0.0.2",
+    "@brainhubeu/hadron-security": "^0.0.1",
     "@brainhubeu/hadron-serialization": "^0.0.1",
     "@brainhubeu/hadron-typeorm": "^0.0.1",
     "@brainhubeu/hadron-utils": "^0.0.1",
@@ -33,6 +34,7 @@
     "typeorm": "0.1.18"
   },
   "devDependencies": {
+    "@types/bcrypt": "^2.0.0",
     "@types/body-parser": "1.16.8",
     "@types/cors": "2.8.3",
     "@types/dotenv": "4.0.2",
