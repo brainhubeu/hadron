@@ -24,8 +24,10 @@
     "@brainhubeu/hadron-core": "^0.0.1",
     "@brainhubeu/hadron-error-handler": "^0.0.1",
     "@brainhubeu/hadron-events": "^0.0.1",
-    "express": "4.16.2",
-    "http-status": "^1.0.1"
+    "@brainhubeu/hadron-utils": "0.0.1",
+    "@brainhubeu/hadron-json-provider": "^0.0.1",
+    "http-status": "1.1.0",
+    "express": "4.16.2"
   },
   "devDependencies": {
     "@types/express": "4.11.1",

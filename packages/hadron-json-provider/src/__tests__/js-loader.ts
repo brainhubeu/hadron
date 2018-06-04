@@ -22,6 +22,17 @@ describe('jsLoader', () => {
     );
   });
 
+  it('should load a JavaScript file with default export', () => {
+    return jsLoader(
+      `${mockDirPath}/mock/app/universal/exportDefaultConfig.js`,
+    ).then((result) => {
+      expect(result).to.be.deep.equal({
+        emailJS: 'user-JS@email.com',
+        usernameJS: 'user-JS',
+      });
+    });
+  });
+
   it("should throw error if file path doesn't have a valid extension", () => {
     const path = `${mockDirPath}/mock/app/config/config.json`;
     return jsLoader(path).catch((error) => {

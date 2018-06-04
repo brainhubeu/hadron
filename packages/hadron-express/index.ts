@@ -7,9 +7,20 @@ export {
   IContainer,
   IHadronExpressConfig,
 } from './src/types';
-import { IRoutesConfig, IContainer, IHadronExpressConfig } from './src/types';
+import {
+  IRoutesConfig,
+  IContainer,
+  IHadronExpressConfig,
+  RoutePathsConfig,
+} from './src/types';
 
 export default hadronExpress;
 
 export const register = (container: IContainer, config: IHadronExpressConfig) =>
-  hadronExpress((config.routes as IRoutesConfig) || {}, container);
+  hadronExpress(
+    {
+      routes: config.routes as IRoutesConfig,
+      routePaths: config.routePaths as RoutePathsConfig,
+    },
+    container,
+  );

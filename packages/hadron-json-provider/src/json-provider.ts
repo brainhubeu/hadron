@@ -3,6 +3,9 @@ import { extname, relative } from 'path';
 import { parseString as xmlToJson } from 'xml2js';
 import locate, { configLocate } from '@brainhubeu/hadron-file-locator';
 
+const isFunction = (functionToCheck: any): boolean =>
+  functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+
 const getExtension = (path: string): string => extname(path).substring(1);
 
 export const jsLoader = (path: string) => {
@@ -12,7 +15,10 @@ export const jsLoader = (path: string) => {
       reject(new Error(`${path} doesn't have ${supportsExtension} extension`));
     }
 
-    const data = require(`./${relative(__dirname, path)}`);
+    let data = require(`./${relative(__dirname, path)}`);
+    if (!isFunction(data) && data && isFunction(data.default)) {
+      data = data.default;
+    }
     data !== null ? resolve(data()) : reject(new Error('File not found'));
   });
 };

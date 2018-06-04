@@ -19,8 +19,11 @@ export interface IRoutesConfig {
   [key: string]: IRoute;
 }
 
+export type RoutePathsConfig = string[][];
+
 export interface IContainer {
   take: (key: string) => any;
+  keys: () => string[];
 }
 
 export interface IHeaders {
@@ -97,11 +100,18 @@ export type StatusCode =
   | 511;
 
 export interface IResponseSpec {
+  type: 'RESPONSE';
   status?: StatusCode;
   redirect?: string;
   headers?: IHeaders;
   body?: any;
   view?: IView;
+}
+
+export interface IPartialResponseSpec {
+  type: 'PARTIAL_RESPONSE';
+  status?: StatusCode;
+  headers?: IHeaders;
 }
 
 export interface IRequest {
@@ -113,6 +123,24 @@ export interface IRequest {
   file?: any;
   files?: any;
 }
-export interface IHadronExpressConfig {
-  routes: IRoutesConfig;
+
+export interface IPartialRequest {
+  type: 'PARTIAL_REQUEST';
+  values: {
+    [key: string]: any;
+  };
 }
+export interface IHadronExpressConfig {
+  routes?: IRoutesConfig;
+  routePaths?: RoutePathsConfig;
+}
+
+export type MiddlewareResult =
+  | IPartialResponseSpec
+  | IPartialRequest
+  | IResponseSpec;
+
+export type HadronMiddleware = (
+  request: IRequest,
+  dependencies: any,
+) => MiddlewareResult;
