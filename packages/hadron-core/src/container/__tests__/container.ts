@@ -58,3 +58,12 @@ describe('container items with parameters in constructor', () => {
     expect(4).to.be.equal(item.value);
   });
 });
+describe("list of container's items keys ", () => {
+  it('should return array of keys of earlier registered items', () => {
+    container.register('key1', 'item1');
+    container.register('key2', 'item2');
+    const keys = container.keys();
+    expect(keys).to.include('key1');
+    expect(keys).to.include('key2');
+  });
+});
