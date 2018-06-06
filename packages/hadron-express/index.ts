@@ -14,6 +14,8 @@ import {
   RoutePathsConfig,
 } from './src/types';
 
+export { Event } from './src/constants/eventNames';
+
 export default hadronExpress;
 
 export const register = (container: IContainer, config: IHadronExpressConfig) =>

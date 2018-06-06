@@ -20,3 +20,8 @@ export interface IHadronEventsConfig {
 export interface IEventsConfig {
   listeners: IEventListener[];
 }
+
+export interface IEventManager {
+  registerEvents: (listeners: IEventListener[]) => null;
+  emitEvent: (eventName: string, callback?: CallbackEvent) => null;
+}
