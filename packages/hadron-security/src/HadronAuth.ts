@@ -3,6 +3,7 @@ import urlGlob, { convertToPattern } from './helpers/urlGlob';
 import { IUser } from '..';
 import { isUserGranted } from './hierarchyProvider';
 import expressMiddlewareAuthorization from './providers/expressMiddlewareAuthorization';
+import flattenDeep from './helpers/flattenDeep';
 
 let routes: IRoute[] = [];
 
@@ -168,4 +169,39 @@ export const getExistsingRoute = (path: string, routes: IRoute[]): IRoute => {
   }
 
   return null;
+};
+
+const getNonExistingRoles = (roles: any, allRoles: string[]): string[] => {
+  let newRoles = roles;
+  if (typeof newRoles === 'string') {
+    newRoles = [newRoles];
+  }
+
+  newRoles = flattenDeep(newRoles);
+  const nonExistingRoles: string[] = [];
+
+  for (const role of newRoles) {
+    if (role !== '*' && !roles.some((el: any) => el === role)) {
+      nonExistingRoles.push(role);
+    }
+  }
+
+  return nonExistingRoles;
+};
+
+const nonExistingRolesWarning = (
+  path: string,
+  roles: string | Array<string | string[]>,
+  allRoles: string[],
+): void => {
+  const nonExistingRoles = getNonExistingRoles(roles, allRoles);
+
+  if (nonExistingRoles.length > 0) {
+    console.warn(
+      '\x1b[33m\x1b[1m',
+      `Roles: [${nonExistingRoles.join(
+        ', ',
+      )}] does not exists. Your route: "${path}" is secured, but yout need to provide existing role, to access it.`,
+    );
+  }
 };

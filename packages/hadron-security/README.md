@@ -1,171 +1,287 @@
 ## Installation
 
 ```bash
-npm install @brainhubeu/hadron-security --save
+npm install @brainhubeu/hadron-authorization --save
 ```
 
 ## Overview
 
-**_Hadron Security_** provides back-end authorization layer for routes you will choose.
+**hadron-authorization** provides back-end authorization layer for routes you will choose.
 
-### Configuration
+### Configuration with Hadron Core
 
-To use security config you need to build User and Role provider. Here are the interfaces:  
-**_IRole_** and **_IUser_**
+If you want to use **hadron-auth** with **hadron-core** you should also use **hadron-typeorm** and **hadron-express**.
+All you need to provide is two schemas for typeorm:
 
-```typescript
-interface IRole {
-  id: number | string;
-  name: string;
-}
-
-interface IUser {
-  id: number | string;
-  username: string;
-  passwordHash: string;
-  roles: IRole[];
-}
-```
-
-**_IUserProvider_**
-
-```typescript
-interface IUserProvider {
-  loadUserByUsername(username: string): Promise<IUser>;
-  refreshUser(user: IUser): void;
-}
-```
-
-**_IRoleProvider_**
-
-```typescript
-interface IRoleProvider {
-  getRole(name: string): Promise<IRole>;
-  getRoles(): Promise<string[]>;
-}
-```
-
-After that you can inject providers to HadronSecurity instance:
+* `User` (id, username and roles many-to-many relation)
+  Here is the example schema:
 
 ```javascript
-const security = new HadronSecurity(userProvider, roleProvider);
+// schemas/User
+const userSchema = {
+  name: 'User',
+  columns: {
+    id: {
+      primary: true,
+      type: 'int',
+      generated: true,
+    },
+    username: {
+      type: 'varchar',
+      unique: true,
+    },
+    passwordHash: {
+      type: 'varchar',
+    },
+    addedOn: {
+      type: 'timestamp',
+    },
+  },
+  relations: {
+    roles: {
+      target: 'Role',
+      type: 'many-to-many',
+      joinTable: {
+        name: 'user_role',
+      },
+      onDelete: 'CASCADE',
+    },
+  },
+};
+
+export default userSchema;
 ```
 
-When your security is ready you can use **_allow_** method:
+* `Role` (id and name)
+  Example schema:
+
 
 ```javascript
-allow(route, roles, methods);
+// schemas/Role
+const roleSchema = {
+  name: 'Role',
+  columns: {
+    id: {
+      primary: true,
+      type: 'int',
+      generated: true,
+    },
+    name: {
+      type: 'varchar',
+      unique: true,
+    },
+    addedOn: {
+      type: 'timestamp',
+    },
+  },
+};
+
+export default roleSchema;
 ```
 
-* `route` - a string which contains URL which will be secured.
-* `roles` - an optional string or array of strings or array of array of strings which contains role names allowed by security.
-* `methods` - an optional array of strings, which contains HTTP methods allowed by security, default all methods are allowed.
-
-If you will not provide any roles or set string `'*'`, then a user with **any** role can access this route, user with 0 roles still not have access to this route.
-
-**_allow_** method, supports role hierarchy, for example you can use:
+Don't forget to add schemas to your database config, example below:
 
 ```javascript
-allow('/route', [['Admin', 'User'], 'Manager']);
-```
+// config/db.js
+import userSchema from '../schemas/User';
+import roleSchema from '../schemas/Role';
 
-Where user which wants access to `/route` must have Admin **AND** User roles **OR** Manager role.
+const connection = {
+  name: 'mysql-connection',
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'my-secret-pw',
+  database: 'done-it',
+  entitySchemas: [roleSchema, userSchema],
+  synchronize: true,
+};
 
-#### Example
-
-```javascript
-security
-  .allow('/route', ['Role1', 'Role2'], ['get', 'post'])
-  .allow('/route2', 'Role3')
-  .allow('/route3/*', [['Role1', 'Role2'], 'Role3'], 'delete');
-```
-
-Next, you can use security instance returned from promise to check if the user is allowed to route by:
-
-```javascript
-isAllowed(path, allowedMethod, user);
-```
-
-* `path` - a string which contains URL.
-* `allowedMethod` - string which contains HTTP method.
-* `user` - IUser implementation.
-
-## Configuration example
-
-```javascript
-const securityConfig = (
-  userProvider: IUserProvider,
-  roleProvider: IRoleProvider,
-): Promise<HadronSecurity> => {
-  return new Promise((resolve, reject) => {
-    roleProvider.getRoles().then((roles) => {
-      const security = new HadronSecurity(userProvider, roleProvider);
-
-      security
-        .allow('/team/*', [['Admin', 'User'], 'Manager'])
-        .allow(
-          '/user/*',
-          ['NotExists', 'ThisDoesNotExistsToo', 'User', 'Admin'],
-          ['get'],
-        )
-        .allow('/user/*', 'Admin', ['post', 'put', 'delete'])
-        .allow('/qwe', ['DoesNotExists']);
-
-      resolve(security);
-    });
-  });
+export default {
+  connection,
+  entities: [roleSchema, userSchema],
 };
 ```
 
-By default all routes are unsecured, you can change by calling a method: **_secureAllRoutes_** from **HadronSecurity**:
+`Of course you can add additional properties if you want.`
+
+Now you need to prepare your hadron configuration file, where you can add secured routes, for example:
 
 ```javascript
-security.secureAllRoutes().allow('/team/*', [['Admin', 'User'], 'Manager']);
+// index.js
+const config = {
+  routes: {
+    helloWorldRoute: {
+      path: '/',
+      methods: ['GET'],
+      callback: () => 'Hello World',
+    },
+    adminRoute: {
+      path: '/admin',
+      methods: ['GET'],
+      callback: () => 'Hello Admin',
+    },
+    userRoute: {
+      path: '/user',
+      methods: ['GET'],
+      callback: () => 'Hello User',
+    },
+  },
+  securedRoutes: [
+    {
+      path: '/admin/*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      roles: 'Admin',
+    },
+    {
+      path: '/user/*',
+      roles: ['Admin', 'User'],
+    },
+  ],
+};
 ```
 
-## Express support
-
-If you are using **_express_**, you can use middleware provider from hadron-security:
+Finally you need to add **hadron-authorization** to hadron initialization method:
 
 ```javascript
-expressApp.use(expressMiddlewareProvider(security));
-```
+import hadron from '@brainhubeu/hadron-core';
+import * as hadronExpress from '@brainhubeu/hadron-express';
+import * as hadronTypeOrm from '@brainhubeu/hadron-typeorm';
+import * as hadronAuth from '@brainhubeu/hadron-authorization';
+import express from 'express';
 
-Where expressApp is an instance of express() and security is an instance of HadronSecurity class.
+const expressApp = express();
+
+const hadronInit = async () => {
+  const config = {
+    routes: {
+      helloWorldRoute: {
+        path: '/',
+        methods: ['GET'],
+        callback: () => 'Hello World',
+      },
+      adminRoute: {
+        path: '/admin',
+        methods: ['GET'],
+        callback: () => 'Hello Admin',
+      },
+      userRoute: {
+        path: '/user',
+        methods: ['GET'],
+        callback: () => 'Hello User',
+      },
+    },
+    securedRoutes: [
+      {
+        path: '/admin/*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        roles: 'Admin',
+      },
+      {
+        path: '/user/*',
+        roles: ['Admin', 'User'],
+      },
+    ],
+  };
+
+  const container = await hadron(
+    expressApp,
+    [hadronAuth, hadronExpress, hadronTypeOrm],
+    config,
+  );
+};
+```
 
 ---
 
-### Warning
-
-**_expressMiddlewareProvider_** should be the first route in your express app.
+Warning, you should pass hadronAuth as first to hadron packages array.
 
 ---
 
-**hadron-security** also provides **JWT** token generator middleware, you just need to provide HadronSecurity instance:
+Now your routes are secured, by default, **hadron-auth** authorize user by JWT Token, passed as `Authorization` header.
+
+### Creating custom authorization middleware
+
+You can pass your own function in hadron configuration to check if user is authorized to secured route.
+Here is the skeleton for the authorization middleware:
 
 ```javascript
-expressApp.post('/login', generateTokenMiddleware(security));
+const authorizationMiddleware = (container) => {
+  return (req, res, next) => {};
+};
 ```
 
-By default **_expressMiddlewareProvider_** authenticate a user by **JWT** token, but if you want to authorize the user by username and password you can set this by the end of your security config:
+**hadron-auth** provides `isAllowed` function, to check if user is allowed to specified route:
 
 ```javascript
-security
-  .allow('/route/*', 'Admin')
-  .allow('/route2/', 'User', ['get'])
-  .authenticateByUsernameAndPassword();
+isAllowed(path, method, user, allRoles);
 ```
 
-You can provide credentials by request headers:
+Where:
 
-* `Authorization` - username
-* `Password` - password
+* `path` - path to secured route, for example /api/admin/1
+* `method` - HTTP method
+* `user` - User object, which need to contain roles
+* `allRoles` - All roles stored in database (only names)
 
-Or by request body:
+Here is an example authorization middleware:
 
-```json
-{
-  "username": "user",
-  "password": "user"
-}
+```javascript
+import * as jwt from 'jsonwebtoken';
+import { isRouteNotSecure, isAllowed } from '@brainhubeu/hadron-authorization';
+
+const errorResponse = {
+  message: 'Unauthorized',
+};
+
+const expressMiddlewareAuthorization = (container) => {
+  return async (req, res, next) => {
+    try {
+      if (isRouteNotSecure(req.path)) {
+        return next();
+      }
+
+      const userRepository = container.take('userRepository');
+      const roleRepository = container.take('roleRepository');
+
+      const token = req.headers.authorization;
+
+      const decoded: any = jwt.decode(token);
+
+      const user = await userRepository.findOne({
+        where: { id: decoded.id },
+        relations: ['roles'],
+      });
+
+      if (!user) {
+        return res.status(403).json({ error: errorResponse });
+      }
+
+      const allRoles = await roleRepository.find();
+
+      if (
+        isAllowed(req.path, req.method, user, allRoles.map((role) => role.name))
+      ) {
+        return next();
+      }
+
+      return res.status(403).json({ error: errorResponse });
+    } catch (error) {
+      return res.status(403).json({ error: errorResponse });
+    }
+  };
+};
+
+export default expressMiddlewareAuthorization;
 ```
+
+To use it, you need to pass expressMiddlewareAuthorization function as `authorizationMiddleware` key in hadron config.
+
+```javascript
+const config = {
+  authorizationMiddleware: yourCustomFunction,
+};
+```
+
+### Using hadron-authorization without hadron-core
