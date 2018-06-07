@@ -6,8 +6,8 @@ import {
   getExistsingRoute,
   createNewRoute,
   getMethodsForExistsingRoute,
-} from '../../HadronAuth';
-import { convertToPattern } from '../../helpers/urlGlob';
+} from '../HadronAuth';
+import { convertToPattern } from '../helpers/urlGlob';
 
 describe('Hadron Authorization module', () => {
   it('initRoutes should return array of prepared IRoute from ISecuredRoute array', () => {

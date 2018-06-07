@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { isRouteNotSecure, isAllowed } from '../HadronAuth';
 
-const error = {
+const errorResponse = {
   message: 'Unauthorized',
 };
 
@@ -25,21 +25,21 @@ const expressMiddlewareAuthorization = (container: any) => {
       });
 
       if (!user) {
-        return res.status(403).json({ error });
+        return res.status(403).json({ error: errorResponse });
       }
 
       const allRoles = await roleRepository.find();
 
-      // @ts-ignore
       if (
+        // @ts-ignore
         isAllowed(req.path, req.method, user, allRoles.map((role) => role.name))
       ) {
         return next();
       }
 
-      return res.status(403).json({ error });
+      return res.status(403).json({ error: errorResponse });
     } catch (error) {
-      return res.status(403).json({ error });
+      return res.status(403).json({ error: errorResponse });
     }
   };
 };

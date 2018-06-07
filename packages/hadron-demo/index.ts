@@ -13,13 +13,9 @@ import emitterConfig from './event-emitter/config';
 import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';
-import HadronSecurity, {
-  expressMiddlewareProvider,
-  generateTokenMiddleware,
-} from '@brainhubeu/hadron-security';
-import securityConfig from './security/securityConfig';
-import TypeOrmUserProvider from './security/TypeOrmUserProvider';
-import TypeOrmRoleProvider from './security/TypeOrmRoleProvider';
+import securedRoutes from './security/securedRoutesConfig';
+import * as hadronAuth from '../hadron-security/index';
+import login from './security/loginRoute';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -27,6 +23,7 @@ expressApp.use(bodyParser.json());
 
 jsonProvider([`${__dirname}/routing/*`], ['config.js']).then((routes: any) => {
   const config = {
+    securedRoutes,
     ...typeormConfig,
     ...hadronLogger,
     events: emitterConfig,
@@ -39,27 +36,15 @@ jsonProvider([`${__dirname}/routing/*`], ['config.js']).then((routes: any) => {
 
   hadron(
     expressApp,
-    [hadronEvents, hadronSerialization, hadronTypeOrm],
+    [
+      hadronAuth,
+      hadronEvents,
+      hadronSerialization,
+      hadronTypeOrm,
+      hadronExpress,
+    ],
     config,
   ).then(async (container: IContainer) => {
-    const userProvider = new TypeOrmUserProvider(
-      container.take('userRepository'),
-    );
-    const roleProvider = new TypeOrmRoleProvider(
-      container.take('roleRepository'),
-    );
-
-    const security: HadronSecurity = await securityConfig(
-      userProvider,
-      roleProvider,
-    );
-
-    expressApp.post('/login', generateTokenMiddleware(security));
-
-    expressApp.use(expressMiddlewareProvider(security));
-
-    hadronExpress.register(container, config);
-
     expressApp.use((req, res, next) =>
       res.status(404).json('Request not found.'),
     );
