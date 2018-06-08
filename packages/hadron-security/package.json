@@ -1,6 +1,6 @@
 {
-  "name": "@brainhubeu/hadron-security",
-  "version": "0.0.2",
+  "name": "@brainhubeu/hadron-auth",
+  "version": "0.0.4",
   "description": "Security package for hadron",
   "main": "dist/index.js",
   "files": [
@@ -18,7 +18,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "devDependencies": {
-    "@types/express": "^4.11.1",
+    "@types/express": "^4.16.0",
     "express": "^4.16.3"
   },
   "dependencies": {

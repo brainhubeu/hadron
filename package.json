@@ -25,6 +25,7 @@
   "author": "Brainhub",
   "license": "MIT",
   "dependencies": {
+    "@types/bunyan": "1.8.4",
     "body-parser": "1.18.2",
     "dotenv": "4.0.0",
     "mysql": "2.15.0",
