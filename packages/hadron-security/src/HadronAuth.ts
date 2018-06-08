@@ -121,7 +121,7 @@ export const initRoutes = (securedRoutes: ISecuredRoute[]): IRoute[] => {
 };
 
 export const register = (container: any, config: any) => {
-  routes = initRoutes(config.securedRoutes);
+  routes = initRoutes(config.securedRoutes || []);
   const server = container.take('server');
 
   server.use(
