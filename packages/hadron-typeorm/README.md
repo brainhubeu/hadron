@@ -115,10 +115,10 @@ module.exports = {
       generated: true,
     },
     firstName: {
-      type: 'string',
+      type: 'varchar',
     },
     lastName: {
-      type: 'string',
+      type: 'varchar',
     },
   },
 };
@@ -126,7 +126,7 @@ module.exports = {
 
 When using this method, while creating connection to database, those schemas should be in `entitySchemas` parameter.
 
-For more details about defining models, please take a look at [TypeORM documentation](http://typeorm.io/#/entities)
+For more details about defining models, please take a look at [TypeORM documentation](http://typeorm.io/#/entities). Especially section about [available types](http://typeorm.io/#/entities/column-types) for each database distribution
 
 ## Injecting entities into hadron
 
