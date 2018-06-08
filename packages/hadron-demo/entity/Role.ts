@@ -1,4 +1,4 @@
-import { IRole } from '@brainhubeu/hadron-security';
+import { IRole } from '@brainhubeu/hadron-auth';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()

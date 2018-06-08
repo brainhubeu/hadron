@@ -14,6 +14,7 @@
     "hadron-demo"
   ],
   "dependencies": {
+    "@brainhubeu/hadron-auth": "^0.0.4",
     "@brainhubeu/hadron-core": "^0.0.2",
     "@brainhubeu/hadron-events": "^0.0.2",
     "@brainhubeu/hadron-express": "^0.0.2",

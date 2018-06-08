@@ -7,7 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Team } from './Team';
-import { IUser, IRole } from '@brainhubeu/hadron-security';
+import { IUser, IRole } from '@brainhubeu/hadron-auth';
 import { Role } from './Role';
 
 @Entity()

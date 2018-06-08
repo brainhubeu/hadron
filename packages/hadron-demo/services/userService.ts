@@ -1,7 +1,7 @@
 import { User } from '../entity/User';
 import validate from '../entity/validation/validate';
 import { Container } from '@brainhubeu/hadron-core';
-import { bcrypt } from '@brainhubeu/hadron-security';
+import { bcrypt } from '@brainhubeu/hadron-auth';
 import { Role } from '../entity/Role';
 
 class UserDto {
