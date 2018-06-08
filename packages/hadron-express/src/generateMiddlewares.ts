@@ -1,11 +1,6 @@
 import * as express from 'express';
 import { Container } from '@brainhubeu/hadron-core';
-import {
-  IRoute,
-  Middleware,
-  HadronMiddleware,
-  MiddlewareResult,
-} from './types';
+import { IRoute, Middleware, HadronMiddleware } from './types';
 import GenerateMiddlewareError from './errors/GenerateMiddlewareError';
 import prepareRequest from './prepareRequest';
 import handleResponseSpec from './handleResponseSpec';

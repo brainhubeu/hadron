@@ -3,7 +3,6 @@ import urlGlob, { convertToPattern } from './helpers/urlGlob';
 import { IUser } from '..';
 import { isUserGranted } from './hierarchyProvider';
 import expressMiddlewareAuthorization from './providers/expressMiddlewareAuthorization';
-import flattenDeep from './helpers/flattenDeep';
 
 let routes: IRoute[] = [];
 
@@ -13,106 +12,25 @@ export interface ISecuredRoute {
   roles: string | Array<string | string[]>;
 }
 
-export const register = (container: any, config: any) => {
-  routes = initRoutes(config.securedRoutes);
-  const server = container.take('server');
-
-  server.use(
-    config.authorizationMiddleware
-      ? config.authorizationMiddleware(container)
-      : expressMiddlewareAuthorization(container),
-  );
-};
-
-export const initRoutes = (securedRoutes: ISecuredRoute[]): IRoute[] => {
-  const routes: IRoute[] = [];
-  securedRoutes.forEach((route) => {
-    const existingRoute = getExistsingRoute(
-      convertToPattern(route.path),
-      routes,
-    );
-
-    if (existingRoute) {
-      existingRoute.methods = getMethodsForExistsingRoute(
-        existingRoute,
-        route.methods,
-        route.roles,
-      );
-    } else {
-      routes.push(createNewRoute(route.path, route.methods, route.roles));
+export const getExistsingRoute = (path: string, routes: IRoute[]): IRoute => {
+  for (const route of routes) {
+    if (route.path === path) {
+      return route;
     }
-  });
-
-  return routes;
-};
-
-export const isRouteNotSecure = (path: string) =>
-  getRouteFromPath(path, routes) === null;
-
-export const isAllowed = (
-  path: string,
-  allowedMethod: string,
-  user: IUser,
-  allRoles: string[],
-): boolean => {
-  try {
-    const route = getRouteFromPath(path, routes);
-    let isGranted = false;
-
-    route.methods.forEach((method) => {
-      if (
-        method.name === '*' ||
-        method.name.toLowerCase() === allowedMethod.toLowerCase()
-      ) {
-        if (method.allowedRoles.includes('*') && user.roles.length > 0) {
-          isGranted = true;
-        } else {
-          isGranted = isUserGranted(user, method.allowedRoles, {
-            ALL: allRoles,
-          });
-        }
-      }
-    });
-    return isGranted;
-  } catch (error) {
-    throw new Error('Unauthorized');
   }
+
+  return null;
 };
 
-export const getRouteFromPath = (path: string, routes: IRoute[]): IRoute => {
-  const route = routes.filter((r) => urlGlob(r.path, path));
-  if (route.length === 0) return null;
-  return route[0];
-};
-
-export const createNewRoute = (
-  path: string,
-  methods: string[] = [],
-  roles: string | Array<string | string[]>,
-) => {
-  const methodsForRoute: IMethod[] = [];
-
-  if (methods.length > 0) {
-    methods = [...new Set(methods)];
-    methods.forEach((methodName) => {
-      methodsForRoute.push({
-        name: methodName,
-        allowedRoles: getRoleArray(roles),
-      });
-    });
+export const getRoleArray = (roles: string | Array<string | string[]>) => {
+  const arr: any[] = [];
+  if (typeof roles === 'string') {
+    arr.push(roles);
   } else {
-    methodsForRoute.push({
-      name: '*',
-      allowedRoles: getRoleArray(roles),
-    });
+    roles.forEach((role) => arr.push(role));
   }
 
-  const route: IRoute = {
-    path: convertToPattern(path),
-    methods: methodsForRoute,
-  };
-
-  return route;
+  return [...new Set(arr)];
 };
 
 export const getMethodsForExistsingRoute = (
@@ -150,58 +68,104 @@ export const getMethodsForExistsingRoute = (
   return [...methodsFromRoute, ...nonExistingMethods];
 };
 
-export const getRoleArray = (roles: string | Array<string | string[]>) => {
-  const arr: any[] = [];
-  if (typeof roles === 'string') {
-    arr.push(roles);
-  } else {
-    roles.forEach((role) => arr.push(role));
-  }
-
-  return [...new Set(arr)];
-};
-
-export const getExistsingRoute = (path: string, routes: IRoute[]): IRoute => {
-  for (const route of routes) {
-    if (route.path === path) {
-      return route;
-    }
-  }
-
-  return null;
-};
-
-const getNonExistingRoles = (roles: any, allRoles: string[]): string[] => {
-  let newRoles = roles;
-  if (typeof newRoles === 'string') {
-    newRoles = [newRoles];
-  }
-
-  newRoles = flattenDeep(newRoles);
-  const nonExistingRoles: string[] = [];
-
-  for (const role of newRoles) {
-    if (role !== '*' && !roles.some((el: any) => el === role)) {
-      nonExistingRoles.push(role);
-    }
-  }
-
-  return nonExistingRoles;
-};
-
-const nonExistingRolesWarning = (
+export const createNewRoute = (
   path: string,
+  methods: string[] = [],
   roles: string | Array<string | string[]>,
-  allRoles: string[],
-): void => {
-  const nonExistingRoles = getNonExistingRoles(roles, allRoles);
+) => {
+  const methodsForRoute: IMethod[] = [];
 
-  if (nonExistingRoles.length > 0) {
-    console.warn(
-      '\x1b[33m\x1b[1m',
-      `Roles: [${nonExistingRoles.join(
-        ', ',
-      )}] does not exists. Your route: "${path}" is secured, but yout need to provide existing role, to access it.`,
+  if (methods.length > 0) {
+    methods = [...new Set(methods)];
+    methods.forEach((methodName) => {
+      methodsForRoute.push({
+        name: methodName,
+        allowedRoles: getRoleArray(roles),
+      });
+    });
+  } else {
+    methodsForRoute.push({
+      name: '*',
+      allowedRoles: getRoleArray(roles),
+    });
+  }
+
+  const route: IRoute = {
+    path: convertToPattern(path),
+    methods: methodsForRoute,
+  };
+
+  return route;
+};
+
+export const initRoutes = (securedRoutes: ISecuredRoute[]): IRoute[] => {
+  const routes: IRoute[] = [];
+  securedRoutes.forEach((route) => {
+    const existingRoute = getExistsingRoute(
+      convertToPattern(route.path),
+      routes,
     );
+
+    if (existingRoute) {
+      existingRoute.methods = getMethodsForExistsingRoute(
+        existingRoute,
+        route.methods,
+        route.roles,
+      );
+    } else {
+      routes.push(createNewRoute(route.path, route.methods, route.roles));
+    }
+  });
+
+  return routes;
+};
+
+export const register = (container: any, config: any) => {
+  routes = initRoutes(config.securedRoutes);
+  const server = container.take('server');
+
+  server.use(
+    config.authorizationMiddleware
+      ? config.authorizationMiddleware(container)
+      : expressMiddlewareAuthorization(container),
+  );
+};
+
+export const getRouteFromPath = (path: string, routes: IRoute[]): IRoute => {
+  const route = routes.filter((r) => urlGlob(r.path, path));
+  if (route.length === 0) return null;
+  return route[0];
+};
+
+export const isRouteNotSecure = (path: string) =>
+  getRouteFromPath(path, routes) === null;
+
+export const isAllowed = (
+  path: string,
+  allowedMethod: string,
+  user: IUser,
+  allRoles: string[],
+): boolean => {
+  try {
+    const route = getRouteFromPath(path, routes);
+    let isGranted = false;
+
+    route.methods.forEach((method) => {
+      if (
+        method.name === '*' ||
+        method.name.toLowerCase() === allowedMethod.toLowerCase()
+      ) {
+        if (method.allowedRoles.includes('*') && user.roles.length > 0) {
+          isGranted = true;
+        } else {
+          isGranted = isUserGranted(user, method.allowedRoles, {
+            ALL: allRoles,
+          });
+        }
+      }
+    });
+    return isGranted;
+  } catch (error) {
+    throw new Error('Unauthorized');
   }
 };

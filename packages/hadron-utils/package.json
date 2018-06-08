@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-utils",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Set of utility functions for hadron",
   "main": "dist/index.js",
   "files": [

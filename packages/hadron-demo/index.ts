@@ -15,7 +15,6 @@ import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';
 import securedRoutes from './security/securedRoutesConfig';
 import * as hadronAuth from '../hadron-security/index';
-import login from './security/loginRoute';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
