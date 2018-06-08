@@ -49,7 +49,7 @@ const userSchema = {
   },
 };
 
-export default userSchema;
+module.exports = userSchema;
 ```
 
 * `Role` (id and name required)
@@ -75,15 +75,15 @@ const roleSchema = {
   },
 };
 
-export default roleSchema;
+module.exports = roleSchema;
 ```
 
 Don't forget to add schemas to Your database config, example below:
 
 ```javascript
 // config/db.js
-import userSchema from '../schemas/User';
-import roleSchema from '../schemas/Role';
+const userSchema = require('../schemas/User');
+const roleSchema = require('../schemas/Role');
 
 const connection = {
   name: 'mysql-connection',
@@ -97,10 +97,7 @@ const connection = {
   synchronize: true,
 };
 
-export default {
-  connection,
-  entities: [roleSchema, userSchema],
-};
+module.exports = connection,
 ```
 
 Now You need to prepare Your hadron configuration file, where You can add secured routes, for example:
@@ -142,11 +139,11 @@ const config = {
 Finally You need to add **hadron-auth** to hadron initialization method:
 
 ```javascript
-import hadron from '@brainhubeu/hadron-core';
-import * as hadronExpress from '@brainhubeu/hadron-express';
-import * as hadronTypeOrm from '@brainhubeu/hadron-typeorm';
-import * as hadronAuth from '@brainhubeu/hadron-auth';
-import express from 'express';
+const hadron = require('@brainhubeu/hadron-core').default;
+const hadronExpress = require('@brainhubeu/hadron-express');
+const hadronTypeOrm = require('@brainhubeu/hadron-typeorm');
+const hadronAuth = require('@brainhubeu/hadron-auth');
+const express = require('express');
 
 const expressApp = express();
 
@@ -225,8 +222,8 @@ Where:
 Here is an example authorization middleware:
 
 ```javascript
-import * as jwt from 'jsonwebtoken';
-import { isRouteNotSecure, isAllowed } from '@brainhubeu/hadron-auth';
+const jwt = require('jsonwebtoken');
+const { isRouteNotSecure, isAllowed } = require('@brainhubeu/hadron-auth');
 
 const errorResponse = {
   message: 'Unauthorized',
@@ -270,7 +267,7 @@ const expressMiddlewareAuthorization = (container) => {
   };
 };
 
-export default expressMiddlewareAuthorization;
+module.exports = expressMiddlewareAuthorization;
 ```
 
 To use it, You need to pass an expressMiddlewareAuthorization function as `authorizationMiddleware` key in hadron config.
