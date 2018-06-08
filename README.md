@@ -1,4 +1,6 @@
-# Brainhub framework app
+# Hadron
+
+[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
 
 ## Getting Started
 
@@ -7,12 +9,12 @@
 * Installed GIT
 * Installed node.js (we recommend using [nvm](https://github.com/creationix/nvm) to run multiple versions of node).
 
-We recommend using latest (9.x) version of node. If you want to use older versions you may need to add [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) to use [some features](http://node.green/).
+We recommend using latest version of node. If you want to use older versions you may need to add [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) to use [some features](http://node.green/).
 
 #### Clone it
 
 ```sh
-git clone ssh://git@git.brainhub.pl:2222/brainhub-framework/brainhub-framework-app.git
+git clone git@github.com:brainhubeu/hadron.git
 cd brainhub-framework-app
 ```
 

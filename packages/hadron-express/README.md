@@ -54,7 +54,7 @@ The callback function can take route parameters as an arguments. Hadron also all
 
 ```javascript
 routeWithParam: {
-  callback: (firstParam) =`firstParam value: ${firstParam}`,
+  callback: (firstParam) => `firstParam value: ${firstParam}`,
   methods: ['GET'],
   path: '/:firstParam',
 }
