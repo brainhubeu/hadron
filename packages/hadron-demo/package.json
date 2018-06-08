@@ -24,6 +24,7 @@
     "@brainhubeu/hadron-typeorm": "^1.0.0",
     "@brainhubeu/hadron-utils": "^1.0.0",
     "@brainhubeu/hadron-validation": "^1.0.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",
