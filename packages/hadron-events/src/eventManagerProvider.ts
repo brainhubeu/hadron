@@ -24,12 +24,12 @@ const eventManagerProvider = (
     });
   },
   emitEvent: (eventName: string, callback: CallbackEvent) => {
-    if (eventName === '' || eventName === null) {
-      throw new Error('eventName can not be empty');
+    if (typeof eventName !== 'string' || eventName.trim() === '') {
+      throw new Error('Event name can not be empty');
     }
 
-    if (callback === undefined || callback === null) {
-      callback = () => null;
+    if (typeof callback !== 'function') {
+      throw new Error('Event callback can not be empty');
     }
 
     return emitter
