@@ -27,7 +27,7 @@ export const register = (
   const expressApp = express();
   expressApp.use(bodyParser.json());
   container.register('server', expressApp);
-  container.register('server_listen', () => {
+  container.register('serverListen', () => {
     expressApp.listen(port);
   });
   return hadronExpress(

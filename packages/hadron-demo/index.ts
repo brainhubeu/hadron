@@ -33,7 +33,7 @@ jsonProvider(['./routing/*'], ['js']).then((routes: any) => {
       .use((req: any, res: any) => res.status(404).json('Request not found.'));
     container.register('customValue', 'From Brainhub with ❤️');
     setupSerializer();
-    container.take('server_listen')();
+    container.take('serverListen')();
   });
 
   return;
