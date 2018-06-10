@@ -29,8 +29,8 @@ jsonProvider(['./routing/*'], ['js']).then((routes: any) => {
     config,
   ).then((container: IContainer) => {
     container
-      .register('server')
-      .use((req, res) => res.status(404).json('Request not found.'));
+      .take('server')
+      .use((req: any, res: any) => res.status(404).json('Request not found.'));
     container.register('customValue', 'From Brainhub with ❤️');
     setupSerializer();
     container.take('server_listen')();
