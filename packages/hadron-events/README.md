@@ -15,9 +15,10 @@ Event Manager is a tool which allows manipulating Hadron's default behavior with
 Pass package as an argument for hadron bootstrapping function:
 
 ```javascript
+const hadronEvents = require('@brainhubeu/hadron-events');
 // ... importing and initializing other components
 
-hadron(expressApp, [require('@brainhubeu/hadron-events')], config).then(() => {
+hadron(expressApp, [hadronEvents], config).then(() => {
   console.log('Hadron with eventManager initialized');
 });
 ```
@@ -42,10 +43,47 @@ eventManager.registerEvents(listeners);
 }
 ```
 
+Example:
+
+```javascript
+const config = {
+  events: {
+    listeners: [
+      {
+        name: 'Listener1',
+        event: 'createRoutesEvent',
+        handler: (callback, ...args) => {
+          const myCustomCallback = () => {
+            console.log("Hey! I've changed the original hadron function!");
+            return callback(...args);
+          };
+          return myCustomCallback();
+        },
+      },
+      {
+        name: 'Listener2',
+        event: 'myCustomEvent',
+        handler: (callback, ...args) => {
+          const myCustomCallback = () => {
+            console.log('My custom event!');
+            return callback(...args);
+          };
+          return myCustomCallback();
+        },
+      },
+    ],
+  },
+};
+
+hadron(app, [hadronEvents], config).then((container) => {
+  container.take('eventManager').emitEvent('myCustomEvent'); // "My custom event!"
+});
+```
+
 ### Emitting events
 
 ```javascript
-eventManager.emitEvent(eventName);
+eventEmitter.emitEvent(eventName);
 ```
 
 Calls all listeners handlers registered for the event with event name passed to it.
@@ -83,22 +121,45 @@ An example of a listener:
 ## Extension points in hadron
 
 As said before, there are a couple of extension points in the hadron framework to which you can hook up your listeners.
-The extension points are:
+The extension depends from packages that You are using and are listed below:
 
----
+--- hadron-express
 
 `HANDLE_REQUEST_CALLBACK_EVENT`
 
 Event fires, before route callback function is called, passes route callback to the listener.
 
----
+Example:
 
-`HANDLE_INITIALIZE_APPLICATION_EVENT`
-
-Event fires when hadron packages are loaded successfully, it doesn't pass a callback to the listener.
+```javascript
+const ExpressEvent = require('@brainhubeu/hadron-express').Event;
+const listeners = [
+  {
+    name: 'Listener',
+    event: ExpressEvent.HANDLE_REQUEST_CALLBACK_EVENT, // or simply event: 'HANDLE_REQUEST_CALLBACK_EVENT'
+    handler: (callback, ...args) => {
+      console.log('Request Handled!');
+      callback(...args);
+    },
+  },
+];
+```
 
 ---
 
 `HANDLE_TERMINATE_APPLICATION_EVENT`
 
 Event fires when the application is terminated with <kbd>CTRL</kbd> + <kbd>C</kbd>, passes default hadron callback to the listener.
+
+```javascript
+const Event = require('@brainhubeu/hadron-events').Event;
+const listeners = [
+  {
+    name: 'Listener',
+    event: Event.HANDLE_TERMINATE_APPLICATION_EVENT, // or simply event: 'HANDLE_TERMINATE_APPLICATION_EVENT'
+    handler: () => {
+      console.log('Application is going to close');
+    },
+  },
+];
+```

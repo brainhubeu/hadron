@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { IContainer, IRoute, Middleware, IHadronExpressConfig } from './types';
 import { validateMethods } from './validators/routing';
-import { eventNames } from './constants/eventNames';
+import { Event } from './constants/eventNames';
 import CreateRouteError from './errors/CreateRouteError';
 import createContainerProxy from './createContainerProxy';
 import prepareRequest from './prepareRequest';
@@ -32,7 +32,7 @@ const createRoutes = (
             }
 
             const newRouteCallback = eventManager.emitEvent(
-              eventNames.HANDLE_REQUEST_CALLBACK_EVENT,
+              Event.HANDLE_REQUEST_CALLBACK_EVENT,
               route.callback,
             );
 

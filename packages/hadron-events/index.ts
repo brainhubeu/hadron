@@ -4,7 +4,10 @@ import { Lifecycle, IContainer } from '@brainhubeu/hadron-core';
 import eventManagerProvider from './src/eventManagerProvider';
 import { IHadronEventsConfig } from './src/types';
 
+import registerProcessEvents from './src/registerProcessEvents';
+
 export * from './src/types';
+export * from './src/constants';
 export default eventManagerProvider;
 
 export const register = (
@@ -20,4 +23,5 @@ export const register = (
   );
   eventManager.registerEvents(config.events.listeners);
   container.register('eventManager', eventManager);
+  registerProcessEvents(eventManager);
 };
