@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt';
+import { bcrypt } from '@brainhubeu/hadron-auth';
 
 const secret = process.env.JWT_SECRET || 'H4DR0N_S3CUR17Y';
 
@@ -12,7 +12,6 @@ const unauthorized = {
   },
 };
 
-// @ts-ignore
 const login = async (req: any, { userRepository }) => {
   try {
     const user = await userRepository.findOne({

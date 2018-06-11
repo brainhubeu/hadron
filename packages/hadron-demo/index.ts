@@ -6,6 +6,7 @@ import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
 import * as hadronLogger from '@brainhubeu/hadron-logger';
 import * as hadronTypeOrm from '@brainhubeu/hadron-typeorm';
+import * as hadronAuth from '../hadron-security/index';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo/index';
@@ -14,7 +15,6 @@ import serializationRoutes from './serialization/routing';
 import { setupSerializer } from './serialization/serialization-demo';
 import 'reflect-metadata';
 import securedRoutes from './security/securedRoutesConfig';
-import * as hadronAuth from '../hadron-security/index';
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
@@ -43,7 +43,7 @@ jsonProvider([`${__dirname}/routing/*`], ['config.js']).then((routes: any) => {
       hadronExpress,
     ],
     config,
-  ).then(async (container: IContainer) => {
+  ).then((container: IContainer) => {
     expressApp.use((req, res, next) =>
       res.status(404).json('Request not found.'),
     );
