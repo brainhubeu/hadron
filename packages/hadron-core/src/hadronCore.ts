@@ -20,22 +20,27 @@ export const prepareConfig = (
 };
 
 export default (
-  server: any,
   packages: any[] = [],
   config: any = {},
 ): Promise<IContainer> => {
-  container.register('server', server);
-
   const logger = createLogger({ name: 'hadron-logger' });
   container.register('hadronLogger', logger);
 
-  return prepareConfig(hadronDefaultConfig, config, logger).then(
-    (hadronConfig) => {
-      return Promise.all(
-        packages
-          .filter(({ register }) => !!register)
-          .map(({ register }) => register(container, hadronConfig)),
-      ).then(() => container);
-    },
-  );
+  return prepareConfig(hadronDefaultConfig, config, logger)
+    .then((hadronConfig) => {
+      const registers = packages
+        .filter(({ register }) => !!register)
+        .map(({ register }) => register);
+
+      let p = Promise.resolve();
+
+      registers.forEach((register) => {
+        p = p.then(() => {
+          register(container, hadronConfig);
+        });
+      });
+
+      return p;
+    })
+    .then(() => container);
 };

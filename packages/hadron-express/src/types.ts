@@ -24,6 +24,7 @@ export type RoutePathsConfig = string[][];
 export interface IContainer {
   take: (key: string) => any;
   keys: () => string[];
+  register: (key: string, value: any) => any;
 }
 
 export interface IHeaders {
