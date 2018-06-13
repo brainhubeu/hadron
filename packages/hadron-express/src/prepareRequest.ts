@@ -6,7 +6,7 @@ const prepareRequest = (
   locals = {},
 ): IRequest => {
   return {
-    locals: Object.assign(locals, expressRequest.locals),
+    locals: Object.assign(locals, (expressRequest as any).locals),
     headers: expressRequest.headers,
     body: expressRequest.body,
     params: expressRequest.params,
