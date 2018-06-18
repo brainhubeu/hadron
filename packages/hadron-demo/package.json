@@ -14,6 +14,7 @@
     "hadron-demo"
   ],
   "dependencies": {
+    "@brainhubeu/hadron-auth": "^0.0.5",
     "@brainhubeu/hadron-core": "^1.0.0",
     "@brainhubeu/hadron-events": "^1.0.1",
     "@brainhubeu/hadron-express": "^1.0.1",
@@ -23,10 +24,12 @@
     "@brainhubeu/hadron-typeorm": "^1.0.1",
     "@brainhubeu/hadron-utils": "^1.0.0",
     "@brainhubeu/hadron-validation": "^1.0.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "4.0.0",
     "express": "4.16.2",
+    "jsonwebtoken": "^8.2.2",
     "multer": "1.3.0",
     "mysql": "2.15.0",
     "reflect-metadata": "^0.1.12",
