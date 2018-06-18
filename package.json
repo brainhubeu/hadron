@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production NODE_PATH=./packages/hadron-demo/dist npm start --prefix packages/hadron-demo",
     "start:dev": "NODE_ENV=development NODE_PATH=./packages/hadron-demo nodemon --watch 'packages/hadron-demo/**/*.ts' --watch .rebuild.ts --ignore 'packages/hadron-demo/**/*.spec.ts' --exec 'ts-node' packages/hadron-demo/index.ts",
+    "start:test": "NODE_ENV=development NODE_PATH=./packages/hadron-demo ts-node packages/hadron-demo",
     "start:lerna": "nodemon --watch 'packages/**/*.ts' --exec 'npm run build && touch .rebuild.ts' -e ts",
     "build": "lerna bootstrap",
     "prestart": "npm run build",
