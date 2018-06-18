@@ -2,6 +2,10 @@
 
 [![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
 
+## Documentation
+
+Hadron documentation can be found at [http://hadron.pro](http://hadron.pro)
+
 ## Getting Started
 
 #### Requirements
@@ -82,10 +86,6 @@ declare module '<some-library>';
 ```
 
 5.  At this point everything should compile with no errors and you can either improve the types in the `.d.ts` file by following this [guide on authoring `.d.ts` files](http://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) or continue with no types.
-
-## Documentation
-
-1.  [Directory structure](docs/directoryStructure)
 
 ## Lerna
 
