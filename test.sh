@@ -5,7 +5,7 @@ trap 'kill $!' EXIT
 
 PORT="$port" npm run start:test &
 tries=0
-while ! echo exit 1 | nc localhost "8081";
+while ! echo exit 1 | nc localhost "$port";
 do
   if ((tries >= 10))
   then
