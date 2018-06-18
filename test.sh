@@ -4,5 +4,15 @@ port="${PORT:-8080}"
 trap 'kill $!' EXIT
 
 PORT="$port" npm run start:test &
-while ! echo exit | nc localhost "$port"; do sleep 1; done
+tries=0
+while ! echo exit 1 | nc localhost "8081";
+do
+  if ((tries >= 10))
+  then
+    echo 'Cannot connect to test server!'
+    exit 1;
+  fi
+  ((tries++))
+  sleep 5;
+done
 npm run test:cucumber
