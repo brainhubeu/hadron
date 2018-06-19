@@ -87,7 +87,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.brainhub.pl:2222/brainhub-framework/brainhub-framework-app.git"
+    "url": "https://github.com/brainhubeu/hadron.git"
   },
   "keywords": [
     "hadron"
