@@ -153,14 +153,14 @@ hadron(expressApp, [hadronTypeOrm], config).then((container) => {
 ```
 
 Repository key in Container depends from name of schema/class and is builded in such way:
-`<schema/class name in lower case>Repository`
+`<schema/class name in camelCase>Repository`
 
 Examples:
 
 ```
 User = userRepository
-SuperUser = superuserRepository
-loremIpsumDolor = loremipsumdolorRepository
+SuperUser = superUserRepository
+loremIpsumDolor = loremIpsumDolorRepository
 ```
 
 ## Repositories
