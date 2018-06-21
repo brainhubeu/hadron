@@ -65,14 +65,16 @@ const config = {
   },
 };
 
-hadron(app, [], config).then((container) => {
-  // We register the config in a container.
-  container.register('oauthConfig', oauthConfig);
+hadron(app, [require('@brainhubeu/hadron-express')], config).then(
+  (container) => {
+    // We register the config in a container.
+    container.register('oauthConfig', oauthConfig);
 
-  app.listen(8080, () => {
-    console.log('Hadron/Express listening on 8080.');
-  });
-});
+    app.listen(8080, () => {
+      console.log('Hadron/Express listening on 8080.');
+    });
+  },
+);
 ```
 
 We now have access to the OAuth config through the container.
