@@ -1,0 +1,28 @@
+{
+  "name": "@brainhubeu/hadron-oauth",
+  "version": "1.0.0",
+  "description": "Hadron module for authorisation from OAuth2 providers.",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": "Brainhub",
+  "keywords": [
+    "hadron",
+    "hadron-oauth"
+  ],
+  "scripts": {
+    "prepare": "tsc",
+    "test": "mocha -r ts-node/register src/__tests__/*"
+  },
+  "devDependencies": {
+    "@types/nock": "9.1.3",
+    "chai": "4.1.2",
+    "eslint-config-brainhub": "1.8.1",
+    "mocha": "5.2.0",
+    "nock": "9.3.3",
+    "ts-node": "6.1.1"
+  },
+  "dependencies": {
+    "@types/node-fetch": "2.1.1",
+    "node-fetch": "2.1.2"
+  }
+}
