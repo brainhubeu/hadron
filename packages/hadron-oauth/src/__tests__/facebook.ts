@@ -4,7 +4,7 @@ import * as nock from 'nock';
 import generateRedirectUrl from '../facebook/redirect';
 import requestToken from '../facebook/token';
 
-let config = {
+const config = {
   facebook: {
     clientID: 'keyboard-cat',
     clientSecret: 'shhh',

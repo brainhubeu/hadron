@@ -1,4 +1,5 @@
 export interface IContainer {
+  register: (key: string, value: any, lifecycle?: string) => any;
   take: (key: string) => any;
   keys: () => string[];
 }

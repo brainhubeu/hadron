@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import formatQueryString from '../util/formatQueryString';
-//import generateAuthRedirect from '../utils/generateAuthRedirect';
 
 describe('utils', function() {
   it('formatQueryString should format an object into a correct url query string', function() {

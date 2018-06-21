@@ -4,7 +4,7 @@ import * as nock from 'nock';
 import generateRedirectUrl from '../google/redirect';
 import requestToken from '../google/token';
 
-let config = {
+const config = {
   google: {
     clientID: 'keyboard-cat',
     clientSecret: 'shhh',
