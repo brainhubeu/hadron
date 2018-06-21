@@ -21,7 +21,7 @@ We can then use the access token to make further request to the provider's API i
 
 ### Configuration
 
-We will need to provide certain information to `hadron-oauth` before we can proceed with the auth process. This information exists in a separate config file, as we need it before the main Hadron config can be loaded.
+We will need to provide certain information to `hadron-oauth` before we can proceed with the auth process. This information exists in Hadron's config file.
 
 ```js
 // oauth.js
@@ -50,12 +50,16 @@ Now that our config is created, we need to create our Hadron app entry point.
 ```js
 // index.js
 const hadron = require('@brainhubeu/hadron-core').default;
+const hadronExpress = require('@brainhubeu/hadron-express');
+const hadronOauth = require('@brainhubeu/hadron-oauth');
+
 const express = require('express');
 const oauthConfig = require('./oauth.js');
 
 const app = express();
 
 const config = {
+  oauth: oauthConfig,
   routes: {
     root: {
       path: '/',
@@ -65,19 +69,14 @@ const config = {
   },
 };
 
-hadron(app, [require('@brainhubeu/hadron-express')], config).then(
-  (container) => {
-    // We register the config in a container.
-    container.register('oauthConfig', oauthConfig);
-
-    app.listen(8080, () => {
-      console.log('Hadron/Express listening on 8080.');
-    });
-  },
-);
+hadron(app, [hadronExpress, hadronOauth], config).then(() => {
+  app.listen(8080, () => {
+    console.log('Hadron/Express listening on 8080.');
+  });
+});
 ```
 
-We now have access to the OAuth config through the container.
+We now have access to the OAuth methods through the container.
 
 ### Auth code route
 
@@ -85,14 +84,12 @@ Let's create a separate file to store the logic for our route endpoints. We'll f
 
 ```js
 // routes.js
-const oauth = require('@brainhubeu/hadron-oauth').default;
-
 const routes = {
   googleAuthRequest: {
     path: '/auth/google',
     methods: ['GET'],
-    callback: (req, { oauthConfig }) => ({
-      redirect: oauth.google.redirect(oauthConfig),
+    callback: (req, { oauth }) => ({
+      redirect: oauth.google.redirect(),
     }),
   },
 };
@@ -147,8 +144,6 @@ We'll define another route to exchange the auth code for an access token.
 
 ```js
 // routes.js
-const oauth = require('@brainhubeu/hadron-oauth');
-
 const routes = {
   googleAuthRequest: {
     // ...
@@ -156,8 +151,8 @@ const routes = {
   googleTokenRequest: {
     path: '/auth/google/token',
     methods: ['POST'],
-    callback: (req, { oauthConfig }) => {
-      oauth.google.token(req.body.code, oauthConfig).then((res) => {
+    callback: (req, { oauth }) => {
+      oauth.google.token(req.body.code).then((res) => {
         console.log(res.access_token);
         // do things with the token...
       });
@@ -199,10 +194,10 @@ Now that we have the access token we can implement other features, such as our o
 
 #### `oauth.google.`
 
-* `redirect(config: object) => string` - parses the config options and returns a redirect URL to the user consent screen.
-* `token(code: string, config: object) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the response from Google.
+* `redirect() => string` - parses the config options and returns a redirect URL to the user consent screen.
+* `token(code: string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the response from Google.
 
 #### oauth.facebook.
 
-* `redirect(config: object, state: ?string) => string` - parses the config and returns a redirect URL to the user consent screen. You can provide a state string to secure your app against CSRF ([see here for details](https://developers.facebook.com/docs/facebook-login/security/#stateparam)).
-* `token(code: string, config: object) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the repsonse from Facebook.
+* `redirect(state: ?string) => string` - parses the config and returns a redirect URL to the user consent screen. You can provide a state string to secure your app against CSRF ([see here for details](https://developers.facebook.com/docs/facebook-login/security/#stateparam)).
+* `token(code: string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the repsonse from Facebook.
