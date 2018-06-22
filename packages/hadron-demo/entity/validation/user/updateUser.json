@@ -2,15 +2,15 @@
   "type": "object",
   "properties": {
     "id": {
-        "type": "number"
+      "type": "number"
     },
-    "userName": {
+    "username": {
       "type": "string"
     },
     "teamId": {
       "type": "number"
     }
   },
-  "required": ["id", "userName", "teamId"],
+  "required": ["id", "username", "teamId"],
   "additionalProperties": false
 }

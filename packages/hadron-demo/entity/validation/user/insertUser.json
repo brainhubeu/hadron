@@ -1,13 +1,16 @@
 {
   "type": "object",
   "properties": {
-    "userName": {
+    "username": {
+      "type": "string"
+    },
+    "password": {
       "type": "string"
     },
     "teamId": {
       "type": "number"
     }
   },
-  "required": ["userName", "teamId"],
+  "required": ["username", "password", "teamId"],
   "additionalProperties": false
 }
