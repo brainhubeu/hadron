@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-auth",
-  "version": "0.0.5",
+  "version": "0.0.1",
   "description": "Security package for hadron",
   "main": "dist/index.js",
   "files": [
@@ -17,16 +17,12 @@
   ],
   "author": "Brainhub",
   "license": "MIT",
-  "devDependencies": {
-    "@types/express": "^4.16.0",
-    "express": "^4.16.3"
-  },
   "dependencies": {
     "@types/bcrypt": "^2.0.0",
     "@types/jsonwebtoken": "^7.2.7",
     "bcrypt": "2.0.0",
     "glob-to-regexp": "^0.4.0",
-    "jsonwebtoken": "8.2.1"
+    "jsonwebtoken": "8.3.0"
   },
   "publishConfig": {
     "access": "public"
