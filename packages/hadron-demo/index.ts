@@ -6,7 +6,7 @@ import * as hadronSerialization from '@brainhubeu/hadron-serialization';
 import * as hadronExpress from '@brainhubeu/hadron-express';
 import * as hadronLogger from '@brainhubeu/hadron-logger';
 import * as hadronTypeOrm from '@brainhubeu/hadron-typeorm';
-import * as hadronAuth from '../hadron-security/index';
+import * as hadronAuth from '@brainhubeu/hadron-auth';
 import jsonProvider from '@brainhubeu/hadron-json-provider';
 import expressConfig from './express-demo';
 import typeormConfig from './typeorm-demo/index';

@@ -12,8 +12,8 @@
     "packages/hadron-typeorm",
     "packages/hadron-events",
     "packages/hadron-express",
-    "packages/hadron-demo",
-    "packages/hadron-security"
+    "packages/hadron-auth",
+    "packages/hadron-demo"
   ],
   "version": "independent"
 }
