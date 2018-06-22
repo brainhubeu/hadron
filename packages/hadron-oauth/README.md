@@ -197,7 +197,7 @@ Now that we have the access token we can implement other features, such as our o
 * `redirect() => string` - parses the config options and returns a redirect URL to the user consent screen.
 * `token(code: string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the response from Google.
 
-#### oauth.facebook.
+#### `oauth.facebook.`
 
 * `redirect(state: ?string) => string` - parses the config and returns a redirect URL to the user consent screen. You can provide a state string to secure your app against CSRF ([see here for details](https://developers.facebook.com/docs/facebook-login/security/#stateparam)).
 * `token(code: string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the repsonse from Facebook.
