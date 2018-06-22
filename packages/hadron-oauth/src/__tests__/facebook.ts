@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import * as nock from 'nock';
+import * as url from 'url';
 
 import generateRedirectUrl from '../facebook/redirect';
 import requestToken from '../facebook/token';
@@ -16,8 +17,8 @@ const config = {
 // @TODO: Errors and bad inputs.
 describe('facebook', function() {
   it('generates a valid redirect url', function() {
-    const url = generateRedirectUrl(config);
-    expect(new URL(url)).to.be.ok;
+    const uri = generateRedirectUrl(config);
+    expect(url.parse(uri)).to.be.ok;
   });
 
   it('exchanges auth code for url', function(done) {
