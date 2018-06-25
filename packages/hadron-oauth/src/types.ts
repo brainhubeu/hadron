@@ -24,6 +24,15 @@ export interface IOAuthConfig {
     tokenUrl?: string;
     responseType?: string;
   };
+  github?: {
+    clientID: string;
+    clientSecret: string;
+    redirectUri: string;
+    scope: string[];
+    authUrl?: string;
+    tokenUrl?: string;
+    allowSignup?: boolean;
+  };
 }
 
 export interface IQueryObject {
