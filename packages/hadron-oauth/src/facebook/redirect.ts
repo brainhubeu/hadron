@@ -2,7 +2,6 @@ import { IContainer, IOAuthConfig } from '../types';
 import { FACEBOOK_AUTH_URL } from '../util/constants';
 
 import formatQueryString from '../util/formatQueryString';
-import * as url from 'url';
 
 export default (config: IOAuthConfig, state?: string): string => {
   const host = config.facebook.authUrl || FACEBOOK_AUTH_URL;

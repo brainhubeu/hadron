@@ -22,12 +22,6 @@ export default {
   },
 };
 
-export const register = (container: IContainer, config: any) => {
-  const oauthConfig = config.oauth as IOAuthConfig;
-
-  container.register('oauth', oauthProvider(oauthConfig));
-};
-
 const oauthProvider = (oauthConfig: IOAuthConfig) => ({
   facebook: {
     redirect: (state?: string) => facebookRedirect(oauthConfig, state),
@@ -43,5 +37,11 @@ const oauthProvider = (oauthConfig: IOAuthConfig) => ({
       githubToken(code, oauthConfig, state),
   },
 });
+
+export const register = (container: IContainer, config: any) => {
+  const oauthConfig = config.oauth as IOAuthConfig;
+
+  container.register('oauth', oauthProvider(oauthConfig));
+};
 
 export { IOAuthConfig, IContainer } from './src/types';

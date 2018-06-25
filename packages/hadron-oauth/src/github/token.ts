@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 
 import { IOAuthConfig } from '../types';
-import formatQueryString from '../util/formatQueryString';
 
 import { GITHUB_TOKEN_URL } from '../util/constants';
 
@@ -14,10 +13,10 @@ export default (
 
   const query = {
     code,
+    state,
     client_id: config.github.clientID,
     client_secret: config.github.clientSecret,
     redirect_uri: config.github.redirectUri,
-    state,
   };
 
   return fetch(host, {
