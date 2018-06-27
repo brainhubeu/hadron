@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hadron Logger provides option to replace default hadron logger ([bunyan](https://github.com/trentm/node-bunyan)) to the one of your choice.
+Hadron Logger provides an option to replace the default hadron logger ([bunyan](https://github.com/trentm/node-bunyan)) to the one of your choice.
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm install @brainhubeu/hadron-logger --save
 
 ## Initialization
 
-Pass package as an argument for hadron bootstrapping function:
+Pass the package as an argument for the Hadron bootstrapping function:
 
 ```javascript
 // ... importing and initializing other components
@@ -22,7 +22,7 @@ Pass package as an argument for hadron bootstrapping function:
 hadron(expressApp, [require('@brainhubeu/hadron-logger')], config);
 ```
 
-That way, You should be able to get it from [Container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like that:
+That way, you should be able to get it from the [Container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like that:
 
 ```javascript
 const logger = container.take('logger');
@@ -32,11 +32,11 @@ logger.debug('Am I your logger?');
 logger.error('I am not your logger!');
 ```
 
-Notice: `logger` is a container key for default logger only.
+Notice: `logger` is a container key only for the default logger.
 
 ## Configuration
 
-To setup your own logger, You need to provide a proper adapter first. You can do that by importing `registerAdapter` method and call it with name and provider function for your logger, like that:
+To setup your own logger, you need to provide an adapter first. You can do that by importing the `registerAdapter` method and calling it with name and provider function for your logger, like that:
 
 ```javascript
 const registerAdapter = require('@brainhubeu/hadron-logger').registerAdapter;
@@ -58,9 +58,9 @@ registerAdapter('myOwnLogger', function(config) {
 });
 ```
 
-Provider will get hadron logger config as first parameter.
+Provider takes the Hadron logger config as the first parameter.
 
-After your adapter is setup, you can define Your logger in hadron configuration and retrieve it using logger name.
+After your adapter is set up, you can define your logger in the Hadron configuration and retrieve it using the logger's name.
 
 ```javascript
 const hadronConfig = {
@@ -78,7 +78,7 @@ const logger = Container.take('myLoggerName');
 
 ## Multiple loggers
 
-You can defined multiple loggers for your application. To do that You just need to provide adapters for all of them and define them in configuration.
+You can define multiple loggers for your application. To do that you just need to provide adapters for each of them and define them in the configuration.
 
 ```javascript
 const hadronConfig = {
