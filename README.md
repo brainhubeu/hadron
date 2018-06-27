@@ -3,6 +3,8 @@
   <img src="https://api.media.atlassian.com/file/afd72cf4-2dd9-4f34-bbf7-a55bb4c23931/binary?token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIzNTM3NmZmMi1kM2IzLTRkNGEtYTRlOC0wNDJmNGVjYzYzNTEiLCJhY2Nlc3MiOnsidXJuOmZpbGVzdG9yZTpmaWxlOjUzNGY5NmFkLTVhNzAtNDNmNC1hZDRlLTg1MDdlZTQwZjI1ZiI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTowMDE4NGU4ZS1kMTZlLTQ4OTYtODczNC00ODI5ODBhNzgzY2YiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6NjI0NGM4OGItMGExYy00YWQ1LTg5NTItZjMxODdkZWY4Zjc0IjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOmI1OTk2NDJjLWY0YzQtNDhmNS1hNzJmLWFjYmEwYzc1MzU1MyI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTphOGEyNTBkNS03YjgzLTRjMDEtOWEzMy02MWM5YWIxNTMwNGUiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6ZGU2ZTQyZGUtY2VkOS00N2JlLTg3NjEtZGUxMTJjNzgzYzU1IjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOmFmZDcyY2Y0LTJkZDktNGYzNC1iYmY3LWE1NWJiNGMyMzkzMSI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTo2NDI0OTY1Yi05MDliLTRjNGItYjQ3ZS1iYWU5ZjA2ZTdjN2MiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6NWY4MjJkNGItN2I3Zi00ZDY3LWI3OWItM2M2NTNmNzIzYzc0IjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOjc0MTI2YTU4LWNmZDMtNDhjMS05ZWMyLTBmYTBiODdlNGExNCI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTphOGQ0NzhlOS1mMjY3LTRmNmMtYmU5Zi01ZjUxNzJmYWRhYjQiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6ZmZkMWVhNDYtMGY5YS00ODk1LWFhOTAtMGM4NzZjNGVjOGJkIjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOjQxOGEwYjBkLTdlNzktNDBkMC04Y2NkLTk3MTBmMTM3MDRjZiI6WyJyZWFkIl19LCJleHAiOjE1MzAwOTU3NTksIm5iZiI6MTUzMDA5NDc5OX0.x6nbaBGQAgyXWayEVbedj47y6eYij79JVBzUNwwDT7Q&client=35376ff2-d3b3-4d4a-a4e8-042f4ecc6351" alt="Hadron Logo" /></a>
 </p>
 
+[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
+
 ## Why?
 
 **Hadron's purpose is to facilitate the building of Node.js applications:**
@@ -31,7 +33,7 @@ Hadron is modular, in addition to core functionalities mentioned above we provid
 
 Hadron is built with TypeScript, but it's primary target are JavaScript apps - we build our API to embrace current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
 
-[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
+> To read more about hadron checkout our article: [https://medium.com/@damian23/5674e33db3f7](https://medium.com/@damian23/5674e33db3f7)
 
 ## Documentation
 
