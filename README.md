@@ -71,6 +71,7 @@ hadron(expressApp, [require('@brainhubeu/hadron-express')], config).then(() => {
     console.log(`Listening on http://localhost:${port}`),
   );
 });
+```
 
 ## Documentation
 
