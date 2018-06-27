@@ -1,6 +1,77 @@
-# Hadron
+<p align="center">
+  <a href="https://hadron.pro/" target="blank">
+  <img src="./logo3.png" alt="Hadron Logo" /></a>
+</p>
 
 [![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
+
+## Why?
+
+**Hadron's purpose is to facilitate the building of Node.js applications:**
+
+##### Low-level framework-agnostic
+
+Hadron is a high-level Node.js framework built on top of Express (with support for other micro frameworks coming in the future).
+
+It abstracts away underlying request and response objects, providing simple data structures as input and output of your routes' handlers, making them simple to test and easy to deal with.
+
+##### Dependency injection
+
+Thanks to using dependency injection containers as a central dependency management solution, it provides a convenient way to access all dependencies in handler functions.
+
+#### Modular structure
+
+Hadron is modular, in addition to core functionalities mentioned above we provide a complete solution for requests processing via separate packages:
+
+* security management
+* input validation
+* database integration (through TypeORM)
+* data serialization
+* logging
+* events handling
+* CLI tool
+
+Hadron is built with TypeScript, but it's primary target are JavaScript apps - we build our API to embrace current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
+
+> To read more about hadron check out our article: [https://medium.com](https://medium.com/@damian23/5674e33db3f7)
+
+## Installation
+
+* Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
+
+* Install following modules from npm:
+
+```bash
+npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
+```
+
+## Hello World app
+
+Let's start with a simple Hello World app. It will give you a quick grasp of the framework.
+
+```javascript
+const hadron = require('@brainhubeu/hadron-core').default;
+const express = require('express');
+
+const port = 8080;
+const expressApp = express();
+
+const config = {
+  routes: {
+    helloWorldRoute: {
+      path: '/',
+      callback: () => 'Hello world!',
+      methods: ['get'],
+    },
+  },
+};
+
+hadron(expressApp, [require('@brainhubeu/hadron-express')], config).then(() => {
+  expressApp.listen(port, () =>
+    console.log(`Listening on http://localhost:${port}`),
+  );
+});
+```
 
 ## Documentation
 
