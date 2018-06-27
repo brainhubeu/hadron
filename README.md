@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://hadron.pro/" target="blank">
-  <img src="logo3" alt="Hadron Logo" /></a>
+  <img src="./logo3" alt="Hadron Logo" /></a>
 </p>
 
 [![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
