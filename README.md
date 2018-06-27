@@ -3,6 +3,8 @@
   <img src="https://api.media.atlassian.com/file/de6e42de-ced9-47be-8761-de112c783c55/binary?token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIzNTM3NmZmMi1kM2IzLTRkNGEtYTRlOC0wNDJmNGVjYzYzNTEiLCJhY2Nlc3MiOnsidXJuOmZpbGVzdG9yZTpmaWxlOjYyNDRjODhiLTBhMWMtNGFkNS04OTUyLWYzMTg3ZGVmOGY3NCI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTpiNTk5NjQyYy1mNGM0LTQ4ZjUtYTcyZi1hY2JhMGM3NTM1NTMiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6YThhMjUwZDUtN2I4My00YzAxLTlhMzMtNjFjOWFiMTUzMDRlIjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOjNkMDlmZjEwLTc4NzEtNDdlMC05NDZhLTgyODFmZmE1YzJlMiI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTpkZTZlNDJkZS1jZWQ5LTQ3YmUtODc2MS1kZTExMmM3ODNjNTUiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6NjQyNDk2NWItOTA5Yi00YzRiLWI0N2UtYmFlOWYwNmU3YzdjIjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOjc0MTI2YTU4LWNmZDMtNDhjMS05ZWMyLTBmYTBiODdlNGExNCI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTo1OTRjYjZjZi1kNDExLTQyMWEtYWYwNS02YmM5NWFiMTg1YzAiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6YThkNDc4ZTktZjI2Ny00ZjZjLWJlOWYtNWY1MTcyZmFkYWI0IjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOmZmZDFlYTQ2LTBmOWEtNDg5NS1hYTkwLTBjODc2YzRlYzhiZCI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZToxNTk4YmNhMS1jNzk3LTRlZmItODA4YS04OTI4YmUxYzU4MzciOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6NDE4YTBiMGQtN2U3OS00MGQwLThjY2QtOTcxMGYxMzcwNGNmIjpbInJlYWQiXX0sImV4cCI6MTUzMDA5NDM2NCwibmJmIjoxNTMwMDkzNDA0fQ.sDaJWb9njVnFPO1eDZwsm-Uts-9pyQv2WmOsjbJRq-w&client=35376ff2-d3b3-4d4a-a4e8-042f4ecc6351" alt="Nest Logo" /></a>
 </p>
 
+[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
+
 ## Why?
 Hadron's purpose is to facilitate the building of Node.js applications, it is a high-level Node.js framework built on top of Express (with support for other micro frameworks coming in the future).
 
@@ -21,8 +23,6 @@ Hadron is modular, in addition to core functionalities mentioned above we provid
 * CLI tool
 
 Hadron is built with TypeScript, but it's primary target are JavaScript apps - we build our API to embrace current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
-
-[![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
 
 ## Documentation
 
