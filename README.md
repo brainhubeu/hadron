@@ -1,4 +1,28 @@
+<p align="center">
+  <a href="https://hadron.pro/" target="blank"><img src="https://api.media.atlassian.com/file/a8d478e9-f267-4f6c-be9f-5f5172fadab4/binary?token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIzNTM3NmZmMi1kM2IzLTRkNGEtYTRlOC0wNDJmNGVjYzYzNTEiLCJhY2Nlc3MiOnsidXJuOmZpbGVzdG9yZTpmaWxlOmI1OTk2NDJjLWY0YzQtNDhmNS1hNzJmLWFjYmEwYzc1MzU1MyI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTozZDA5ZmYxMC03ODcxLTQ3ZTAtOTQ2YS04MjgxZmZhNWMyZTIiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6NTk0Y2I2Y2YtZDQxMS00MjFhLWFmMDUtNmJjOTVhYjE4NWMwIjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOmE4ZDQ3OGU5LWYyNjctNGY2Yy1iZTlmLTVmNTE3MmZhZGFiNCI6WyJyZWFkIl0sInVybjpmaWxlc3RvcmU6ZmlsZTpmZmQxZWE0Ni0wZjlhLTQ4OTUtYWE5MC0wYzg3NmM0ZWM4YmQiOlsicmVhZCJdLCJ1cm46ZmlsZXN0b3JlOmZpbGU6MTU5OGJjYTEtYzc5Ny00ZWZiLTgwOGEtODkyOGJlMWM1ODM3IjpbInJlYWQiXSwidXJuOmZpbGVzdG9yZTpmaWxlOjQxOGEwYjBkLTdlNzktNDBkMC04Y2NkLTk3MTBmMTM3MDRjZiI6WyJyZWFkIl19LCJleHAiOjE1MzAwOTIyODcsIm5iZiI6MTUzMDA5MTMyN30.yFPS1y3ICbPIVI4R1nUsbhkN6nf_iMSIoBDkYIxTgYE&client=35376ff2-d3b3-4d4a-a4e8-042f4ecc6351" width="200" alt="Nest Logo" /></a>
+</p>
+
 # Hadron
+>Makes backend services creation easier.
+
+## Why?
+Hadron is a high-level Node.js framework built on top of Express (with support for other micro frameworks coming in the future).
+
+It abstracts away underlying request and response objects, providing simple data structures as input and output of your routes' handlers, making them simple to test and easy to deal with.
+
+Thanks to using dependency injection containers as a central dependency management solution, it provides a convenient way to access all dependencies in handler functions.
+
+Hadron is modular, in addition to core functionalities mentioned above we provide a complete solution for requests processing via separate packages:
+
+* security management
+* input validation
+* database integration (through TypeORM)
+* data serialization
+* logging
+* events handling
+* CLI tool
+
+Hadron is built with TypeScript, but it's primary target are JavaScript apps - we build our API to embrace current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
 
 [![CircleCI](https://circleci.com/gh/brainhubeu/hadron.svg?style=svg)](https://circleci.com/gh/brainhubeu/hadron)
 
