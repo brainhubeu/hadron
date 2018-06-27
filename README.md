@@ -35,6 +35,43 @@ Hadron is built with TypeScript, but it's primary target are JavaScript apps - w
 
 > To read more about hadron check out our article: [https://medium.com](https://medium.com/@damian23/5674e33db3f7)
 
+## Installation
+
+* Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
+
+* Install following modules from npm:
+
+```bash
+npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
+```
+
+## Hello World app
+
+Let's start with a simple Hello World app. It will give you a quick grasp of the framework.
+
+```javascript
+const hadron = require('@brainhubeu/hadron-core').default;
+const express = require('express');
+
+const port = 8080;
+const expressApp = express();
+
+const config = {
+  routes: {
+    helloWorldRoute: {
+      path: '/',
+      callback: () => 'Hello world!',
+      methods: ['get'],
+    },
+  },
+};
+
+hadron(expressApp, [require('@brainhubeu/hadron-express')], config).then(() => {
+  expressApp.listen(port, () =>
+    console.log(`Listening on http://localhost:${port}`),
+  );
+});
+
 ## Documentation
 
 Hadron documentation can be found at [http://hadron.pro](http://hadron.pro)
