@@ -9,7 +9,7 @@
 
 **Hadron's purpose is to facilitate the building of Node.js applications:**
 
-##### Low level framework-agnostic
+##### Low-level framework-agnostic
 
 Hadron is a high-level Node.js framework built on top of Express (with support for other micro frameworks coming in the future).
 
