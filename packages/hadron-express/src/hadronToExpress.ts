@@ -41,10 +41,10 @@ const createRoutes = (
           .then(handleResponseSpec(res))
           .catch((error) => {
             const logger = containerProxy.hadronLogger;
+            const createRouteError = new CreateRouteError(routeName, error);
             if (logger) {
-              logger.warn(new CreateRouteError(routeName, error));
+              logger.error(createRouteError);
             }
-
             res.sendStatus(500);
           });
       },
