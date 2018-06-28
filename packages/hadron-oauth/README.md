@@ -190,6 +190,16 @@ Now that we have the access token we can implement other features, such as our o
 * `tokenUrl: ?string` - see above, defaults to `https://graph.facebook.com/v3.0/oauth/access_token`
 * `responseType` - see above, defaults to `code`.
 
+#### `github.`
+
+* `clientID: string` - your app id as provided in the [Github Developer Settings](https://github.com/settings/developers).
+* `clientSecert: string` - your app secret from the Developer Settings.
+* `scope: string[]` - an array of strings listing [Github API scopes](https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/).
+* `redirectUri: string` - the redirect URI for your app, must be the same as in the Developer Settings.
+* `authUrl: ?string` - see above, defaults to `https://github.com/login/oauth/authorize`.
+* `tokenUrl: ?string` - see above, defaults to `https://github.com/login/oauth/access_token`
+* `allowSignup: ?boolean` - determines whether the user will be able to sign up to Github while authorizing the app, defaults to `true`.
+
 ### Methods
 
 #### `oauth.google.`
@@ -201,3 +211,8 @@ Now that we have the access token we can implement other features, such as our o
 
 * `redirect(state: ?string) => string` - parses the config and returns a redirect URL to the user consent screen. You can provide a state string to secure your app against CSRF ([see here for details](https://developers.facebook.com/docs/facebook-login/security/#stateparam)).
 * `token(code: string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the repsonse from Facebook.
+
+#### `oauth.github.`
+
+* `redirect(state: ?string) => string` - parses the config and returns a redirect URL to the user consent screen. You can provide a state string to secure your app against CSRF.
+* `token(code: string, state: ?string) => Promise` - exchanges the auth code in the first argument for an access token. Returns a promise which resolves to the repsonse from Facebook.
