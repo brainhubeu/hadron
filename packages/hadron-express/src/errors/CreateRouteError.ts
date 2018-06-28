@@ -2,8 +2,7 @@ import HadronErrorHandler from '@brainhubeu/hadron-error-handler';
 
 export default class CreateRouteError extends HadronErrorHandler {
   constructor(routeName: string, error: Error) {
-    super();
-    this.message = `Cannot create route ${routeName}.`;
+    super(`Cannot create route ${routeName}.`);
     this.stack = error.stack;
   }
 }
