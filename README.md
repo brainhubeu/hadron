@@ -9,19 +9,23 @@
 
 **Hadron's purpose is to facilitate the building of Node.js applications:**
 
-##### Low-level framework-agnostic
+### Low-level framework-agnostic
 
-Hadron is a high-level Node.js framework built on top of Express (with support for other micro frameworks coming in the future).
+Your application is built independently from other frameworks (Express, Koa). Hadron creates a layer between HTTP requests and your app written in plain Javascript.
 
-It abstracts away underlying request and response objects, providing simple data structures as input and output of your routes' handlers, making them simple to test and easy to deal with.
+Hadron abstracts away underlying request and response objects, providing simple data structures as input/output of your routes' handlers, making them simple to test and easy to deal with.
 
-##### Dependency injection
+### Dependency injection
 
-Thanks to using dependency injection containers as a central dependency management solution, it provides a convenient way to access all dependencies in handler functions.
+The dependency injection pattern enables you to easily change interface implementation. Hadron gives us the power to create SOLID applications.
 
-#### Modular structure
+Containers as a dependency management solution provides a convenient way to access all dependencies in functions.
 
-Hadron is modular, in addition to core functionalities mentioned above we provide a complete solution for requests processing via separate packages:
+### Modular structure
+
+The modular structure enables you to add/remove packages or create your own extensions. Hadron provides a complete solution for request processing using separate packages.
+
+Current packages:
 
 * security management
 * input validation
@@ -31,7 +35,7 @@ Hadron is modular, in addition to core functionalities mentioned above we provid
 * events handling
 * CLI tool
 
-Hadron is built with TypeScript, but it's primary target are JavaScript apps - we build our API to embrace current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
+Built with TypeScript, but it's primary target is JavaScript apps. Hadron’s API embraces current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
 
 > To read more about hadron check out our article: [https://medium.com](https://medium.com/@damian23/5674e33db3f7)
 
