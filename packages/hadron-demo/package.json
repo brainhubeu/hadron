@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-demo",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Hadron demo example app",
   "main": "dist/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "@brainhubeu/hadron-events": "^1.0.1",
     "@brainhubeu/hadron-express": "^1.0.2",
     "@brainhubeu/hadron-json-provider": "^1.0.0",
-    "@brainhubeu/hadron-logger": "^1.0.0",
+    "@brainhubeu/hadron-logger": "^1.0.1",
     "@brainhubeu/hadron-serialization": "^1.0.0",
     "@brainhubeu/hadron-typeorm": "^1.0.2",
     "@brainhubeu/hadron-utils": "^1.0.0",
