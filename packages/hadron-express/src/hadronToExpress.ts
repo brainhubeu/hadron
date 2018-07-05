@@ -23,10 +23,10 @@ const createRoutes = (
       (req: express.Request, res: express.Response) => {
         const request = prepareRequest(req);
 
+        const eventManager = containerProxy.eventManager;
+
         Promise.resolve()
           .then(() => {
-            const eventManager = containerProxy.eventManager;
-
             if (!eventManager) {
               return route.callback(request, containerProxy);
             }
@@ -38,7 +38,18 @@ const createRoutes = (
 
             return newRouteCallback(request, containerProxy);
           })
-          .then(handleResponseSpec(res))
+          .then((cb) => {
+            if (!eventManager) {
+              return handleResponseSpec(res)(cb);
+            }
+
+            const newResponseHandler = eventManager.emitEvent(
+              Event.HANDLE_RESPONSE_EVENT,
+              handleResponseSpec,
+            );
+
+            return newResponseHandler(res)(cb);
+          })
           .catch((error) => {
             const logger = containerProxy.hadronLogger;
             if (logger) {
