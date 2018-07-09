@@ -37,7 +37,7 @@ Current packages:
 
 Built with TypeScript, but it's primary target is JavaScript apps. Hadron’s API embraces current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
 
-> To read more about hadron check out our article: [https://medium.com](https://medium.com/@damian23/5674e33db3f7)
+> To read more about hadron check out our article: [How to use Hadron?](https://brainhub.eu/blog/building-api-expressjs-and-hadron/)
 
 ## Installation
 
