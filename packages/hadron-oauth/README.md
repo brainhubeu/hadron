@@ -39,7 +39,7 @@ The `clientID` and `clientSecret` fields need to be the same as these given to y
 
 `scope` is an array of strings defining the scopes your app requires from the user. See the [Google scopes](https://developers.google.com/identity/protocols/googlescopes) and [Facebook scopes](https://developers.facebook.com/docs/facebook-login/permissions/) for details. These can be used later to retrieve relevant data from your provider's APIs about the user.
 
-In this case, we'll also pretend that there is a dev server for React or Vue at `http://localhost:8081`, however we can just as well redirect the calls back to our own server.
+In this case, we'll also pretend that there is a front-end dev server at `http://localhost:8081`, however we can just as well redirect the calls back to our own server.
 
 It's recommended that you exclude this file from your version control or supply the specific config fields through environment variables as this file contains sensitive information.
 
