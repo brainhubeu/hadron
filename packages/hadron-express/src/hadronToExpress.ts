@@ -38,9 +38,9 @@ const createRoutes = (
 
             return newRouteCallback(request, containerProxy);
           })
-          .then((cb) => {
+          .then((callback) => {
             if (!eventManager) {
-              return handleResponseSpec(res)(cb);
+              return handleResponseSpec(res)(callback);
             }
 
             const newResponseHandler = eventManager.emitEvent(
@@ -48,7 +48,7 @@ const createRoutes = (
               handleResponseSpec,
             );
 
-            return newResponseHandler(res)(cb);
+            return newResponseHandler(res)(callback);
           })
           .catch((error) => {
             const logger = containerProxy.hadronLogger;
