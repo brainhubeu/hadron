@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-oauth",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Hadron module for authorisation from OAuth2 providers.",
   "main": "dist/index.js",
   "license": "MIT",
@@ -24,5 +24,8 @@
   "dependencies": {
     "@types/node-fetch": "2.1.1",
     "node-fetch": "2.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
