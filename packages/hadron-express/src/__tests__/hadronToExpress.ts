@@ -15,6 +15,7 @@ import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
 import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
 
 import routesToExpress from '../hadronToExpress';
+import * as eventNames from '../constants/eventNames';
 import { IRequest, IResponseSpec } from '../types';
 
 let app = express();
@@ -132,6 +133,26 @@ describe('router config', () => {
           .get(`/index`)
           .then(() => {
             expect(eventManager.emitEvent.calledOnce).to.equal(true);
+          }),
+      );
+    });
+
+    it('calls the response event if eventManager is present', () => {
+      const eventManager = {
+        emitEvent: sinon.spy(),
+      };
+      Container.register('eventManager', eventManager);
+      const testRoute = createTestRoute('/index', ['GET'], () => null);
+
+      return routesToExpress(testRoute, Container).then(() =>
+        request(app)
+          .get('/index')
+          .then(() => {
+            expect(
+              eventManager.emitEvent.calledWith(
+                eventNames.HANDLE_RESPONSE_EVENT,
+              ),
+            );
           }),
       );
     });
