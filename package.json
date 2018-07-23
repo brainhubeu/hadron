@@ -15,6 +15,7 @@
     "lint:fix": "lerna exec --bail=false -- tslint -c \\$LERNA_ROOT_PATH/tslint.json -p \\packages/$LERNA_PACKAGE_NAME/tsconfig.json --format stylish",
     "test": "lerna bootstrap && npm run -s test:unit && npm run -s test:e2e",
     "test:unit": "NODE_ENV=test NODE_PATH=src:lib mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
+    "test:package": "./package-test.sh",
     "test:unit:watch": "npm run test:unit -- --reporter min --watch-extensions ts --watch",
     "test:unit:coverage": "NODE_ENV=test NODE_PATH=src:lib nyc mocha -r ts-node/register tools/testSetup.ts './**/__tests__/*.ts'",
     "test:e2e": "./test.sh",

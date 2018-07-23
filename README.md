@@ -127,8 +127,14 @@ PORT=8181 npm run test
 
 #### Unit tests
 
+Run unit tests for each package:
 ```sh
 npm run test:unit
+```
+
+Run unit tests for a single package:
+```sh
+npm run test:package <package name>
 ```
 
 #### E2E tests
