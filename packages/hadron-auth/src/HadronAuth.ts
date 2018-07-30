@@ -121,6 +121,10 @@ export const initRoutes = (securedRoutes: ISecuredRoute[]): IRoute[] => {
 };
 
 export const register = (container: any, config: any) => {
+  if (config.authSecret) {
+    container.register('authSecret', config.authSecret);
+  }
+
   routes = initRoutes(config.securedRoutes || []);
   const server = container.take('server');
 
