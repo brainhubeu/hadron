@@ -3,8 +3,7 @@ import { CONNECTION } from './constants';
 import { IContainer } from '@brainhubeu/hadron-core';
 import { IHadronTypeormConfig } from './types';
 
-const repositoryName = (name: string) =>
-  `${name.charAt(0).toLowerCase()}${name.substr(1)}Repository`;
+const repositoryName = (name: string) => `${name.toLowerCase()}Repository`;
 
 const registerRepositories = (
   container: IContainer,

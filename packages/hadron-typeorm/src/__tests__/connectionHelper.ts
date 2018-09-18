@@ -8,6 +8,7 @@ import { CONNECTION } from '../constants';
 
 import { Team } from './mocks/entity/Team';
 import { User } from './mocks/entity/User';
+import { UserStatus } from './mocks/entity/UserStatus';
 import userSchema from './mocks/schema/User';
 
 const connection: typeorm.ConnectionOptions = {
@@ -18,7 +19,7 @@ const connection: typeorm.ConnectionOptions = {
   username: 'root',
   password: 'my-secret-pw',
   database: 'test',
-  entities: [Team, User],
+  entities: [Team, User, UserStatus],
 };
 
 describe('TypeORM connection helper', () => {
@@ -60,6 +61,11 @@ describe('TypeORM connection helper', () => {
   it('should register Team repository to container as teamRepository', () =>
     connect(Container, { connection }).then((connection: any) =>
       assert(Container.take('teamRepository')),
+    ));
+
+  it('should register UserStatus repository to container as userstatusRepository', () =>
+    connect(Container, { connection }).then((connection: any) =>
+      assert(Container.take('userstatusRepository')),
     ));
 
   it('should register User repository from javascript schema to container as userRepository', () =>
