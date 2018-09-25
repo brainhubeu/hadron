@@ -223,7 +223,7 @@ Here is an example authorization middleware:
 
 ```javascript
 const jwt = require('jsonwebtoken');
-const { isRouteNotSecure, isAllowed } = require('@brainhubeu/hadron-auth');
+const { isRouteSecure, isAllowed } = require('@brainhubeu/hadron-auth');
 
 const errorResponse = {
   message: 'Unauthorized',
@@ -232,7 +232,7 @@ const errorResponse = {
 const expressMiddlewareAuthorization = (container) => {
   return async (req, res, next) => {
     try {
-      if (isRouteNotSecure(req.path)) {
+      if (!isRouteSecure(req.path)) {
         return next();
       }
 

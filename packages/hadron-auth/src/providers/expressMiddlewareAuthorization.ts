@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { isRouteNotSecure, isAllowed } from '../HadronAuth';
+import { isRouteSecure, isAllowed } from '../HadronAuth';
 
 const errorResponse = {
   message: 'Unauthorized',
@@ -8,7 +8,7 @@ const errorResponse = {
 const expressMiddlewareAuthorization = (container: any) => {
   return async (req: any, res: any, next: any) => {
     try {
-      if (isRouteNotSecure(req.path)) {
+      if (!isRouteSecure(req.path)) {
         return next();
       }
 

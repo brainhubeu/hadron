@@ -141,8 +141,13 @@ export const getRouteFromPath = (path: string, routes: IRoute[]): IRoute => {
   return route[0];
 };
 
-export const isRouteNotSecure = (path: string) =>
-  getRouteFromPath(path, routes) === null;
+export const isRouteNotSecure = (path: string) => {
+  console.warn("HadronAuth: isRouteNotSecure is being deprecated. Use isRouteSecure instead.");
+  return getRouteFromPath(path, routes) === null;
+}
+
+export const isRouteSecure = (path: string) =>
+  getRouteFromPath(path, routes) !== null;
 
 export const isAllowed = (
   path: string,
