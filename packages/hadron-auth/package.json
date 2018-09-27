@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Security package for hadron",
   "main": "dist/index.js",
   "files": [
