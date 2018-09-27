@@ -69,7 +69,7 @@
     "tslint-config-airbnb": "5.7.0",
     "tslint-config-prettier": "1.10.0",
     "tslint-eslint-rules": "5.1.0",
-    "typescript": "2.7.2"
+    "typescript": "2.8"
   },
   "nyc": {
     "extension": [
