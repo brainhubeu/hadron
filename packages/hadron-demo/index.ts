@@ -39,7 +39,7 @@ jsonProvider([`${__dirname}/routing/*`], ['config.js']).then((routes: any) => {
       hadronAuth,
       hadronEvents,
       hadronSerialization,
-      // hadronTypeOrm,
+      hadronTypeOrm,
       hadronExpress,
     ],
     config,
