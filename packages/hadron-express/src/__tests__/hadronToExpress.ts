@@ -121,7 +121,7 @@ describe('router config', () => {
         .expect(HTTPStatus[500]);
     });
 
-    it('calls emitEvent method', () => {
+    it.only('calls emitEvent method', () => {
       const eventManager = {
         emitEvent: sinon.spy(),
       };

@@ -1,6 +1,13 @@
 import * as express from 'express';
-import { IContainer, IRoute, Middleware, IHadronExpressConfig } from './types';
-import { validateMethods } from './validators/routing';
+import * as nodePath from 'path';
+import {
+  IContainer,
+  IRoute,
+  Middleware,
+  IHadronExpressConfig,
+  Callback,
+  IRoutesConfig,
+} from './types';
 import { Event } from './constants/eventNames';
 import CreateRouteError from './errors/CreateRouteError';
 import createContainerProxy from './createContainerProxy';
@@ -12,31 +19,29 @@ import jsonProvider from '@brainhubeu/hadron-json-provider';
 const createRoutes = (
   app: express.Application,
   route: IRoute,
-  middleware: Middleware[],
   containerProxy: any,
   routeName: string,
 ) => {
   return route.methods.map((method: string) => {
     (app as any)[method.toLowerCase()](
       route.path,
-      ...middleware,
+      ...route.middleware,
       (req: express.Request, res: express.Response) => {
         const request = prepareRequest(req);
 
-        const eventManager = containerProxy.eventManager;
+        const eventManager = containerProxy.get('eventManager');
 
         Promise.resolve()
           .then(() => {
-            if (!eventManager) {
-              return route.callback(request, containerProxy);
-            }
+            const callback = eventManager
+              ? // get new callback from events manager
+                eventManager.emitEvent(
+                  Event.HANDLE_REQUEST_CALLBACK_EVENT,
+                  route.callback,
+                )
+              : route.callback;
 
-            const newRouteCallback = eventManager.emitEvent(
-              Event.HANDLE_REQUEST_CALLBACK_EVENT,
-              route.callback,
-            );
-
-            return newRouteCallback(request, containerProxy);
+            return callback(request, containerProxy, res.locals);
           })
           .then((callback) => {
             if (!eventManager) {
@@ -87,22 +92,119 @@ const convertToExpress = (
     promises.push(jsonProvider(paths, extensions));
   }
 
-  return Promise.all(promises)
-    .then((results) =>
-      results.reduce(
-        (aggregation, current) => ({ ...aggregation, ...current }),
-        {},
-      ),
-    )
-    .then((routes: any) => {
-      (Object as any).keys(routes).map((key: string) => {
-        const route: IRoute = routes[key];
-        validateMethods(key, route.methods);
-        const middlewares: Middleware[] =
-          generateMiddlewares(route, containerProxy) || [];
-        createRoutes(app, route, middlewares, containerProxy, key);
-      });
-    });
+  return (
+    Promise.all(promises)
+      .then((results) =>
+        results.reduce(
+          (aggregation, current) => ({ ...aggregation, ...current }),
+          {},
+        ),
+      )
+      // flatten routes and prepare all components
+      .then((routes: any) =>
+        (Object as any)
+          .keys(routes)
+          .map((key: string) => prepareRoute(routes[key], key, containerProxy))
+          .reduce((agg: any, current: any) => ({ ...agg, ...current })),
+      )
+      .then((preparedRoutes: IRoutesConfig) => {
+        (Object as any).keys(preparedRoutes).map((key: string) => {
+          const route: IRoute = preparedRoutes[key];
+          createRoutes(app, route, container, key);
+        });
+      })
+  );
+};
+
+const prepareRoute = (
+  route: IRoute,
+  key: string,
+  container: IContainer,
+  parentRoute: IRoute = {},
+  parentKey: string = null,
+) => {
+  const middlewares = prepareMiddlewares(
+    route.middleware,
+    route.$middleware,
+    parentRoute.middleware,
+    container,
+  );
+  const path = preparePath(route.path, route.$path, parentRoute.path);
+
+  const methods = prepareMethods(
+    route.methods,
+    route.$methods,
+    parentRoute.methods,
+  );
+
+  const routeKey = parentKey ? `${parentKey}.${key}` : key;
+
+  const preparedRoute = {
+    ...route,
+    path,
+    methods,
+    middleware: middlewares,
+  };
+
+  const result = {
+    [routeKey]: preparedRoute,
+  };
+
+  if (route.routes) {
+    return {
+      ...result,
+      ...(Object as any)
+        .keys(route.routes)
+        .map((childKey: string) =>
+          prepareRoute(
+            (route.routes as any)[childKey],
+            childKey,
+            container,
+            preparedRoute,
+            routeKey,
+          ),
+        )
+        .reduce((agg: any, current: any) => ({ ...agg, ...current })),
+    };
+  }
+
+  return result;
+};
+
+const prepareMiddlewares = (
+  middleware: any[],
+  $middleware: any[],
+  parentMiddleware: Middleware[],
+  container: IContainer,
+) => {
+  if ($middleware) {
+    return generateMiddlewares($middleware, container);
+  }
+  return [
+    ...(parentMiddleware || []),
+    ...generateMiddlewares(middleware, container),
+  ];
+};
+
+const preparePath = (path: string, $path: string, parentPath: string = '') => {
+  if ($path) {
+    return $path;
+  }
+  return nodePath.join(parentPath, path);
+};
+
+const prepareMethods = (
+  methods: string[],
+  $methods: string[],
+  parentMethods: string[] = [],
+) => {
+  if ($methods) {
+    return $methods;
+  }
+  return [...(methods || []), ...parentMethods].reduce(
+    (agg, next) => (agg.indexOf(next) >= 0 ? agg : [...agg, next]),
+    [],
+  );
 };
 
 export default convertToExpress;
