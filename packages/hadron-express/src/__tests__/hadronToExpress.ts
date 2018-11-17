@@ -175,7 +175,7 @@ describe('router config', () => {
     });
   });
 
-  describe.only('routes nesting', () => {
+  describe('routes nesting', () => {
     describe('prepareMiddlewares()', () => {
       it('should return parents middlewares', () => {
         const middleware = () => null;
