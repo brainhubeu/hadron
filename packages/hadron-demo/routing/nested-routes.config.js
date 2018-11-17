@@ -6,8 +6,11 @@ const testMiddleware = (req, res, next) => {
 const teamRoutsConfig = () => {
   return {
     nestedRoutes: {
-      callback: () => ({ body: { response: 'Hello There!', locals } }),
+      callback: (req, container, locals) => ({
+        body: { response: 'Hello There!', locals },
+      }),
       path: '/test/',
+      methods: ['GET'],
       middleware: [testMiddleware],
       routes: {
         route1: {

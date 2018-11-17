@@ -52,7 +52,10 @@ const generateMiddlewares = (
   middlewares: Middleware[],
   containerProxy: any,
 ) => {
-  return (middlewares || []).map((middleware: any) => {
+  if (!middlewares) {
+    return middlewares;
+  }
+  return middlewares.map((middleware: any) => {
     const rawMiddleware: Middleware = isRawMiddleware(middleware)
       ? middleware
       : createRawMiddleware(middleware as HadronMiddleware, containerProxy);

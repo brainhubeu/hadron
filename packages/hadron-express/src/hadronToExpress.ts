@@ -5,7 +5,6 @@ import {
   IRoute,
   Middleware,
   IHadronExpressConfig,
-  Callback,
   IRoutesConfig,
 } from './types';
 import { Event } from './constants/eventNames';
@@ -28,20 +27,20 @@ const createRoutes = (
       ...route.middleware,
       (req: express.Request, res: express.Response) => {
         const request = prepareRequest(req);
-
-        const eventManager = containerProxy.get('eventManager');
+        const eventManager = containerProxy.take('eventManager');
 
         Promise.resolve()
           .then(() => {
-            const callback = eventManager
-              ? // get new callback from events manager
-                eventManager.emitEvent(
-                  Event.HANDLE_REQUEST_CALLBACK_EVENT,
-                  route.callback,
-                )
-              : route.callback;
+            if (!eventManager) {
+              return route.callback(request, containerProxy, res.locals);
+            }
 
-            return callback(request, containerProxy, res.locals);
+            const newRouteCallback = eventManager.emitEvent(
+              Event.HANDLE_REQUEST_CALLBACK_EVENT,
+              route.callback,
+            );
+
+            return newRouteCallback(request, containerProxy, res.locals);
           })
           .then((callback) => {
             if (!eventManager) {
@@ -124,10 +123,9 @@ const prepareRoute = (
   parentKey: string = null,
 ) => {
   const middlewares = prepareMiddlewares(
-    route.middleware,
-    route.$middleware,
+    generateMiddlewares(route.middleware, container),
+    generateMiddlewares(route.$middleware, container),
     parentRoute.middleware,
-    container,
   );
   const path = preparePath(route.path, route.$path, parentRoute.path);
 
@@ -171,29 +169,29 @@ const prepareRoute = (
   return result;
 };
 
-const prepareMiddlewares = (
+export const prepareMiddlewares = (
   middleware: any[],
   $middleware: any[],
   parentMiddleware: Middleware[],
-  container: IContainer,
 ) => {
   if ($middleware) {
-    return generateMiddlewares($middleware, container);
+    return $middleware;
   }
-  return [
-    ...(parentMiddleware || []),
-    ...generateMiddlewares(middleware, container),
-  ];
+  return [...(parentMiddleware || []), ...(middleware || [])];
 };
 
-const preparePath = (path: string, $path: string, parentPath: string = '') => {
+export const preparePath = (
+  path: string,
+  $path: string,
+  parentPath: string = '',
+) => {
   if ($path) {
     return $path;
   }
   return nodePath.join(parentPath, path);
 };
 
-const prepareMethods = (
+export const prepareMethods = (
   methods: string[],
   $methods: string[],
   parentMethods: string[] = [],

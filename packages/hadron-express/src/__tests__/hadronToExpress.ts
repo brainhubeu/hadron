@@ -11,11 +11,14 @@ import { Container } from '@brainhubeu/hadron-core';
 
 import { json as bodyParser } from 'body-parser';
 
-import InvalidRouteMethodError from '../errors/InvalidRouteMethodError';
 import NoRouterMethodSpecifiedError from '../errors/NoRouterMethodSpecifiedError';
 
-import routesToExpress from '../hadronToExpress';
-import * as eventNames from '../constants/eventNames';
+import routesToExpress, {
+  prepareMiddlewares,
+  preparePath,
+  prepareMethods,
+} from '../hadronToExpress';
+import { Event } from '../constants/eventNames';
 import { IRequest, IResponseSpec } from '../types';
 
 let app = express();
@@ -84,14 +87,6 @@ describe('router config', () => {
       );
     });
 
-    it("throws a InvalidRouteMethodError if method specified in config doesn't exist", () => {
-      const testRoute = createTestRoute('/index', ['REPAIR'], () => null);
-
-      return routesToExpress(testRoute, Container).catch((error) =>
-        expect(error).to.be.instanceOf(InvalidRouteMethodError),
-      );
-    });
-
     it('generate multiple methods based on config', () => {
       const callback = (req: any, res: any) =>
         req.params.testParam + req.params.anotherParam;
@@ -121,7 +116,7 @@ describe('router config', () => {
         .expect(HTTPStatus[500]);
     });
 
-    it.only('calls emitEvent method', () => {
+    it('calls emitEvent method', () => {
       const eventManager = {
         emitEvent: sinon.spy(),
       };
@@ -131,15 +126,19 @@ describe('router config', () => {
       return routesToExpress(testRoute, Container).then(() =>
         request(app)
           .get(`/index`)
-          .then(() => {
-            expect(eventManager.emitEvent.calledOnce).to.equal(true);
-          }),
+          .then(() =>
+            expect(
+              eventManager.emitEvent.calledWith(
+                Event.HANDLE_REQUEST_CALLBACK_EVENT,
+              ),
+            ).to.equal(true),
+          ),
       );
     });
 
     it('calls the response event if eventManager is present', () => {
       const eventManager = {
-        emitEvent: sinon.spy(),
+        emitEvent: sinon.spy(() => () => null),
       };
       Container.register('eventManager', eventManager);
       const testRoute = createTestRoute('/index', ['GET'], () => null);
@@ -149,10 +148,8 @@ describe('router config', () => {
           .get('/index')
           .then(() => {
             expect(
-              eventManager.emitEvent.calledWith(
-                eventNames.HANDLE_RESPONSE_EVENT,
-              ),
-            );
+              eventManager.emitEvent.calledWith(Event.HANDLE_RESPONSE_EVENT),
+            ).to.equal(true);
           }),
       );
     });
@@ -175,6 +172,84 @@ describe('router config', () => {
         .then(() => {
           expect(getRouteProp(app, 'path')[0]).to.equal('/');
         });
+    });
+  });
+
+  describe.only('routes nesting', () => {
+    describe('prepareMiddlewares()', () => {
+      it('should return parents middlewares', () => {
+        const middleware = () => null;
+        const result = prepareMiddlewares([], null, [middleware]);
+
+        expect(result).to.contain(middleware);
+      });
+
+      it('should return joined middlewares of parent and current route', () => {
+        const middleware = () => null;
+        const middleware2 = () => null;
+        const result = prepareMiddlewares([middleware2], null, [middleware]);
+
+        expect(result).to.have.members([middleware, middleware2]);
+      });
+
+      it('should exclude parent and route middleware, if $middlewares exists', () => {
+        const middleware = () => null;
+        const middleware2 = () => null;
+        const middleware3 = () => null;
+        const result = prepareMiddlewares(
+          [middleware2],
+          [middleware3],
+          [middleware],
+        );
+
+        expect(result).to.not.have.members([middleware2, middleware]);
+      });
+
+      it('should contain $middlewares, if they exists', () => {
+        const middleware = () => null;
+        const middleware2 = () => null;
+        const middleware3 = () => null;
+        const result = prepareMiddlewares(
+          [middleware2],
+          [middleware3],
+          [middleware],
+        );
+
+        expect(result).to.have.members([middleware3]);
+      });
+    });
+
+    describe('preparePath()', () => {
+      it('should return just a path of route', () => {
+        expect(preparePath('path', null, '')).to.equal('path');
+      });
+
+      it('should return merged parent path and route path', () => {
+        expect(preparePath('path', null, 'previousPath')).to.equal(
+          'previousPath/path',
+        );
+      });
+
+      it('should overwrite parent path to $path', () => {
+        expect(preparePath('path', 'path2', 'previousPath')).to.equal('path2');
+      });
+    });
+
+    describe('prepareMethods()', () => {
+      it('should return methods of route', () => {
+        expect(prepareMethods(['GET'], null, [])).to.have.members(['GET']);
+      });
+
+      it('should return join methods of route and parent route', () => {
+        expect(prepareMethods(['GET'], null, ['POST'])).to.have.members([
+          'GET',
+          'POST',
+        ]);
+      });
+
+      it('should unique methods of route and parent route', () => {
+        expect(prepareMethods(['GET'], null, ['POST', 'GET'])).to.be.length(2);
+      });
     });
   });
 
