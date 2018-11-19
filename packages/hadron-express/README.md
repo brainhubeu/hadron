@@ -86,7 +86,7 @@ GET request with path: `http://localhost/Hello/World` will result with following
 
 ### Locals (available from 2.0.0)
 
-As a third parameter, hadron delivers `locals` from your response. You can inject it's content in middlewares, f.e.
+As a third parameter, hadron delivers `locals` from your response. You can inject its content in middlewares, e.g.
 
 ```javascript
 const route = {
@@ -219,7 +219,7 @@ const nestedRoute = {
 };
 ```
 
-If You would like to override parent property, just define new one with `$` sign before, f.e. `$middlewares`, `$path`, `$method`.
+If You would like to override parent property, just define new one with `$` sign before, e.g. `$middlewares`, `$path`, `$method`.
 
 ```javascript
 const nestedRoute = {

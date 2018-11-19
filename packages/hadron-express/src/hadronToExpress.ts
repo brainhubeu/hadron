@@ -95,7 +95,7 @@ const convertToExpress = (
     Promise.all(promises)
       .then((results) =>
         results.reduce(
-          (aggregation, current) => ({ ...aggregation, ...current }),
+          (accumulator, current) => ({ ...accumulator, ...current }),
           {},
         ),
       )
@@ -104,7 +104,10 @@ const convertToExpress = (
         (Object as any)
           .keys(routes)
           .map((key: string) => prepareRoute(routes[key], key, containerProxy))
-          .reduce((agg: any, current: any) => ({ ...agg, ...current })),
+          .reduce((accumulator: any, current: any) => ({
+            ...accumulator,
+            ...current,
+          })),
       )
       .then((preparedRoutes: IRoutesConfig) => {
         (Object as any).keys(preparedRoutes).map((key: string) => {
@@ -162,7 +165,10 @@ const prepareRoute = (
             routeKey,
           ),
         )
-        .reduce((agg: any, current: any) => ({ ...agg, ...current })),
+        .reduce((accumulator: any, current: any) => ({
+          ...accumulator,
+          ...current,
+        })),
     };
   }
 
@@ -200,7 +206,8 @@ export const prepareMethods = (
     return $methods;
   }
   return [...(methods || []), ...parentMethods].reduce(
-    (agg, next) => (agg.indexOf(next) >= 0 ? agg : [...agg, next]),
+    (accumulator, next) =>
+      accumulator.indexOf(next) >= 0 ? accumulator : [...accumulator, next],
     [],
   );
 };
