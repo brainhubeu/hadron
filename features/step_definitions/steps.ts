@@ -1,4 +1,4 @@
 import { defineSupportCode } from 'cucumber';
-import stepsSupport from 'cucumber-steps';
+import stepsSupport from '@brainhubeu/cucumber-steps';
 
 defineSupportCode(stepsSupport);
