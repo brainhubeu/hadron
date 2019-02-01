@@ -9,10 +9,14 @@ export type Middleware = (
 export type Callback = (...args: any[]) => any;
 
 export interface IRoute {
-  callback: Callback;
+  callback?: Callback;
   middleware?: Middleware[];
-  path: string;
-  methods: string[];
+  $middleware?: Middleware[];
+  path?: string;
+  $path?: string;
+  methods?: string[];
+  $methods?: string[];
+  routes?: IRoutesConfig[];
 }
 
 export interface IRoutesConfig {

@@ -84,6 +84,22 @@ GET request with path: `http://localhost/Hello/World` will result with following
 "Hello World"
 ```
 
+### Locals (available from 2.0.0)
+
+As a third parameter, hadron delivers `locals` from your response. You can inject its content in middlewares, e.g.
+
+```javascript
+const route = {
+  callback: (req, container, locals) => locals.testValue,
+  middlewares: [
+    (req, res, next) => {
+      res.locals.testValue = 'I am test!';
+      next();
+    },
+  ],
+};
+```
+
 ## Retrieving items from container in callback
 
 Callback function provides a simple way to retrieve items from container with ease. Simply set item's key as callback function's argument. Let's see an example below:
@@ -170,3 +186,85 @@ Callback function
 Middlewares take three arguments: `request`, `response` and `next`. First two are objects and third one - function which executed continues request flow.
 
 You can read more about middlewares in [express guide](https://expressjs.com/en/guide/using-middleware.html)
+
+## Routes nesting (available from 2.0.0)
+
+In case of more complicated routing, hadron-express offers possibility to nest routes. That way, You can specify bunch of route properties, that all child routes will inherit.
+
+Route properties that can be inherited:
+
+* path (will add parent's path beforehand new path),
+* middlewares
+* methods,
+
+```javascript
+const nestedRoute = {
+  middleware: [myTestMiddleware],
+  method: ['GET'],
+  path: '/test',
+  routes: {
+    route1: {
+      // path here is going to be /test/test1/, it's going to have 'GET' method on default and middleware myTestMiddleware will be called before
+      path: '/test1',
+      callback: () => 'It works! Trust me...',
+    },
+    route1: {
+      // path here is going to be /test/test2/, it's going to have 'GET' and 'POST' methods on default and middlewares myCustomMiddleware and myTestMiddleware will be called before
+      path: '/test2',
+      method: ['POST'],
+      middleware: [myCustomMiddleware],
+      callback: () => 'It works! Trust me...',
+    },
+  },
+};
+```
+
+If You would like to override parent property, just define new one with `$` sign before, e.g. `$middlewares`, `$path`, `$method`.
+
+```javascript
+const nestedRoute = {
+  middleware: [myTestMiddleware],
+  method: ['GET'],
+  path: '/test',
+  routes: {
+    route1: {
+      // path here is going to be /test1/, it's going to have 'GET' method on default and middleware myTestMiddleware will be called before
+      $path: '/test1',
+      callback: () => 'It works! Trust me...',
+    },
+    route1: {
+      // path here is going to be /test/test2/, it's going to have 'GET' and 'POST' methods on default and no middlewares
+      path: '/test2',
+      method: ['POST'],
+      $middleware: [],
+      callback: () => 'It works! Trust me...',
+    },
+  },
+};
+```
+
+You can define nested route endlessly, all of them will inherit properties of it's parent and other ancestors (of course if they were not overwritten with `$` sign).
+
+```javascript
+const nestedRoute = {
+  middleware: [myTestMiddleware],
+  method: ['GET'],
+  path: '/test',
+  routes: {
+    route1: {
+      // path here is going to be /test/test2/, it's going to have 'GET' and 'POST' methods on default and no middlewares
+      path: '/test2',
+      method: ['POST'],
+      $middleware: [],
+      callback: () => 'It works! Trust me...',
+      routes: {
+        // path here is going to be /test/test2/deep/, it's going to have 'GET' and 'POST' methods on default and no middlewares
+        deepRoute1: {
+          path: 'deep',
+          callback: () => 'The Dwarves delved too greedily and too deep',
+        },
+      },
+    },
+  },
+};
+```

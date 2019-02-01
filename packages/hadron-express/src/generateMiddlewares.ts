@@ -48,32 +48,35 @@ export const createRawMiddleware = (
   };
 };
 
-const generateMiddlewares = (route: IRoute, containerProxy: any) => {
-  return (
-    route.middleware &&
-    route.middleware.map((middleware: any) => {
-      const rawMiddleware: Middleware = isRawMiddleware(middleware)
-        ? middleware
-        : createRawMiddleware(middleware as HadronMiddleware, containerProxy);
+const generateMiddlewares = (
+  middlewares: Middleware[],
+  containerProxy: any,
+) => {
+  if (!middlewares) {
+    return middlewares;
+  }
+  return middlewares.map((middleware: any) => {
+    const rawMiddleware: Middleware = isRawMiddleware(middleware)
+      ? middleware
+      : createRawMiddleware(middleware as HadronMiddleware, containerProxy);
 
-      return (
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction,
-      ) => {
-        Promise.resolve()
-          .then(() => rawMiddleware(req, res, next))
-          .catch((error) => {
-            const logger = Container.take('hadronLogger');
-            if (logger) {
-              logger.warn(new GenerateMiddlewareError(error));
-            }
+    return (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      Promise.resolve()
+        .then(() => rawMiddleware(req, res, next))
+        .catch((error) => {
+          const logger = Container.take('hadronLogger');
+          if (logger) {
+            logger.warn(new GenerateMiddlewareError(error));
+          }
 
-            res.sendStatus(500);
-          });
-      };
-    })
-  );
+          res.sendStatus(500);
+        });
+    };
+  });
 };
 
 export default generateMiddlewares;
