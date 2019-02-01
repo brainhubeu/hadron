@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/hadron-express",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Hadron module implementing express elements",
   "main": "dist/index.js",
   "files": [
